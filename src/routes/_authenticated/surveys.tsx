@@ -14,6 +14,7 @@ import { isIndianSide, useMyProfile } from "@/lib/profile";
 import { useT } from "@/lib/i18n";
 import { CampaignBuilder } from "@/components/campaigns/CampaignBuilder";
 import { CampaignList } from "@/components/campaigns/CampaignList";
+import { SampleReportButton } from "@/components/campaigns/SampleReport";
 
 export const Route = createFileRoute("/_authenticated/surveys")({
   head: () => ({ meta: [{ title: "Dealer Surveys — nippon2japan" }, { name: "description", content: "Paid questionnaires answered by Indian dealers and vendors." }, { property: "og:title", content: "Dealer Surveys" }, { property: "og:description", content: "Real field insight from local dealers." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
@@ -31,7 +32,7 @@ function Surveys() {
   return (
     <>
       <PageHeader kanji="調" title={t("surveys")} desc={t("surveysDesc")}
-        action={company ? (tab === "campaigns" ? <CampaignBuilder /> : <NewSurvey />) : null} />
+        action={<div className="flex flex-wrap gap-2"><SampleReportButton />{company ? (tab === "campaigns" ? <CampaignBuilder /> : <NewSurvey />) : null}</div>} />
       {(company || dealer) && (
         <div className="mb-6 flex gap-1 rounded-md border border-border bg-card p-1 text-sm w-fit">
           {([["campaigns", "Product Campaigns"], ["questionnaires", "Paid Questionnaires"]] as const).map(([k, l]) => (
