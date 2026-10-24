@@ -8,3 +8,10 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+## Connect hubs
+- Keep distributor, company collaboration and tutor listings in shared hub profiles with hub-specific fields; this provides consistent discovery without changing existing compliance profiles.
+- Keep hub requests and conversations separate from legacy connections; participant-only RLS and database transition triggers protect private communication and response ownership.
+- Tutor slots have a partial unique active-request index; the database, not a filtered browser view, prevents concurrent double booking.
+- Qualification verification is protected from owner edits; self-reported qualifications must never become verified through registration.
+- Company pitch files use private storage and expiring signed playback URLs; member discovery does not make uploaded media public.

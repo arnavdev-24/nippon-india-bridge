@@ -4,7 +4,7 @@ import { useMyProfile } from "@/lib/profile";
 import { useT, type TKey } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({ meta: [{ title: "Dashboard — nippon2japan" }, { name: "description", content: "Your Japan–India business hub." }, { property: "og:title", content: "Dashboard" }, { property: "og:description", content: "Your Japan–India business hub." }] }),
+  head: () => ({ meta: [{ title: "Dashboard — nippon2japan" }, { name: "description", content: "Your Japan–India business hub." }, { property: "og:title", content: "Dashboard" }, { property: "og:description", content: "Your Japan–India business hub." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
   component: Dashboard,
 });
 

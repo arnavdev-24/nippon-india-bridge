@@ -1,0 +1,51 @@
+CREATE TABLE public.hub_profiles (
+ id uuid PRIMARY KEY DEFAULT gen_random_uuid(), owner_id uuid NOT NULL REFERENCES public.profiles(id), hub text NOT NULL CHECK (hub IN ('distribution','jv','tutoring')), name text NOT NULL, country text NOT NULL DEFAULT 'India' CHECK(country IN ('India','Japan')), city text NOT NULL DEFAULT '', state text NOT NULL DEFAULT '', industry text NOT NULL DEFAULT '', categories text[] NOT NULL DEFAULT '{}', service_areas text[] NOT NULL DEFAULT '{}', customers text[] NOT NULL DEFAULT '{}', capabilities text[] NOT NULL DEFAULT '{}', technologies text[] NOT NULL DEFAULT '{}', bio text NOT NULL DEFAULT '', offers text NOT NULL DEFAULT '', seeking text NOT NULL DEFAULT '', goals text NOT NULL DEFAULT '', qualifications text NOT NULL DEFAULT '', qualification_verified boolean NOT NULL DEFAULT false, experience_years integer NOT NULL DEFAULT 0 CHECK(experience_years >= 0), fee_inr integer NOT NULL DEFAULT 0 CHECK(fee_inr >= 0), levels text[] NOT NULL DEFAULT '{}', online boolean NOT NULL DEFAULT true, in_person boolean NOT NULL DEFAULT false, contact_email text NOT NULL DEFAULT '', pitch_path text, updated_at timestamptz NOT NULL DEFAULT now(), UNIQUE(owner_id,hub)
+);
+GRANT SELECT,INSERT,UPDATE,DELETE ON public.hub_profiles TO authenticated;
+GRANT ALL ON public.hub_profiles TO service_role;
+ALTER TABLE public.hub_profiles ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Members browse hub profiles" ON public.hub_profiles FOR SELECT TO authenticated USING(true);
+CREATE POLICY "Owners create hub profiles" ON public.hub_profiles FOR INSERT TO authenticated WITH CHECK(owner_id=auth.uid() AND qualification_verified=false AND (hub <> 'distribution' OR country='India'));
+CREATE POLICY "Owners update hub profiles" ON public.hub_profiles FOR UPDATE TO authenticated USING(owner_id=auth.uid()) WITH CHECK(owner_id=auth.uid());
+CREATE POLICY "Owners delete hub profiles" ON public.hub_profiles FOR DELETE TO authenticated USING(owner_id=auth.uid());
+CREATE FUNCTION public.guard_hub_profile() RETURNS trigger LANGUAGE plpgsql SET search_path=public AS $$ BEGIN IF auth.uid() IS NOT NULL AND (NEW.owner_id IS DISTINCT FROM OLD.owner_id OR NEW.hub IS DISTINCT FROM OLD.hub OR NEW.qualification_verified IS DISTINCT FROM OLD.qualification_verified) THEN RAISE EXCEPTION 'Ownership, section and verification are protected'; END IF; IF NEW.hub='distribution' AND NEW.country<>'India' THEN RAISE EXCEPTION 'Distributor profiles must operate in India'; END IF; RETURN NEW; END $$;
+CREATE TRIGGER guard_hub_profile BEFORE UPDATE ON public.hub_profiles FOR EACH ROW EXECUTE FUNCTION public.guard_hub_profile();
+CREATE TABLE public.tutor_slots (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), tutor_id uuid NOT NULL REFERENCES public.hub_profiles(id) ON DELETE CASCADE, starts_at timestamptz NOT NULL, duration_minutes integer NOT NULL DEFAULT 60 CHECK(duration_minutes BETWEEN 15 AND 240), mode text NOT NULL DEFAULT 'online' CHECK(mode IN ('online','in_person')), UNIQUE(tutor_id,starts_at));
+GRANT SELECT,INSERT,UPDATE,DELETE ON public.tutor_slots TO authenticated;
+GRANT ALL ON public.tutor_slots TO service_role;
+ALTER TABLE public.tutor_slots ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Members see tutor slots" ON public.tutor_slots FOR SELECT TO authenticated USING(true);
+CREATE POLICY "Tutors manage slots" ON public.tutor_slots FOR ALL TO authenticated USING(EXISTS(SELECT 1 FROM public.hub_profiles p WHERE p.id=tutor_id AND p.owner_id=auth.uid() AND p.hub='tutoring')) WITH CHECK(EXISTS(SELECT 1 FROM public.hub_profiles p WHERE p.id=tutor_id AND p.owner_id=auth.uid() AND p.hub='tutoring'));
+CREATE TABLE public.hub_requests (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), from_user uuid NOT NULL REFERENCES public.profiles(id), to_user uuid NOT NULL REFERENCES public.profiles(id), profile_id uuid NOT NULL REFERENCES public.hub_profiles(id), hub text NOT NULL CHECK(hub IN ('distribution','jv','tutoring')), subject text NOT NULL, message text NOT NULL, details jsonb NOT NULL DEFAULT '{}', slot_id uuid REFERENCES public.tutor_slots(id), status text NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','accepted','declined','in_discussion','meeting_scheduled','partnership_established','completed','cancelled')), meeting_at timestamptz, meeting_mode text CHECK(meeting_mode IN ('online','in_person')), meeting_location text, created_at timestamptz NOT NULL DEFAULT now(), CHECK(from_user<>to_user));
+GRANT SELECT,INSERT,UPDATE ON public.hub_requests TO authenticated;
+GRANT ALL ON public.hub_requests TO service_role;
+ALTER TABLE public.hub_requests ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Participants read hub requests" ON public.hub_requests FOR SELECT TO authenticated USING(auth.uid() IN(from_user,to_user));
+CREATE POLICY "Members send own hub requests" ON public.hub_requests FOR INSERT TO authenticated WITH CHECK(from_user=auth.uid() AND status='pending' AND EXISTS(SELECT 1 FROM public.hub_profiles p WHERE p.id=profile_id AND p.owner_id=to_user AND p.hub=hub_requests.hub));
+CREATE POLICY "Participants update hub requests" ON public.hub_requests FOR UPDATE TO authenticated USING(auth.uid() IN(from_user,to_user)) WITH CHECK(auth.uid() IN(from_user,to_user));
+CREATE UNIQUE INDEX one_active_slot_request ON public.hub_requests(slot_id) WHERE slot_id IS NOT NULL AND status NOT IN ('declined','cancelled');
+CREATE FUNCTION public.guard_hub_request() RETURNS trigger LANGUAGE plpgsql SET search_path=public AS $$ BEGIN
+ IF TG_OP='INSERT' THEN
+ IF NEW.hub='tutoring' AND NEW.slot_id IS NULL THEN RAISE EXCEPTION 'Select an available tutor slot'; END IF;
+ IF NEW.slot_id IS NOT NULL AND NOT EXISTS(SELECT 1 FROM public.tutor_slots s WHERE s.id=NEW.slot_id AND s.tutor_id=NEW.profile_id AND s.starts_at>now()) THEN RAISE EXCEPTION 'Slot is unavailable or in the past'; END IF;
+ RETURN NEW;
+ END IF;
+ IF NEW.from_user IS DISTINCT FROM OLD.from_user OR NEW.to_user IS DISTINCT FROM OLD.to_user OR NEW.profile_id IS DISTINCT FROM OLD.profile_id OR NEW.hub IS DISTINCT FROM OLD.hub OR NEW.slot_id IS DISTINCT FROM OLD.slot_id OR NEW.details IS DISTINCT FROM OLD.details OR NEW.subject IS DISTINCT FROM OLD.subject OR NEW.message IS DISTINCT FROM OLD.message THEN RAISE EXCEPTION 'Request details cannot be changed'; END IF;
+ IF OLD.status IN ('declined','cancelled','completed','partnership_established') THEN RAISE EXCEPTION 'This request is closed'; END IF;
+ IF OLD.status='pending' AND NEW.status NOT IN ('pending','accepted','declined','cancelled') THEN RAISE EXCEPTION 'Respond to the request first'; END IF;
+ IF OLD.status='pending' AND NEW.status IN ('accepted','declined') AND auth.uid() IS DISTINCT FROM OLD.to_user THEN RAISE EXCEPTION 'Only the recipient can accept or decline'; END IF;
+ IF OLD.status<>'pending' AND NEW.status IN ('pending','declined') THEN RAISE EXCEPTION 'Invalid status transition'; END IF;
+ IF NEW.hub='tutoring' AND NEW.status IN ('partnership_established','in_discussion') THEN RAISE EXCEPTION 'Invalid booking status'; END IF;
+ IF NEW.hub<>'tutoring' AND NEW.status='completed' THEN RAISE EXCEPTION 'Invalid partnership status'; END IF;
+ IF NEW.status='meeting_scheduled' AND (NEW.meeting_at IS NULL OR NEW.meeting_at<=now() OR NEW.meeting_mode IS NULL OR COALESCE(NEW.meeting_location,'')='') THEN RAISE EXCEPTION 'Add a future meeting date, mode and location or link'; END IF;
+ RETURN NEW; END $$;
+CREATE TRIGGER guard_hub_request BEFORE INSERT OR UPDATE ON public.hub_requests FOR EACH ROW EXECUTE FUNCTION public.guard_hub_request();
+CREATE TABLE public.hub_messages (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), request_id uuid NOT NULL REFERENCES public.hub_requests(id), sender_id uuid NOT NULL REFERENCES public.profiles(id), body text NOT NULL CHECK(length(trim(body)) BETWEEN 1 AND 4000), created_at timestamptz NOT NULL DEFAULT now());
+GRANT SELECT,INSERT ON public.hub_messages TO authenticated;
+GRANT ALL ON public.hub_messages TO service_role;
+ALTER TABLE public.hub_messages ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Participants read messages" ON public.hub_messages FOR SELECT TO authenticated USING(EXISTS(SELECT 1 FROM public.hub_requests r WHERE r.id=request_id AND auth.uid() IN(r.from_user,r.to_user)));
+CREATE POLICY "Participants send messages" ON public.hub_messages FOR INSERT TO authenticated WITH CHECK(sender_id=auth.uid() AND EXISTS(SELECT 1 FROM public.hub_requests r WHERE r.id=request_id AND auth.uid() IN(r.from_user,r.to_user) AND r.status NOT IN ('declined','cancelled','completed','partnership_established')));
+CREATE POLICY "Owners upload pitches" ON storage.objects FOR INSERT TO authenticated WITH CHECK(bucket_id='company-pitches' AND (storage.foldername(name))[1]=auth.uid()::text);
+CREATE POLICY "Members watch listed pitches" ON storage.objects FOR SELECT TO authenticated USING(bucket_id='company-pitches' AND ((storage.foldername(name))[1]=auth.uid()::text OR EXISTS(SELECT 1 FROM public.hub_profiles p WHERE p.pitch_path=name)));
+CREATE POLICY "Owners delete pitches" ON storage.objects FOR DELETE TO authenticated USING(bucket_id='company-pitches' AND (storage.foldername(name))[1]=auth.uid()::text);

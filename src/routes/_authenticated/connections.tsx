@@ -6,9 +6,10 @@ import { PageHeader, Empty } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { useMyProfile } from "@/lib/profile";
 import { useT } from "@/lib/i18n";
+import { RequestDashboard } from "@/components/hubs/RequestDashboard";
 
 export const Route = createFileRoute("/_authenticated/connections")({
-  head: () => ({ meta: [{ title: "Connections — nippon2japan" }, { name: "description", content: "Your connection requests." }, { property: "og:title", content: "Connections" }, { property: "og:description", content: "Manage requests with advisors, partners and tutors." }] }),
+  head: () => ({ meta: [{ title: "Connections & Requests — Japan2Nippon" }, { name: "description", content: "Track partnerships, tutor bookings, private conversations and meetings." }, { property: "og:title", content: "Connections & Requests — Japan2Nippon" }, { property: "og:description", content: "Manage distributor, collaboration and language training requests." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
   component: Connections,
 });
 
@@ -40,6 +41,8 @@ function Connections() {
   return (
     <>
       <PageHeader kanji="縁" title={t("connections")} />
+      <RequestDashboard />
+      <h2 className="mb-5 text-xl font-bold">Earlier connection requests</h2>
       <div className="grid gap-8 lg:grid-cols-2">
         <section>
           <h2 className="mb-4 text-xl font-bold">Received</h2>

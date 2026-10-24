@@ -18,6 +18,8 @@ export const Route = createFileRoute("/_authenticated/tax-compliance")({
       { name: "description", content: "Find the right Indian compliance experts for your industry — guided matching with CAs and CSs." },
       { property: "og:title", content: "Tax & Compliance Connect" },
       { property: "og:description", content: "The right compliance expert for your industry, before you enter the Indian market." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Wizard,

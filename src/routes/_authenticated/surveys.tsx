@@ -14,7 +14,7 @@ import { isCompany, useMyProfile } from "@/lib/profile";
 import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/surveys")({
-  head: () => ({ meta: [{ title: "Dealer Surveys — nippon2japan" }, { name: "description", content: "Paid questionnaires answered by Indian dealers and vendors." }, { property: "og:title", content: "Dealer Surveys" }, { property: "og:description", content: "Real field insight from local dealers." }] }),
+  head: () => ({ meta: [{ title: "Dealer Surveys — nippon2japan" }, { name: "description", content: "Paid questionnaires answered by Indian dealers and vendors." }, { property: "og:title", content: "Dealer Surveys" }, { property: "og:description", content: "Real field insight from local dealers." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
   component: Surveys,
 });
 
