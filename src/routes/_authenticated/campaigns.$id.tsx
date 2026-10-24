@@ -14,6 +14,7 @@ import { Report } from "@/components/campaigns/Report";
 import { BIS_STATUSES, CORE_HEADERS } from "@/lib/campaigns";
 import { fetchCampaign, fetchResponses, photoUrl, questionsOf, type Campaign } from "@/lib/campaigns-data";
 import { useMyProfile } from "@/lib/profile";
+import { VENDOR_ACCOUNT_TYPES } from "@/lib/profile";
 
 export const Route = createFileRoute("/_authenticated/campaigns/$id")({
   head: () => ({ meta: [{ title: "Product Campaign — Japan2Nippon" }, { name: "description", content: "Dealer survey campaign: quote, fieldwork and market viability report." }, { property: "og:title", content: "Product Campaign — Japan2Nippon" }, { property: "og:description", content: "Dealer survey campaign: quote, fieldwork and market viability report." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
@@ -92,7 +93,7 @@ function ActionPanel({ c, role }: { c: Campaign; role: "sme" | "vendor" }) {
   useEffect(() => setVendor(c.vendor_id ?? ""), [c.vendor_id]);
   const { data: vendors = [] } = useQuery({
     queryKey: ["survey-vendors"], enabled: role === "sme" && c.status === "draft",
-    queryFn: async () => (await supabase.from("profiles").select("id, full_name, company_name, state").eq("account_type", "dealer")).data ?? [],
+    queryFn: async () => (await supabase.from("profiles").select("id, full_name, company_name, state").in("account_type", VENDOR_ACCOUNT_TYPES)).data ?? [],
   });
 
   async function update(patch: Partial<Campaign>, msg: string) {

@@ -5,7 +5,7 @@ import { LayoutDashboard, Calculator, CalendarCheck, Handshake, Truck, Languages
 import { supabase } from "@/integrations/supabase/client";
 import { Logo } from "@/components/Logo";
 import { LangToggle, useT, type TKey } from "@/lib/i18n";
-import { ACCOUNT_TYPES, EXPERT_TYPES, useMyProfile } from "@/lib/profile";
+import { ACCOUNT_TYPES, EXPERT_TYPES, SIGNUP_ACCOUNT_TYPES, useMyProfile } from "@/lib/profile";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -106,7 +106,7 @@ function Onboarding() {
       <h1 className="text-3xl font-bold">Tell us about you</h1>
       <p className="mt-2 text-muted-foreground">Choose how you'll use nippon2japan.</p>
       <div className="mt-6 grid grid-cols-2 gap-2">
-        {Object.entries(ACCOUNT_TYPES).map(([k, v]) => (
+        {Object.entries(SIGNUP_ACCOUNT_TYPES).map(([k, v]) => (
           <button key={k} onClick={() => setF({ ...f, account_type: k })}
             className={`rounded-md border p-3 text-left text-sm ${f.account_type === k ? "border-primary bg-primary/5" : "border-border text-muted-foreground"}`}>{v}</button>
         ))}

@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { isCompany, useMyProfile } from "@/lib/profile";
+import { isIndianSide, useMyProfile } from "@/lib/profile";
 import { useT } from "@/lib/i18n";
 import { CampaignBuilder } from "@/components/campaigns/CampaignBuilder";
 import { CampaignList } from "@/components/campaigns/CampaignList";
@@ -25,8 +25,8 @@ const inr = (n: number) => `₹${n.toLocaleString("en-IN")}`;
 function Surveys() {
   const { t } = useT();
   const { data: me } = useMyProfile();
-  const company = isCompany(me);
-  const dealer = me?.account_type === "dealer";
+  const company = me?.account_type === "japanese_company";
+  const dealer = isIndianSide(me);
   const [tab, setTab] = useState<"campaigns" | "questionnaires">("campaigns");
   return (
     <>
