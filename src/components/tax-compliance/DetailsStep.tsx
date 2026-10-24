@@ -26,10 +26,10 @@ export function DetailsStep({ expert, industry, services, notes, booking, detail
   const { data: me } = useMyProfile();
   const qc = useQueryClient();
   const [busy, setBusy] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Partial<Record<keyof CompanyDetails, string>>>({});
 
   function validate(): boolean {
-    const e: Record<string, string> = {};
+    const e: Partial<Record<keyof CompanyDetails, string>> = {};
     if (!details.companyName.trim()) e.companyName = "Company name is required";
     if (!details.country.trim()) e.country = "Country of origin is required";
     if (!details.contactName.trim()) e.contactName = "Contact person is required";

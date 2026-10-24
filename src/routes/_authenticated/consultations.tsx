@@ -26,14 +26,14 @@ export const Route = createFileRoute("/_authenticated/consultations")({
 });
 
 function StatusBadge({ status }: { status: string }) {
-  const meta = STATUS_META[status] ?? STATUS_META.pending;
+  const meta = STATUS_META[status] ?? { label: status, className: "border-border bg-muted text-muted-foreground" };
   return <span className={`rounded-full border px-2 py-0.5 text-xs font-semibold ${meta.className}`}>{meta.label}</span>;
 }
 
 function RequestCard({ r, role, onAction }: {
   r: Request;
   role: "company" | "expert";
-  onAction: (id: string, status: "confirmed" | "completed" | "cancelled", patch?: Partial<Request>) => Promise<void>;
+  onAction: (id: string, status: "pending" | "confirmed" | "completed" | "cancelled", patch?: Partial<Request>) => Promise<void>;
 }) {
   const [rescheduling, setRescheduling] = useState(false);
   const [date, setDate] = useState(r.preferred_date ?? "");
