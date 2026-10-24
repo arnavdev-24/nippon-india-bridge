@@ -18,15 +18,20 @@ export function Choice({
   onChange,
   options,
   placeholder = "All",
+  id,
+  "aria-label": ariaLabel,
 }: {
   value: string;
   onChange: (v: string) => void;
   options: readonly string[];
   placeholder?: string;
+  id?: string;
+  "aria-label"?: string;
 }) {
   return (
     <select
-      aria-label={placeholder}
+      id={id}
+      aria-label={ariaLabel ?? placeholder}
       className="h-10 w-full min-w-0 rounded-md border border-input bg-background px-3 text-sm"
       value={value}
       onChange={(e) => onChange(e.target.value)}
