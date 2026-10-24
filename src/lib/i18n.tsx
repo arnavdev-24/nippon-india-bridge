@@ -41,7 +41,7 @@ export function LangProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("en");
   useEffect(() => {
     const saved = localStorage.getItem("n2j-lang");
-    if (saved === "ja" || saved === "en" || saved === "hi") setLangState(saved);
+    if (saved === "ja" || saved === "en") setLangState(saved);
   }, []);
   const setLang = (l: Lang) => {
     setLangState(l);
@@ -56,13 +56,13 @@ export function LangToggle() {
   const { lang, setLang } = useT();
   return (
     <div className="inline-flex rounded-md border border-border p-0.5 text-xs">
-      {(["en", "ja", "hi"] as const).map((l) => (
+      {(["en", "ja"] as const).map((l) => (
         <button
           key={l}
           onClick={() => setLang(l)}
           className={`rounded px-2 py-1 transition-colors ${lang === l ? "bg-ink text-ink-foreground" : "text-muted-foreground hover:text-foreground"}`}
         >
-          {l === "en" ? "EN" : l === "ja" ? "日本語" : "हिन्दी"}
+          {l === "en" ? "EN" : "日本語"}
         </button>
       ))}
     </div>
