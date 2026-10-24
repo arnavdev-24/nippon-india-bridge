@@ -96,7 +96,7 @@ export function CampaignBuilder() {
           <div><Label>BIS certification status</Label><select className={sel} value={f.bis_status} onChange={(e) => set("bis_status", e.target.value)}>{Object.entries(BIS_STATUSES).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select></div>
           <div><Label>Send request to Indian vendor *</Label>
             <select className={sel} value={f.vendor_id} onChange={(e) => set("vendor_id", e.target.value)}>
-              <option value="">{vendors.length ? "Select a vendor" : "No vendor accounts registered yet"}</option>
+              <option value="">{vendors.length ? "Select an Indian company" : "No Indian company profiles yet"}</option>
               {vendors.map((v) => <option key={v.id} value={v.id}>{v.company_name || v.full_name || "Vendor"}{v.state ? ` · ${v.state}` : ""}</option>)}
             </select></div>
         </div>
