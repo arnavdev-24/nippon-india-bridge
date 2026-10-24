@@ -20,11 +20,11 @@ describe("product survey campaigns", () => {
   });
   it("free text with >70% unique answers shows as notes, ≤4 answers doughnut, more bar", () => {
     const notes = buildCharts([row({ answers: { n: "a" } }), row({ answers: { n: "b" } }), row({ answers: { n: "c" } })], [q("n", "text")]);
-    expect(?.kind).toBe("notes");
+    expect(notes[0]?.kind).toBe("notes");
     const d = buildCharts([1, 1, 2, 2, 3].map((v) => row({ answers: { c: `x${v}` } })), [q("c", "choice")]);
-    expect(?.kind).toBe("doughnut");
+    expect(d[0]?.kind).toBe("doughnut");
     const b = buildCharts([1, 1, 2, 2, 3, 3, 4, 4, 5, 5].map((v) => row({ answers: { c: `x${v}` } })), [q("c", "choice")]);
-    expect(?.kind).toBe("bar");
+    expect(b[0]?.kind).toBe("bar");
   });
   it("bulk upload rejects bad GSTIN and maps spreadsheet headers", () => {
     const base = { "Dealer Name": "Khalsa", "Operating Territory": "Punjab", "GSTIN / Trade License": "03AAACK2214F1Z8", "Price Acceptance Rating (1-5)": 2, "Required Margin (%)": "14%", "Pilot Trial Volume": "5", "Engine": "Diesel" };
