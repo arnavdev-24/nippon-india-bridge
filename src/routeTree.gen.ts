@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedAdvisorsRouteImport } from './routes/_authenticated/advisors'
+import { Route as AuthenticatedAiInnovationRouteImport } from './routes/_authenticated/ai-innovation'
 import { Route as AuthenticatedConnectionsRouteImport } from './routes/_authenticated/connections'
 import { Route as AuthenticatedConsultationsRouteImport } from './routes/_authenticated/consultations'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -20,11 +21,14 @@ import { Route as AuthenticatedDistributorsRouteImport } from './routes/_authent
 import { Route as AuthenticatedGreentechRouteImport } from './routes/_authenticated/greentech'
 import { Route as AuthenticatedJointVenturesRouteImport } from './routes/_authenticated/joint-ventures'
 import { Route as AuthenticatedNavigatorRouteImport } from './routes/_authenticated/navigator'
+import { Route as AuthenticatedOverviewRouteImport } from './routes/_authenticated/overview'
+import { Route as AuthenticatedPartnerFinderRouteImport } from './routes/_authenticated/partner-finder'
 import { Route as AuthenticatedPilotsRouteImport } from './routes/_authenticated/pilots'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedSemiconductorRouteImport } from './routes/_authenticated/semiconductor'
 import { Route as AuthenticatedSurveysRouteImport } from './routes/_authenticated/surveys'
 import { Route as AuthenticatedTaxComplianceRouteImport } from './routes/_authenticated/tax-compliance'
+import { Route as AuthenticatedTrustCenterRouteImport } from './routes/_authenticated/trust-center'
 import { Route as AuthenticatedTutorsRouteImport } from './routes/_authenticated/tutors'
 import { Route as ApiPublicProfileAssessmentRouteImport } from './routes/api/public/profile-assessment'
 
@@ -47,6 +51,12 @@ const AuthenticatedAdvisorsRoute = AuthenticatedAdvisorsRouteImport.update({
   path: '/advisors',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAiInnovationRoute =
+  AuthenticatedAiInnovationRouteImport.update({
+    id: '/ai-innovation',
+    path: '/ai-innovation',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedConnectionsRoute =
   AuthenticatedConnectionsRouteImport.update({
     id: '/connections',
@@ -86,6 +96,17 @@ const AuthenticatedNavigatorRoute = AuthenticatedNavigatorRouteImport.update({
   path: '/navigator',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedOverviewRoute = AuthenticatedOverviewRouteImport.update({
+  id: '/overview',
+  path: '/overview',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPartnerFinderRoute =
+  AuthenticatedPartnerFinderRouteImport.update({
+    id: '/partner-finder',
+    path: '/partner-finder',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPilotsRoute = AuthenticatedPilotsRouteImport.update({
   id: '/pilots',
   path: '/pilots',
@@ -113,6 +134,12 @@ const AuthenticatedTaxComplianceRoute =
     path: '/tax-compliance',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedTrustCenterRoute =
+  AuthenticatedTrustCenterRouteImport.update({
+    id: '/trust-center',
+    path: '/trust-center',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedTutorsRoute = AuthenticatedTutorsRouteImport.update({
   id: '/tutors',
   path: '/tutors',
@@ -129,6 +156,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/advisors': typeof AuthenticatedAdvisorsRoute
+  '/ai-innovation': typeof AuthenticatedAiInnovationRoute
   '/connections': typeof AuthenticatedConnectionsRoute
   '/consultations': typeof AuthenticatedConsultationsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -136,11 +164,14 @@ export interface FileRoutesByFullPath {
   '/greentech': typeof AuthenticatedGreentechRoute
   '/joint-ventures': typeof AuthenticatedJointVenturesRoute
   '/navigator': typeof AuthenticatedNavigatorRoute
+  '/overview': typeof AuthenticatedOverviewRoute
+  '/partner-finder': typeof AuthenticatedPartnerFinderRoute
   '/pilots': typeof AuthenticatedPilotsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/semiconductor': typeof AuthenticatedSemiconductorRoute
   '/surveys': typeof AuthenticatedSurveysRoute
   '/tax-compliance': typeof AuthenticatedTaxComplianceRoute
+  '/trust-center': typeof AuthenticatedTrustCenterRoute
   '/tutors': typeof AuthenticatedTutorsRoute
   '/api/public/profile-assessment': typeof ApiPublicProfileAssessmentRoute
 }
@@ -148,6 +179,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/advisors': typeof AuthenticatedAdvisorsRoute
+  '/ai-innovation': typeof AuthenticatedAiInnovationRoute
   '/connections': typeof AuthenticatedConnectionsRoute
   '/consultations': typeof AuthenticatedConsultationsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -155,11 +187,14 @@ export interface FileRoutesByTo {
   '/greentech': typeof AuthenticatedGreentechRoute
   '/joint-ventures': typeof AuthenticatedJointVenturesRoute
   '/navigator': typeof AuthenticatedNavigatorRoute
+  '/overview': typeof AuthenticatedOverviewRoute
+  '/partner-finder': typeof AuthenticatedPartnerFinderRoute
   '/pilots': typeof AuthenticatedPilotsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/semiconductor': typeof AuthenticatedSemiconductorRoute
   '/surveys': typeof AuthenticatedSurveysRoute
   '/tax-compliance': typeof AuthenticatedTaxComplianceRoute
+  '/trust-center': typeof AuthenticatedTrustCenterRoute
   '/tutors': typeof AuthenticatedTutorsRoute
   '/api/public/profile-assessment': typeof ApiPublicProfileAssessmentRoute
 }
@@ -169,6 +204,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/advisors': typeof AuthenticatedAdvisorsRoute
+  '/_authenticated/ai-innovation': typeof AuthenticatedAiInnovationRoute
   '/_authenticated/connections': typeof AuthenticatedConnectionsRoute
   '/_authenticated/consultations': typeof AuthenticatedConsultationsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -176,11 +212,14 @@ export interface FileRoutesById {
   '/_authenticated/greentech': typeof AuthenticatedGreentechRoute
   '/_authenticated/joint-ventures': typeof AuthenticatedJointVenturesRoute
   '/_authenticated/navigator': typeof AuthenticatedNavigatorRoute
+  '/_authenticated/overview': typeof AuthenticatedOverviewRoute
+  '/_authenticated/partner-finder': typeof AuthenticatedPartnerFinderRoute
   '/_authenticated/pilots': typeof AuthenticatedPilotsRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/semiconductor': typeof AuthenticatedSemiconductorRoute
   '/_authenticated/surveys': typeof AuthenticatedSurveysRoute
   '/_authenticated/tax-compliance': typeof AuthenticatedTaxComplianceRoute
+  '/_authenticated/trust-center': typeof AuthenticatedTrustCenterRoute
   '/_authenticated/tutors': typeof AuthenticatedTutorsRoute
   '/api/public/profile-assessment': typeof ApiPublicProfileAssessmentRoute
 }
@@ -190,6 +229,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/advisors'
+    | '/ai-innovation'
     | '/connections'
     | '/consultations'
     | '/dashboard'
@@ -197,11 +237,14 @@ export interface FileRouteTypes {
     | '/greentech'
     | '/joint-ventures'
     | '/navigator'
+    | '/overview'
+    | '/partner-finder'
     | '/pilots'
     | '/profile'
     | '/semiconductor'
     | '/surveys'
     | '/tax-compliance'
+    | '/trust-center'
     | '/tutors'
     | '/api/public/profile-assessment'
   fileRoutesByTo: FileRoutesByTo
@@ -209,6 +252,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/advisors'
+    | '/ai-innovation'
     | '/connections'
     | '/consultations'
     | '/dashboard'
@@ -216,11 +260,14 @@ export interface FileRouteTypes {
     | '/greentech'
     | '/joint-ventures'
     | '/navigator'
+    | '/overview'
+    | '/partner-finder'
     | '/pilots'
     | '/profile'
     | '/semiconductor'
     | '/surveys'
     | '/tax-compliance'
+    | '/trust-center'
     | '/tutors'
     | '/api/public/profile-assessment'
   id:
@@ -229,6 +276,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/advisors'
+    | '/_authenticated/ai-innovation'
     | '/_authenticated/connections'
     | '/_authenticated/consultations'
     | '/_authenticated/dashboard'
@@ -236,11 +284,14 @@ export interface FileRouteTypes {
     | '/_authenticated/greentech'
     | '/_authenticated/joint-ventures'
     | '/_authenticated/navigator'
+    | '/_authenticated/overview'
+    | '/_authenticated/partner-finder'
     | '/_authenticated/pilots'
     | '/_authenticated/profile'
     | '/_authenticated/semiconductor'
     | '/_authenticated/surveys'
     | '/_authenticated/tax-compliance'
+    | '/_authenticated/trust-center'
     | '/_authenticated/tutors'
     | '/api/public/profile-assessment'
   fileRoutesById: FileRoutesById
@@ -280,6 +331,13 @@ declare module '@tanstack/react-router' {
       path: '/advisors'
       fullPath: '/advisors'
       preLoaderRoute: typeof AuthenticatedAdvisorsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/ai-innovation': {
+      id: '/_authenticated/ai-innovation'
+      path: '/ai-innovation'
+      fullPath: '/ai-innovation'
+      preLoaderRoute: typeof AuthenticatedAiInnovationRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/connections': {
@@ -331,6 +389,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedNavigatorRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/overview': {
+      id: '/_authenticated/overview'
+      path: '/overview'
+      fullPath: '/overview'
+      preLoaderRoute: typeof AuthenticatedOverviewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/partner-finder': {
+      id: '/_authenticated/partner-finder'
+      path: '/partner-finder'
+      fullPath: '/partner-finder'
+      preLoaderRoute: typeof AuthenticatedPartnerFinderRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/pilots': {
       id: '/_authenticated/pilots'
       path: '/pilots'
@@ -366,6 +438,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTaxComplianceRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/trust-center': {
+      id: '/_authenticated/trust-center'
+      path: '/trust-center'
+      fullPath: '/trust-center'
+      preLoaderRoute: typeof AuthenticatedTrustCenterRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/tutors': {
       id: '/_authenticated/tutors'
       path: '/tutors'
@@ -385,6 +464,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdvisorsRoute: typeof AuthenticatedAdvisorsRoute
+  AuthenticatedAiInnovationRoute: typeof AuthenticatedAiInnovationRoute
   AuthenticatedConnectionsRoute: typeof AuthenticatedConnectionsRoute
   AuthenticatedConsultationsRoute: typeof AuthenticatedConsultationsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
@@ -392,16 +472,20 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedGreentechRoute: typeof AuthenticatedGreentechRoute
   AuthenticatedJointVenturesRoute: typeof AuthenticatedJointVenturesRoute
   AuthenticatedNavigatorRoute: typeof AuthenticatedNavigatorRoute
+  AuthenticatedOverviewRoute: typeof AuthenticatedOverviewRoute
+  AuthenticatedPartnerFinderRoute: typeof AuthenticatedPartnerFinderRoute
   AuthenticatedPilotsRoute: typeof AuthenticatedPilotsRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedSemiconductorRoute: typeof AuthenticatedSemiconductorRoute
   AuthenticatedSurveysRoute: typeof AuthenticatedSurveysRoute
   AuthenticatedTaxComplianceRoute: typeof AuthenticatedTaxComplianceRoute
+  AuthenticatedTrustCenterRoute: typeof AuthenticatedTrustCenterRoute
   AuthenticatedTutorsRoute: typeof AuthenticatedTutorsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdvisorsRoute: AuthenticatedAdvisorsRoute,
+  AuthenticatedAiInnovationRoute: AuthenticatedAiInnovationRoute,
   AuthenticatedConnectionsRoute: AuthenticatedConnectionsRoute,
   AuthenticatedConsultationsRoute: AuthenticatedConsultationsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
@@ -409,11 +493,14 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedGreentechRoute: AuthenticatedGreentechRoute,
   AuthenticatedJointVenturesRoute: AuthenticatedJointVenturesRoute,
   AuthenticatedNavigatorRoute: AuthenticatedNavigatorRoute,
+  AuthenticatedOverviewRoute: AuthenticatedOverviewRoute,
+  AuthenticatedPartnerFinderRoute: AuthenticatedPartnerFinderRoute,
   AuthenticatedPilotsRoute: AuthenticatedPilotsRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedSemiconductorRoute: AuthenticatedSemiconductorRoute,
   AuthenticatedSurveysRoute: AuthenticatedSurveysRoute,
   AuthenticatedTaxComplianceRoute: AuthenticatedTaxComplianceRoute,
+  AuthenticatedTrustCenterRoute: AuthenticatedTrustCenterRoute,
   AuthenticatedTutorsRoute: AuthenticatedTutorsRoute,
 }
 

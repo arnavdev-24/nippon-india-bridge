@@ -1,9 +1,10 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
-export type Lang = "en" | "ja";
+export type Lang = "en" | "ja" | "hi";
 
 const dict = {
-  dashboard: { en: "Dashboard", ja: "ダッシュボード" },
+  dashboard: { en: "Dashboard", ja: "ダッシュボード", hi: "डैशबोर्ड" },
+  overview: { en: "Sector Platform", ja: "業界プラットフォーム", hi: "सेक्टर प्लेटफ़ॉर्म" },
   advisors: { en: "Tax & Compliance", ja: "税務・法務" },
   jv: { en: "JV & Technology Exchange", ja: "合弁・技術交流" },
   distributors: { en: "Distributor Connect", ja: "販売代理店マッチング" },
@@ -40,13 +41,13 @@ export function LangProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("en");
   useEffect(() => {
     const saved = localStorage.getItem("n2j-lang");
-    if (saved === "ja" || saved === "en") setLangState(saved);
+    if (saved === "ja" || saved === "en" || saved === "hi") setLangState(saved);
   }, []);
   const setLang = (l: Lang) => {
     setLangState(l);
     localStorage.setItem("n2j-lang", l);
   };
-  return <Ctx.Provider value={{ lang, setLang, t: (k) => dict[k][lang] }}>{children}</Ctx.Provider>;
+  return <Ctx.Provider value={{ lang, setLang, t: (k) => (dict[k] as { en: string; ja: string; hi?: string })[lang] ?? dict[k].en }}>{children}</Ctx.Provider>;
 }
 
 export const useT = () => useContext(Ctx);
@@ -55,13 +56,13 @@ export function LangToggle() {
   const { lang, setLang } = useT();
   return (
     <div className="inline-flex rounded-md border border-border p-0.5 text-xs">
-      {(["en", "ja"] as const).map((l) => (
+      {(["en", "ja", "hi"] as const).map((l) => (
         <button
           key={l}
           onClick={() => setLang(l)}
           className={`rounded px-2 py-1 transition-colors ${lang === l ? "bg-ink text-ink-foreground" : "text-muted-foreground hover:text-foreground"}`}
         >
-          {l === "en" ? "EN" : "日本語"}
+          {l === "en" ? "EN" : l === "ja" ? "日本語" : "हिन्दी"}
         </button>
       ))}
     </div>
