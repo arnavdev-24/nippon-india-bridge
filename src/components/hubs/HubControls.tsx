@@ -1,15 +1,16 @@
-import type { ReactNode } from "react";
+import { cloneElement, isValidElement, useId, type ReactNode } from "react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 export function Field({ label, children }: { label: string; children: ReactNode }) {
+  const id = useId();
   return (
-    <label className="block min-w-0 space-y-2">
-      <Label asChild>
-        <span>{label}</span>
-      </Label>
-      {children}
-    </label>
+    <div className="block min-w-0 space-y-2">
+      <Label htmlFor={id}>{label}</Label>
+      {isValidElement<{ id?: string; "aria-label"?: string }>(children)
+        ? cloneElement(children, { id, "aria-label": label })
+        : children}
+    </div>
   );
 }
 export function Choice({
