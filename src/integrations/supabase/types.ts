@@ -14,6 +14,137 @@ export type Database = {
   }
   public: {
     Tables: {
+      campaign_dealer_actions: {
+        Row: {
+          campaign_id: string
+          created_at: string
+          id: string
+          kind: string
+          response_id: string
+          sme_id: string
+        }
+        Insert: {
+          campaign_id: string
+          created_at?: string
+          id?: string
+          kind: string
+          response_id: string
+          sme_id: string
+        }
+        Update: {
+          campaign_id?: string
+          created_at?: string
+          id?: string
+          kind?: string
+          response_id?: string
+          sme_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_dealer_actions_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "survey_campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaign_dealer_actions_response_id_fkey"
+            columns: ["response_id"]
+            isOneToOne: false
+            referencedRelation: "campaign_responses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      campaign_response_contacts: {
+        Row: {
+          campaign_id: string
+          contact_name: string
+          email: string
+          phone: string
+          response_id: string
+        }
+        Insert: {
+          campaign_id: string
+          contact_name?: string
+          email?: string
+          phone?: string
+          response_id: string
+        }
+        Update: {
+          campaign_id?: string
+          contact_name?: string
+          email?: string
+          phone?: string
+          response_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_response_contacts_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "survey_campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaign_response_contacts_response_id_fkey"
+            columns: ["response_id"]
+            isOneToOne: true
+            referencedRelation: "campaign_responses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      campaign_responses: {
+        Row: {
+          answers: Json
+          campaign_id: string
+          created_at: string
+          dealer_name: string
+          gstin: string
+          id: string
+          margin: string
+          pilot_volume: string
+          price_rating: number | null
+          source: string
+          territory: string
+        }
+        Insert: {
+          answers?: Json
+          campaign_id: string
+          created_at?: string
+          dealer_name: string
+          gstin: string
+          id?: string
+          margin?: string
+          pilot_volume?: string
+          price_rating?: number | null
+          source?: string
+          territory?: string
+        }
+        Update: {
+          answers?: Json
+          campaign_id?: string
+          created_at?: string
+          dealer_name?: string
+          gstin?: string
+          id?: string
+          margin?: string
+          pilot_volume?: string
+          price_rating?: number | null
+          source?: string
+          territory?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_responses_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "survey_campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       connection_requests: {
         Row: {
           created_at: string
@@ -677,6 +808,105 @@ export type Database = {
           },
         ]
       }
+      survey_campaigns: {
+        Row: {
+          bis_status: string
+          clarification_note: string | null
+          created_at: string
+          custom_questions: Json
+          deadline: string | null
+          dealer_types: string[]
+          description: string
+          id: string
+          industry: string
+          mrp_inr: number | null
+          photo_path: string | null
+          product_name_en: string
+          product_name_jp: string
+          public_token: string
+          quote_note: string | null
+          quote_price_inr: number | null
+          quote_timeline_days: number | null
+          sme_id: string
+          status: string
+          target_price_jpy: number | null
+          target_responses: number
+          target_states: string[]
+          updated_at: string
+          vendor_commentary: string
+          vendor_id: string | null
+        }
+        Insert: {
+          bis_status?: string
+          clarification_note?: string | null
+          created_at?: string
+          custom_questions?: Json
+          deadline?: string | null
+          dealer_types?: string[]
+          description?: string
+          id?: string
+          industry: string
+          mrp_inr?: number | null
+          photo_path?: string | null
+          product_name_en: string
+          product_name_jp?: string
+          public_token?: string
+          quote_note?: string | null
+          quote_price_inr?: number | null
+          quote_timeline_days?: number | null
+          sme_id: string
+          status?: string
+          target_price_jpy?: number | null
+          target_responses?: number
+          target_states?: string[]
+          updated_at?: string
+          vendor_commentary?: string
+          vendor_id?: string | null
+        }
+        Update: {
+          bis_status?: string
+          clarification_note?: string | null
+          created_at?: string
+          custom_questions?: Json
+          deadline?: string | null
+          dealer_types?: string[]
+          description?: string
+          id?: string
+          industry?: string
+          mrp_inr?: number | null
+          photo_path?: string | null
+          product_name_en?: string
+          product_name_jp?: string
+          public_token?: string
+          quote_note?: string | null
+          quote_price_inr?: number | null
+          quote_timeline_days?: number | null
+          sme_id?: string
+          status?: string
+          target_price_jpy?: number | null
+          target_responses?: number
+          target_states?: string[]
+          updated_at?: string
+          vendor_commentary?: string
+          vendor_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "survey_campaigns_sme_id_fkey"
+            columns: ["sme_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "survey_campaigns_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       survey_responses: {
         Row: {
           answers: Json
@@ -800,7 +1030,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_public_campaign: { Args: { _token: string }; Returns: Json }
       save_provider_listing: { Args: { payload: Json }; Returns: string }
+      submit_public_response: {
+        Args: { _token: string; payload: Json }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
