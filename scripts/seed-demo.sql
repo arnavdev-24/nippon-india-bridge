@@ -9,6 +9,7 @@ from (values
   ('00000000-0001-0000-0000-000000000001', 'priya@demo.nippon2japan.test'),
   ('00000000-0002-0000-0000-000000000002', 'rajiv@demo.nippon2japan.test'),
   ('00000000-0003-0000-0000-000000000003', 'yuki@demo.nippon2japan.test'),
+  ('00000000-0004-0000-0000-000000000004', 'vikram@demo.nippon2japan.test'),
   ('00000000-aaaa-0000-0000-000000000001', 'bharat@demo.nippon2japan.test'),
   ('00000000-aaaa-0000-0000-000000000002', 'medequip@demo.nippon2japan.test'),
   ('00000000-aaaa-0000-0000-000000000003', 'autoparts@demo.nippon2japan.test'),
@@ -21,7 +22,8 @@ on conflict (id) do nothing;
 insert into public.profiles (id, account_type, expert_type, full_name, company_name, city, state, bio, rate_inr) values
  ('00000000-0001-0000-0000-000000000001','expert','ca','Priya Sharma','Sharma & Associates','Mumbai','Maharashtra','ICAI-certified CA, 12 years in FDI compliance, GST advisory and transfer pricing for Japanese corporates entering India.',3500),
  ('00000000-0002-0000-0000-000000000002','expert','cs','Rajiv Menon','Menon Corporate Services','Bengaluru','Karnataka','Company Secretary: WOS incorporation, RBI/FEMA compliance, India-Japan JV structuring.',4000),
- ('00000000-0003-0000-0000-000000000003','expert','japanese_tutor','Yuki Tanaka','Nihongo Bridge','Delhi','Delhi','Trilingual Japanese-English-Hindi trainer, 8 years of business Japanese for Indian executives.',2500)
+ ('00000000-0003-0000-0000-000000000003','expert','japanese_tutor','Yuki Tanaka','Nihongo Bridge','Delhi','Delhi','Trilingual Japanese-English-Hindi trainer, 8 years of business Japanese for Indian executives.',2500),
+ ('00000000-0004-0000-0000-000000000004','expert','ca','Vikram Joshi','Joshi & Co. Tax Advisory','Gurugram','Haryana','ICAI Fellow CA with 15 years advisory for Japanese auto and electronics firms in Delhi NCR. Specializes in GST audits and Customs valuation.',4500)
 on conflict (id) do update set account_type=excluded.account_type, expert_type=excluded.expert_type, full_name=excluded.full_name,
   company_name=excluded.company_name, city=excluded.city, state=excluded.state, bio=excluded.bio, rate_inr=excluded.rate_inr;
 

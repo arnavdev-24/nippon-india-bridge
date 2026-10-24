@@ -82,7 +82,7 @@ function AdvisorsPage() {
           <div>
             <h2 className="text-lg font-bold">Vetted Professional Practices</h2>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Filtered by accreditation with the Institute of Chartered Accountants of India (ICAI) and ICSI.
+              Profiles list self-declared ICAI / ICSI membership — verify the membership number before engagement.
             </p>
           </div>
           <span className="hidden sm:inline-flex items-center gap-1.5 text-xs text-emerald-600 font-medium">

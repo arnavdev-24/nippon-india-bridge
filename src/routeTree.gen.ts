@@ -23,6 +23,7 @@ import { Route as AuthenticatedJointVenturesRouteImport } from './routes/_authen
 import { Route as AuthenticatedOverviewRouteImport } from './routes/_authenticated/overview'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedSemiconductorRouteImport } from './routes/_authenticated/semiconductor'
+import { Route as AuthenticatedStateIntelligenceRouteImport } from './routes/_authenticated/state-intelligence'
 import { Route as AuthenticatedSurveysRouteImport } from './routes/_authenticated/surveys'
 import { Route as AuthenticatedSustainableAgricultureRouteImport } from './routes/_authenticated/sustainable-agriculture'
 import { Route as AuthenticatedTalentRouteImport } from './routes/_authenticated/talent'
@@ -108,6 +109,12 @@ const AuthenticatedSemiconductorRoute =
     path: '/semiconductor',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedStateIntelligenceRoute =
+  AuthenticatedStateIntelligenceRouteImport.update({
+    id: '/state-intelligence',
+    path: '/state-intelligence',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSurveysRoute = AuthenticatedSurveysRouteImport.update({
   id: '/surveys',
   path: '/surveys',
@@ -172,6 +179,7 @@ export interface FileRoutesByFullPath {
   '/overview': typeof AuthenticatedOverviewRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/semiconductor': typeof AuthenticatedSemiconductorRoute
+  '/state-intelligence': typeof AuthenticatedStateIntelligenceRoute
   '/surveys': typeof AuthenticatedSurveysRoute
   '/sustainable-agriculture': typeof AuthenticatedSustainableAgricultureRoute
   '/talent': typeof AuthenticatedTalentRoute
@@ -196,6 +204,7 @@ export interface FileRoutesByTo {
   '/overview': typeof AuthenticatedOverviewRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/semiconductor': typeof AuthenticatedSemiconductorRoute
+  '/state-intelligence': typeof AuthenticatedStateIntelligenceRoute
   '/surveys': typeof AuthenticatedSurveysRoute
   '/sustainable-agriculture': typeof AuthenticatedSustainableAgricultureRoute
   '/talent': typeof AuthenticatedTalentRoute
@@ -222,6 +231,7 @@ export interface FileRoutesById {
   '/_authenticated/overview': typeof AuthenticatedOverviewRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/semiconductor': typeof AuthenticatedSemiconductorRoute
+  '/_authenticated/state-intelligence': typeof AuthenticatedStateIntelligenceRoute
   '/_authenticated/surveys': typeof AuthenticatedSurveysRoute
   '/_authenticated/sustainable-agriculture': typeof AuthenticatedSustainableAgricultureRoute
   '/_authenticated/talent': typeof AuthenticatedTalentRoute
@@ -248,6 +258,7 @@ export interface FileRouteTypes {
     | '/overview'
     | '/profile'
     | '/semiconductor'
+    | '/state-intelligence'
     | '/surveys'
     | '/sustainable-agriculture'
     | '/talent'
@@ -272,6 +283,7 @@ export interface FileRouteTypes {
     | '/overview'
     | '/profile'
     | '/semiconductor'
+    | '/state-intelligence'
     | '/surveys'
     | '/sustainable-agriculture'
     | '/talent'
@@ -297,6 +309,7 @@ export interface FileRouteTypes {
     | '/_authenticated/overview'
     | '/_authenticated/profile'
     | '/_authenticated/semiconductor'
+    | '/_authenticated/state-intelligence'
     | '/_authenticated/surveys'
     | '/_authenticated/sustainable-agriculture'
     | '/_authenticated/talent'
@@ -417,6 +430,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSemiconductorRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/state-intelligence': {
+      id: '/_authenticated/state-intelligence'
+      path: '/state-intelligence'
+      fullPath: '/state-intelligence'
+      preLoaderRoute: typeof AuthenticatedStateIntelligenceRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/surveys': {
       id: '/_authenticated/surveys'
       path: '/surveys'
@@ -495,6 +515,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedOverviewRoute: typeof AuthenticatedOverviewRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedSemiconductorRoute: typeof AuthenticatedSemiconductorRoute
+  AuthenticatedStateIntelligenceRoute: typeof AuthenticatedStateIntelligenceRoute
   AuthenticatedSurveysRoute: typeof AuthenticatedSurveysRoute
   AuthenticatedSustainableAgricultureRoute: typeof AuthenticatedSustainableAgricultureRoute
   AuthenticatedTalentRoute: typeof AuthenticatedTalentRoute
@@ -515,6 +536,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedOverviewRoute: AuthenticatedOverviewRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedSemiconductorRoute: AuthenticatedSemiconductorRoute,
+  AuthenticatedStateIntelligenceRoute: AuthenticatedStateIntelligenceRoute,
   AuthenticatedSurveysRoute: AuthenticatedSurveysRoute,
   AuthenticatedSustainableAgricultureRoute:
     AuthenticatedSustainableAgricultureRoute,

@@ -68,7 +68,7 @@ export default function Index() {
             <span>·</span>
             <span>12 Japanese Industrial Townships (JIT)</span>
             <span>·</span>
-            <span>CEPA Compliant</span>
+            <span>India–Japan CEPA</span>
           </div>
         </div>
       </div>
@@ -112,7 +112,7 @@ export default function Index() {
           <div className="lg:col-span-7">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-3 py-1 text-xs text-primary font-medium tracking-wide">
               <span className="font-serif">検印</span>
-              <span>{lang === "ja" ? "JETRO × インド商工省 連携枠組準拠" : "Aligned with JETRO & DPIIT Bilateral Framework"}</span>
+              <span>{lang === "ja" ? "日印経済回廊のために設計" : "Built for the Japan–India business corridor"}</span>
             </div>
 
             <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08]">
@@ -134,7 +134,7 @@ export default function Index() {
             <p className="mt-6 max-w-xl text-base sm:text-lg text-muted-foreground leading-relaxed">
               {lang === "ja"
                 ? "現地公認会計士（CA）による税務・法人設立から、提携先JV発掘、州別販売店マッチング、現地有償ディーラー調査まで。不透明な仲介者を排した確かなビジネス回廊。"
-                : "From Chartered Accountants for GST and FDI compliance, to verified Joint Venture partners, audited state distributors, and real-time dealer surveys — a direct, institutional corridor."}
+                : "From Chartered Accountants for GST and FDI compliance, to Joint Venture partners, state-level distributors, and real-time dealer surveys — a direct, institutional corridor."}
             </p>
 
             {/* CTAs */}

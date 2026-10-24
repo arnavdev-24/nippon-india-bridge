@@ -19,6 +19,7 @@ import {
   Briefcase,
   Award,
   SlidersHorizontal,
+  MapPin,
 } from "lucide-react";
 import { useMyProfile } from "@/lib/profile";
 import { useT } from "@/lib/i18n";
@@ -89,8 +90,8 @@ export default function Dashboard() {
 
         <div className="flex flex-wrap items-center gap-3">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-3 py-1 text-xs text-primary font-medium">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>{lang === "ja" ? "回廊接続中 · CEPA準拠" : "Active Corridor · CEPA Compliant"}</span>
+            <span className="h-2 w-2 rounded-full bg-primary" />
+            <span>{lang === "ja" ? "日印経済回廊" : "Japan–India Corridor"}</span>
           </div>
           <Button asChild variant="outline" size="sm">
             <Link to="/profile">{lang === "ja" ? "組織プロフィール" : "Organization Profile"}</Link>
@@ -121,12 +122,12 @@ export default function Dashboard() {
               <div className="mt-6 flex flex-wrap items-center gap-4 text-xs font-medium text-muted-foreground">
                 <span className="flex items-center gap-1.5 text-foreground">
                   <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
-                  1. Industry Selection
+                  1. Industry & States
                 </span>
                 <span>→</span>
-                <span className="flex items-center gap-1.5">2. FDI Route Check</span>
+                <span className="flex items-center gap-1.5">2. FDI Route, GST & Licences</span>
                 <span>→</span>
-                <span className="flex items-center gap-1.5">3. CA Match & Consultation</span>
+                <span className="flex items-center gap-1.5">3. Matched CA / CS</span>
               </div>
             </div>
 
@@ -161,11 +162,11 @@ export default function Dashboard() {
 
               <div className="mt-6 flex flex-wrap items-center gap-4 text-xs font-medium text-muted-foreground">
                 <span className="flex items-center gap-1.5 text-foreground">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                  14 Japanese SMEs actively sourcing partners
+                  <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
+                  Matched by industry, states served and capabilities
                 </span>
                 <span>·</span>
-                <span className="flex items-center gap-1.5">High Demand: Precision Eng, MedTech, CleanTech</span>
+                <span className="flex items-center gap-1.5">Requests arrive in your Connections inbox</span>
               </div>
             </div>
 
@@ -269,7 +270,7 @@ export default function Dashboard() {
                 </p>
               </div>
               <div className="mt-5 border-t border-border/60 pt-3 flex items-center justify-between text-xs">
-                <span className="text-[11px] font-medium text-emerald-600">Verified Practices Available</span>
+                <span className="text-[11px] font-medium text-emerald-600">CA / CS directory</span>
                 <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>
             </Link>
@@ -319,11 +320,11 @@ export default function Dashboard() {
                   {t("distributors")}
                 </h3>
                 <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">
-                  Match your machinery and consumer products with audited regional distributors filtered by warehousing facilities and state presence.
+                  Match your machinery and consumer products with regional distributors filtered by warehousing facilities and state presence.
                 </p>
               </div>
               <div className="mt-5 border-t border-border/60 pt-3 flex items-center justify-between text-xs">
-                <span className="text-[11px] font-medium text-emerald-600">Warehousing Audited</span>
+                <span className="text-[11px] font-medium text-emerald-600">Filter by state & capability</span>
                 <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>
             </Link>
@@ -568,7 +569,7 @@ export default function Dashboard() {
                 </p>
               </div>
               <div className="mt-5 border-t border-border/60 pt-3 flex items-center justify-between text-xs">
-                <span className="text-[11px] font-medium text-emerald-600">Trust Badge Active</span>
+                <span className="text-[11px] font-medium text-emerald-600">GSTIN & licence details</span>
                 <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>
             </Link>
@@ -732,7 +733,7 @@ export default function Dashboard() {
                 </p>
               </div>
               <div className="mt-5 border-t border-border/60 pt-3 flex items-center justify-between text-xs">
-                <span className="text-[11px] font-medium text-emerald-600">AI Verified Profile</span>
+                <span className="text-[11px] font-medium text-emerald-600">AI profile assessment</span>
                 <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>
             </Link>
@@ -751,12 +752,20 @@ export default function Dashboard() {
               {lang === "ja" ? "日印共同産業プラットフォーム" : "Industry-Specific Innovation Dashboards"}
             </h3>
           </div>
-          <Button asChild variant="outline" size="sm">
-            <Link to="/overview">
-              {lang === "ja" ? "全産業マップ" : "Sector Overview"}
-              <ArrowUpRight className="ml-1 h-3.5 w-3.5" />
-            </Link>
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            <Button asChild variant="outline" size="sm">
+              <Link to="/state-intelligence">
+                <MapPin className="mr-1 h-3.5 w-3.5 text-primary" />
+                {lang === "ja" ? "州別インテリジェンス" : "State Intelligence"}
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <Link to="/overview">
+                {lang === "ja" ? "全産業マップ" : "Sector Overview"}
+                <ArrowUpRight className="ml-1 h-3.5 w-3.5" />
+              </Link>
+            </Button>
+          </div>
         </div>
 
         <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-4">

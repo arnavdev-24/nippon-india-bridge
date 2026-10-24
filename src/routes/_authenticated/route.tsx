@@ -15,6 +15,7 @@ import {
   Globe2,
   Users,
   ShieldCheck,
+  MapPin,
   Menu,
   X,
   PanelLeftClose,
@@ -125,6 +126,7 @@ function getNavGroupsForRole(role: AppRole): NavGroup[] {
       items: [
         { to: "/dashboard", key: "dashboard", icon: LayoutDashboard },
         { to: "/overview", key: "overview", icon: Globe2 },
+        { to: "/state-intelligence", key: "stateIntelligence", icon: MapPin },
       ],
     },
     {
@@ -346,9 +348,9 @@ function Shell() {
 
             <div className="hidden lg:flex items-center gap-2 text-xs text-muted-foreground">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="font-medium text-foreground">JETRO × DPIIT Bilateral Trade Corridor</span>
+              <span className="font-medium text-foreground">Japan–India Business Corridor</span>
               <span>·</span>
-              <span className="font-mono text-[11px]">CEPA Framework</span>
+              <span className="font-mono text-[11px]">India–Japan CEPA (2011)</span>
             </div>
           </div>
 

@@ -14,7 +14,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
-import { SECTIONS, registrationSchema, validateResume, type ProviderSection } from "@/lib/provider-registration";
+import { useRole } from "@/lib/role-context";
+import { SECTIONS, canRegister, registrationSchema, validateResume, type ProviderSection } from "@/lib/provider-registration";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -89,6 +90,9 @@ function FieldRow({
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export function RegisterAsPartnerDialog({ section, trigger }: Props) {
+  const { effectiveRole } = useRole();
+  const allowed = canRegister(section, effectiveRole);
+
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
@@ -314,6 +318,8 @@ export function RegisterAsPartnerDialog({ section, trigger }: Props) {
   );
 
   // ─── Render ──────────────────────────────────────────────────────────────────
+
+  if (!allowed) return null;
 
   return (
     <>

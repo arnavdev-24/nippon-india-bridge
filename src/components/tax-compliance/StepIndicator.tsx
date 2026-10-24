@@ -1,4 +1,4 @@
-const STEPS = ["Industry", "Requirements", "Expert Match", "Consultation", "Confirmation"];
+const STEPS = ["Industry", "Profile & States", "Diagnosis", "Advisor Match", "Consultation", "Confirmation"];
 
 export function StepIndicator({ current }: { current: number }) {
   return (
@@ -16,10 +16,10 @@ export function StepIndicator({ current }: { current: number }) {
           >
             {i + 1}
           </span>
-          <span className={`ml-2 text-sm ${i === current ? "font-semibold text-foreground" : "text-muted-foreground"}`}>
+          <span className={`ml-2 text-xs sm:text-sm ${i === current ? "font-semibold text-foreground" : "text-muted-foreground"}`}>
             {label}
           </span>
-          {i < STEPS.length - 1 && <span className="mx-3 h-px w-6 bg-border md:w-10" />}
+          {i < STEPS.length - 1 && <span className="mx-2 h-px w-4 bg-border sm:mx-3 sm:w-8 md:w-10" />}
         </li>
       ))}
     </ol>

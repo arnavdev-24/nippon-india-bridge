@@ -41,10 +41,11 @@ export function DetailsStep({ expert, industry, services, notes, booking, detail
   async function confirm() {
     if (!me || !validate()) return;
     setBusy(true);
+    const targetExpertId = expert.id || "00000000-0001-0000-0000-000000000001";
     const { data, error } = await supabase.from("consultation_requests").insert({
       company_id: me.id,
-      expert_id: expert.id,
-      expert_name: expert.name,
+      expert_id: targetExpertId,
+      expert_name: expert.name.replace(/^Demo\s*—\s*/, ""),
       industry,
       services,
       mode: booking.mode,

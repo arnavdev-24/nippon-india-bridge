@@ -75,6 +75,17 @@ async function seedExpertProfiles() {
         account_type: "expert",
         rate_inr: 2500,
       },
+      {
+        id: "00000000-0004-0000-0000-000000000004",
+        full_name: "Vikram Joshi",
+        company_name: "Joshi & Co. Tax Advisory",
+        city: "Gurugram",
+        state: "Haryana",
+        bio: "ICAI Fellow CA with 15 years advisory for Japanese auto and electronics firms in Delhi NCR. Specializes in GST audits, Transfer Pricing and Customs valuation.",
+        expert_type: "ca",
+        account_type: "expert",
+        rate_inr: 4500,
+      },
     ],
     { onConflict: "id", ignoreDuplicates: false },
   );

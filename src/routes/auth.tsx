@@ -130,7 +130,7 @@ function AuthPage() {
             </div>
             <div className="flex items-center gap-2.5">
               <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
-              <span>Audited distributor networks across 28 Indian states</span>
+              <span>Distributor discovery by state, category and capability</span>
             </div>
             <div className="flex items-center gap-2.5">
               <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
@@ -140,7 +140,7 @@ function AuthPage() {
         </div>
 
         <div className="border-t border-sidebar-border/80 pt-6 text-[11px] text-sidebar-foreground/50 flex items-center justify-between">
-          <span>JETRO &amp; DPIIT Aligned</span>
+          <span>Japan–India Business Corridor</span>
           <span>© {new Date().getFullYear()} nippon2japan</span>
         </div>
       </div>

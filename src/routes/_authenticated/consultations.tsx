@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { PageHeader, Empty } from "@/components/PageHeader";
 import { INDUSTRIES, SERVICES, STATUS_META, industryName, serviceName } from "@/lib/tax-compliance";
 import { useMyProfile } from "@/lib/profile";
+import { useRole } from "@/lib/role-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -106,7 +107,8 @@ function RequestCard({ r, role, onAction }: {
 function Consultations() {
   const { data: me } = useMyProfile();
   const qc = useQueryClient();
-  const isExpert = me?.account_type === "expert";
+  const { effectiveRole } = useRole();
+  const isExpert = effectiveRole === "expert";
 
   const { data: requests = [], isLoading } = useQuery({
     queryKey: ["tc-requests", me?.id],

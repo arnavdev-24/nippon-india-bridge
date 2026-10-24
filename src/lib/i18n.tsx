@@ -5,6 +5,7 @@ export type Lang = "en" | "ja" | "hi";
 const dict = {
   dashboard: { en: "Dashboard", ja: "ダッシュボード", hi: "डैशबोर्ड" },
   overview: { en: "Sector Platform", ja: "業界プラットフォーム", hi: "सेक्टर प्लेटफ़ॉर्म" },
+  stateIntelligence: { en: "State Intelligence", ja: "州別市場調査", hi: "राज्य इंटेलिजेंस" },
   advisors: { en: "Tax & Compliance", ja: "税務・法務" },
   jv: { en: "JV & Technology Exchange", ja: "合弁・技術交流" },
   distributors: { en: "Distributor Connect", ja: "販売代理店マッチング" },
@@ -19,8 +20,8 @@ const dict = {
   getStarted: { en: "Get started", ja: "はじめる" },
   heroTitle: { en: "Your bridge from Nippon to India.", ja: "日本からインドへの架け橋。" },
   heroSub: {
-    en: "A JETRO-backed platform helping Japanese SMEs enter India — with trusted advisors, partners, distributors, language training and on-ground market insight.",
-    ja: "JETROが支援する、日本の中小企業のインド進出プラットフォーム。専門家、パートナー、販売代理店、語学研修、現地の市場調査をひとつに。",
+    en: "A platform helping Japanese SMEs enter India — with trusted advisors, partners, distributors, language training and on-ground market insight.",
+    ja: "日本の中小企業のインド進出を支援するプラットフォーム。専門家、パートナー、販売代理店、語学研修、現地の市場調査をひとつに。",
   },
   advisorsDesc: { en: "Connect with Chartered Accountants and Company Secretaries for GST, tax and incorporation.", ja: "GST・税務・会社設立のため、公認会計士やカンパニーセクレタリーとつながる。" },
   jvDesc: { en: "Discover company pitches, technology needs and Japan–India collaboration partners.", ja: "企業紹介、技術ニーズ、日印の協業パートナーを探す。" },
