@@ -1,7 +1,7 @@
 import { createFileRoute, Link, Outlet, redirect, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { LayoutDashboard, Calculator, CalendarCheck, Handshake, Truck, Languages, ClipboardList, Inbox, LogOut, UserRound, Globe2 } from "lucide-react";
+import { LayoutDashboard, Calculator, CalendarCheck, Handshake, Truck, Languages, ClipboardList, Inbox, LogOut, UserRound, Globe2, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Logo } from "@/components/Logo";
 import { LangToggle, useT, type TKey } from "@/lib/i18n";
@@ -29,6 +29,7 @@ const nav: { to: string; key: TKey; icon: typeof Inbox }[] = [
   { to: "/tutors", key: "tutors", icon: Languages },
   { to: "/surveys", key: "surveys", icon: ClipboardList },
   { to: "/consultations", key: "consultations", icon: CalendarCheck },
+  { to: "/talent", key: "talent", icon: Users },
   { to: "/connections", key: "connections", icon: Inbox },
   { to: "/profile", key: "profile", icon: UserRound },
 ];
