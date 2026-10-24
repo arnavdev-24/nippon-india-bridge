@@ -2,7 +2,9 @@ import { useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Bookmark, FileDown, FileSpreadsheet, Package, Search } from "lucide-react";
-import { Bar, BarChart, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { SurveyChart } from "@/components/campaigns/SurveyChart";
+import { IndiaHeatMap } from "@/components/campaigns/IndiaHeatMap";
+import { resolveStates } from "@/lib/india-heatmap";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,12 +13,12 @@ import { Kpi } from "@/components/campaigns/CampaignStatus";
 import { buildCharts, computeKpis, readinessScore, redFlags, stateBreakdown, type ResponseRow } from "@/lib/campaigns";
 import { downloadBlob, downloadSheet, fetchContacts, questionsOf, type Campaign } from "@/lib/campaigns-data";
 
-const COLORS = ["var(--color-primary)", "var(--color-success)", "var(--color-accent-foreground, #334)", "var(--color-muted-foreground)", "var(--color-destructive)", "var(--color-ring)"];
 
 export function Report({ c, responses, role }: { c: Campaign; responses: ResponseRow[]; role: "sme" | "vendor" }) {
   const qc = useQueryClient();
   const qs = questionsOf(c);
   const [search, setSearch] = useState("");
+  const [selState, setSelState] = useState<string | null>(null);
   const [commentary, setCommentary] = useState(c.vendor_commentary);
   const [clar, setClar] = useState("");
   const kpis = computeKpis(responses);
@@ -30,7 +32,7 @@ export function Report({ c, responses, role }: { c: Campaign; responses: Respons
     queryFn: async () => (await supabase.from("campaign_dealer_actions").select("id, response_id, kind").eq("campaign_id", c.id)).data ?? [],
   });
   const has = (rid: string, kind: string) => actions.find((a) => a.response_id === rid && a.kind === kind);
-  const filtered = ranked.filter(({ r }) => [r.dealer_name, r.territory, r.gstin, r.margin, r.pilot_volume].join(" ").toLowerCase().includes(search.toLowerCase()));
+  const filtered = ranked.filter(({ r }) => [r.dealer_name, r.territory, r.gstin, r.margin, r.pilot_volume].join(" ").toLowerCase().includes(search.toLowerCase()) && (!selState || resolveStates(r.territory).includes(selState)));
   const canAct = role === "sme" && (c.status === "report_ready" || c.status === "delivered");
   const showContacts = (contacts?.size ?? 0) > 0;
 
@@ -86,6 +88,8 @@ export function Report({ c, responses, role }: { c: Campaign; responses: Respons
         <Kpi label="Total pilot demand" value={`${kpis.pilotDemand.toLocaleString()} units`} />
       </div>
 
+      <IndiaHeatMap responses={responses} questions={qs} selState={selState} onSelectState={setSelState} />
+
       {charts.length > 0 && (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {charts.map((ch) => (
@@ -96,14 +100,7 @@ export function Report({ c, responses, role }: { c: Campaign; responses: Respons
                 <ul className="mt-3 max-h-52 space-y-2 overflow-y-auto text-xs">{ch.samples.map((s) => <li key={s} className="rounded border border-border bg-muted/40 p-2 italic">“{s}”</li>)}{ch.samples.length === 0 && <li className="text-muted-foreground">No answers.</li>}</ul>
               ) : ch.data.length === 0 ? <p className="mt-3 text-xs text-muted-foreground">No answers.</p> : (
                 <div className="mt-3 h-52">
-                  <ResponsiveContainer>
-                    {ch.kind === "doughnut" ? (
-                      <PieChart><Pie data={ch.data} dataKey="value" nameKey="label" innerRadius={45} outerRadius={75}>{ch.data.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}</Pie><Tooltip /></PieChart>
-                    ) : (
-                      <BarChart data={ch.data}><XAxis dataKey="label" tick={{ fontSize: 9 }} tickFormatter={(v: string) => (v.length > 14 ? `${v.slice(0, 12)}…` : v)} /><YAxis allowDecimals={false} tick={{ fontSize: 10 }} /><Tooltip /><Bar dataKey="value" fill="var(--color-primary)" radius={4} /></BarChart>
-                    )}
-                  </ResponsiveContainer>
-                  {ch.kind === "doughnut" && <div className="-mt-2 flex flex-wrap gap-2 text-[10px]">{ch.data.map((d, i) => <span key={d.label} className="flex items-center gap-1"><span className="h-2 w-2 rounded-full" style={{ background: COLORS[i % COLORS.length] }} />{d.label} ({d.value})</span>)}</div>}
+                  <SurveyChart kind={ch.kind} data={ch.data} />
                 </div>
               )}
             </div>
