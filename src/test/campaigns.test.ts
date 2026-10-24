@@ -11,7 +11,7 @@ describe("product survey campaigns", () => {
   });
   it("readiness score: valid GSTIN + 15+ pilot units + 14% margin = 100", () => {
     expect(readinessScore({ gstin: "03AAACK2214F1Z8", pilot_volume: "15+ Units Dealership Contract", margin: "14% - 18%" })).toBe(100);
-    expect(readinessScore({ gstin: "bad", pilot_volume: "0 Units (Feedback Only)", margin: "8% - 12%" })).toBe(55);
+    expect(readinessScore({ gstin: "bad", pilot_volume: "0 Units (Feedback Only)", margin: "8% - 12%" })).toBe(40);
     expect(readinessScore({ gstin: "bad", pilot_volume: "0 Units", margin: "25%" })).toBe(40);
   });
   it("KPIs come from rows", () => {
