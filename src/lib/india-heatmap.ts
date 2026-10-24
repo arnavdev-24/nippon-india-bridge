@@ -2,7 +2,7 @@
 import INDIA from "./india-map.json";
 import type { CustomQuestion, ResponseRow } from "./campaigns";
 
-export const INDIA_MAP = INDIA as { w: number; h: number; paths: Record<string, string>; cent: Record<string, [number, number]> };
+export const INDIA_MAP = INDIA as unknown as { w: number; h: number; paths: Record<string, string>; cent: Record<string, [number, number]> };
 export const STATE_NAMES = Object.keys(INDIA_MAP.paths);
 
 const ZONES: Record<string, string[]> = {
@@ -38,9 +38,9 @@ export function resolveStates(text: string): string[] {
   const explicit = new Set<string>(), zone = new Set<string>();
   tokens.forEach((t) => {
     const clean = t.replace(/\b(region|state|states|belt|zone)\b/g, "").trim();
-    if (LOOKUP[clean]) explicit.add(LOOKUP[clean]);
-    else if (LOOKUP[t]) explicit.add(LOOKUP[t]);
-    else if (ZONES[clean]) ZONES[clean].forEach((s) => zone.add(s));
+    if (LOOKUP[clean]) explicit.add(LOOKUP[clean]!);
+    else if (LOOKUP[t]) explicit.add(LOOKUP[t]!);
+    else if (ZONES[clean]) ZONES[clean]!.forEach((s) => zone.add(s));
   });
   return [...(explicit.size ? explicit : zone)].filter((s) => INDIA_MAP.paths[s]);
 }
@@ -50,7 +50,7 @@ export function parsePilot(v: string) {
   const s = String(v || "").replace(/[–—]/g, "-");
   let total = 0, m: RegExpExecArray | null;
   const re = /(\d+)\s*-\s*(\d+)|(\d+)/g;
-  while ((m = re.exec(s))) total += m[3] !== undefined ? +m[3] : (+m[1] + +m[2]) / 2;
+  while ((m = re.exec(s))) total += m[3] !== undefined ? +m[3] : (+(m[1] ?? 0) + +(m[2] ?? 0)) / 2;
   return total;
 }
 export function parseMargin(v: string) {
@@ -62,10 +62,10 @@ export const HEAT_STOPS: [number, number[]][] = [[0, [255, 255, 255]], [0.18, [2
 export function heatColor(t: number) {
   t = Math.max(0, Math.min(1, t));
   for (let i = 1; i < HEAT_STOPS.length; i++) {
-    if (t <= HEAT_STOPS[i][0]) {
-      const [t0, c0] = HEAT_STOPS[i - 1], [t1, c1] = HEAT_STOPS[i];
+    if (t <= HEAT_STOPS[i]![0]) {
+      const [t0, c0] = HEAT_STOPS[i - 1]!, [t1, c1] = HEAT_STOPS[i]!;
       const f = (t - t0) / (t1 - t0);
-      return `rgb(${c0.map((v, k) => Math.round(v + (c1[k] - v) * f)).join(",")})`;
+      return `rgb(${c0.map((v: number, k: number) => Math.round(v + (c1[k]! - v) * f)).join(",")})`;
     }
   }
   return "rgb(196,18,28)";
