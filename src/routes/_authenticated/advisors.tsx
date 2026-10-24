@@ -4,7 +4,7 @@ import { ExpertDirectory } from "@/components/ExpertDirectory";
 import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/advisors")({
-  head: () => ({ meta: [{ title: "Tax & Compliance Advisors — nippon2japan" }, { name: "description", content: "Find Indian CAs and Company Secretaries." }, { property: "og:title", content: "Tax & Compliance Advisors" }, { property: "og:description", content: "CAs and CSs for GST, tax and incorporation in India." }] }),
+  head: () => ({ meta: [{ title: "Tax & Compliance Advisors — nippon2japan" }, { name: "description", content: "Find Indian CAs and Company Secretaries." }, { property: "og:title", content: "Tax & Compliance Advisors" }, { property: "og:description", content: "CAs and CSs for GST, tax and incorporation in India." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
   component: () => {
     const { t } = useT();
     return (

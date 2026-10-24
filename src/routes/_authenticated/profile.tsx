@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { ACCOUNT_TYPES, EXPERT_TYPES, useMyProfile } from "@/lib/profile";
 
 export const Route = createFileRoute("/_authenticated/profile")({
-  head: () => ({ meta: [{ title: "Your profile — nippon2japan" }, { name: "description", content: "Edit your nippon2japan profile." }, { property: "og:title", content: "Your profile" }, { property: "og:description", content: "Edit your profile." }] }),
+  head: () => ({ meta: [{ title: "Your profile — nippon2japan" }, { name: "description", content: "Edit your nippon2japan profile." }, { property: "og:title", content: "Your profile" }, { property: "og:description", content: "Edit your profile." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
   component: ProfilePage,
 });
 
