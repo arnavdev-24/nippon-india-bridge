@@ -42,7 +42,7 @@ export const AGRI_SAMPLE_QUESTIONS: Omit<CustomQuestion, "id">[] = [
 /** Detect core columns by keyword; returns header for each core key ("" when missing). */
 export function detectColumns(headers: string[]) {
   const used = new Set<string>();
-  const order: CoreKey[] = ["gstin", "margin", "pilot", "priceScore", "name", "territory"];
+  const order: CoreKey[] = ["gstin", "margin", "pilot", "territory", "name", "priceScore"];
   const map = {} as Record<CoreKey, string>;
   for (const k of order) {
     const h = headers.find((x) => !used.has(x) && CORE_KEYS[k].some((kw) => x.toLowerCase().includes(kw))) ?? "";
