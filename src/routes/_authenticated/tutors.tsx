@@ -11,6 +11,7 @@ import { LANGUAGES, LEVELS, hubProfilesQuery, slotsQuery, matchReasons } from "@
 import { Choice, Field } from "@/components/hubs/HubControls";
 import { ProfileEditor } from "@/components/hubs/ProfileEditor";
 import { HubProfileCard } from "@/components/hubs/HubProfileCard";
+import { RegisterAsPartnerDialog } from "@/components/RegisterAsPartnerDialog";
 export const Route = createFileRoute("/_authenticated/tutors")({
   head: () => ({
     meta: [
@@ -93,7 +94,7 @@ function Tutors() {
                 My bookings <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
-            <ProfileEditor hub="tutoring" profile={profiles.find((p) => p.owner_id === me?.id)} />
+            <ProfileEditor hub="tutoring" profile={profiles.find((p) => p.owner_id === me?.id)} /><RegisterAsPartnerDialog section="tutors" />
           </div>
         }
       />

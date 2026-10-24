@@ -18,6 +18,7 @@ import {
 import { Choice, Field, MultiChoice } from "@/components/hubs/HubControls";
 import { ProfileEditor } from "@/components/hubs/ProfileEditor";
 import { HubProfileCard } from "@/components/hubs/HubProfileCard";
+import { RegisterAsPartnerDialog } from "@/components/RegisterAsPartnerDialog";
 
 export const Route = createFileRoute("/_authenticated/distributors")({
   head: () => ({
@@ -90,7 +91,7 @@ function Distributors() {
             <ProfileEditor
               hub="distribution"
               profile={profiles.find((p) => p.owner_id === me?.id)}
-            />
+            /><RegisterAsPartnerDialog section="distributors" />
           </div>
         }
       />

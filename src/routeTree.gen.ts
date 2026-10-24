@@ -28,6 +28,7 @@ import { Route as AuthenticatedSustainableAgricultureRouteImport } from './route
 import { Route as AuthenticatedTalentRouteImport } from './routes/_authenticated/talent'
 import { Route as AuthenticatedTaxComplianceRouteImport } from './routes/_authenticated/tax-compliance'
 import { Route as AuthenticatedTutorsRouteImport } from './routes/_authenticated/tutors'
+import { Route as AdminSeedRouteImport } from './routes/admin/seed'
 import { Route as STokenRouteImport } from './routes/s.$token'
 import { Route as AuthenticatedCampaignsIdRouteImport } from './routes/_authenticated/campaigns.$id'
 import { Route as ApiPublicProfileAssessmentRouteImport } from './routes/api/public/profile-assessment'
@@ -134,6 +135,11 @@ const AuthenticatedTutorsRoute = AuthenticatedTutorsRouteImport.update({
   path: '/tutors',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AdminSeedRoute = AdminSeedRouteImport.update({
+  id: '/admin/seed',
+  path: '/admin/seed',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const STokenRoute = STokenRouteImport.update({
   id: '/s/$token',
   path: '/s/$token',
@@ -171,6 +177,7 @@ export interface FileRoutesByFullPath {
   '/talent': typeof AuthenticatedTalentRoute
   '/tax-compliance': typeof AuthenticatedTaxComplianceRoute
   '/tutors': typeof AuthenticatedTutorsRoute
+  '/admin/seed': typeof AdminSeedRoute
   '/s/$token': typeof STokenRoute
   '/campaigns/$id': typeof AuthenticatedCampaignsIdRoute
   '/api/public/profile-assessment': typeof ApiPublicProfileAssessmentRoute
@@ -194,6 +201,7 @@ export interface FileRoutesByTo {
   '/talent': typeof AuthenticatedTalentRoute
   '/tax-compliance': typeof AuthenticatedTaxComplianceRoute
   '/tutors': typeof AuthenticatedTutorsRoute
+  '/admin/seed': typeof AdminSeedRoute
   '/s/$token': typeof STokenRoute
   '/campaigns/$id': typeof AuthenticatedCampaignsIdRoute
   '/api/public/profile-assessment': typeof ApiPublicProfileAssessmentRoute
@@ -219,6 +227,7 @@ export interface FileRoutesById {
   '/_authenticated/talent': typeof AuthenticatedTalentRoute
   '/_authenticated/tax-compliance': typeof AuthenticatedTaxComplianceRoute
   '/_authenticated/tutors': typeof AuthenticatedTutorsRoute
+  '/admin/seed': typeof AdminSeedRoute
   '/s/$token': typeof STokenRoute
   '/_authenticated/campaigns/$id': typeof AuthenticatedCampaignsIdRoute
   '/api/public/profile-assessment': typeof ApiPublicProfileAssessmentRoute
@@ -244,6 +253,7 @@ export interface FileRouteTypes {
     | '/talent'
     | '/tax-compliance'
     | '/tutors'
+    | '/admin/seed'
     | '/s/$token'
     | '/campaigns/$id'
     | '/api/public/profile-assessment'
@@ -267,6 +277,7 @@ export interface FileRouteTypes {
     | '/talent'
     | '/tax-compliance'
     | '/tutors'
+    | '/admin/seed'
     | '/s/$token'
     | '/campaigns/$id'
     | '/api/public/profile-assessment'
@@ -291,6 +302,7 @@ export interface FileRouteTypes {
     | '/_authenticated/talent'
     | '/_authenticated/tax-compliance'
     | '/_authenticated/tutors'
+    | '/admin/seed'
     | '/s/$token'
     | '/_authenticated/campaigns/$id'
     | '/api/public/profile-assessment'
@@ -300,6 +312,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  AdminSeedRoute: typeof AdminSeedRoute
   STokenRoute: typeof STokenRoute
   ApiPublicProfileAssessmentRoute: typeof ApiPublicProfileAssessmentRoute
 }
@@ -439,6 +452,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTutorsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/admin/seed': {
+      id: '/admin/seed'
+      path: '/admin/seed'
+      fullPath: '/admin/seed'
+      preLoaderRoute: typeof AdminSeedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/s/$token': {
       id: '/s/$token'
       path: '/s/$token'
@@ -511,6 +531,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  AdminSeedRoute: AdminSeedRoute,
   STokenRoute: STokenRoute,
   ApiPublicProfileAssessmentRoute: ApiPublicProfileAssessmentRoute,
 }

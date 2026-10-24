@@ -4,6 +4,7 @@ import { ExpertDirectory } from "@/components/ExpertDirectory";
 import { useT } from "@/lib/i18n";
 import { ShieldCheck, Scale, FileText, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { RegisterAsPartnerDialog } from "@/components/RegisterAsPartnerDialog";
 
 export const Route = createFileRoute("/_authenticated/advisors")({
   head: () => ({
@@ -50,12 +51,12 @@ function AdvisorsPage() {
         title={t("advisors")}
         desc="Connect with certified Indian Chartered Accountants (CA) and Company Secretaries (CS) specialized in Japanese corporate expansion, GST compliance, and FDI regulations."
         action={
-          <Button asChild size="sm" className="shadow-paper">
+          <div className="flex flex-wrap gap-2"><RegisterAsPartnerDialog section="advisors" /><Button asChild size="sm" className="shadow-paper">
             <Link to="/tax-compliance">
               {lang === "ja" ? "進出診断ウィザード" : "Interactive Diagnostic"}
               <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
             </Link>
-          </Button>
+          </Button></div>
         }
       />
 

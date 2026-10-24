@@ -10,6 +10,7 @@ import { INDUSTRIES, TECHNOLOGIES, hubProfilesQuery, matchReasons } from "@/lib/
 import { Choice, Field, MultiChoice } from "@/components/hubs/HubControls";
 import { ProfileEditor } from "@/components/hubs/ProfileEditor";
 import { HubProfileCard } from "@/components/hubs/HubProfileCard";
+import { RegisterAsPartnerDialog } from "@/components/RegisterAsPartnerDialog";
 export const Route = createFileRoute("/_authenticated/joint-ventures")({
   head: () => ({
     meta: [
@@ -70,7 +71,7 @@ function JV() {
                 My collaborations <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
-            <ProfileEditor hub="jv" profile={own} />
+            <ProfileEditor hub="jv" profile={own} /><RegisterAsPartnerDialog section="joint-ventures" />
           </div>
         }
       />
