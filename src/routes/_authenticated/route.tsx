@@ -1,7 +1,7 @@
 import { createFileRoute, Link, Outlet, redirect, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { LayoutDashboard, Calculator, CalendarCheck, Handshake, Truck, Languages, ClipboardList, Inbox, LogOut, UserRound } from "lucide-react";
+import { LayoutDashboard, Calculator, CalendarCheck, Handshake, Truck, Languages, ClipboardList, Inbox, LogOut, UserRound, Globe2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Logo } from "@/components/Logo";
 import { LangToggle, useT, type TKey } from "@/lib/i18n";
@@ -22,6 +22,7 @@ export const Route = createFileRoute("/_authenticated")({
 
 const nav: { to: string; key: TKey; icon: typeof Inbox }[] = [
   { to: "/dashboard", key: "dashboard", icon: LayoutDashboard },
+  { to: "/overview", key: "overview", icon: Globe2 },
   { to: "/advisors", key: "advisors", icon: Calculator },
   { to: "/joint-ventures", key: "jv", icon: Handshake },
   { to: "/distributors", key: "distributors", icon: Truck },

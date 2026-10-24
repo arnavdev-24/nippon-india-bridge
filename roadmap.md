@@ -12,3 +12,6 @@
 - [x] Build sent/received request tracking, conversations and meeting scheduling.
 - [x] Verify signed-in profile creation and availability read-back; matching/status tests pass.
 - [ ] Verify two-account requests, responses and private messaging — requires a second authenticated account; test signup rejects reserved email domains.
+# Sector platform
+- [x] Overview, Semiconductor, AI, GreenTech dashboards with demo profiles and opportunity map.
+- [x] Partner Finder, Pilot Exchange (browser-saved simulation), Navigator, Trust & Localization, Hindi option.

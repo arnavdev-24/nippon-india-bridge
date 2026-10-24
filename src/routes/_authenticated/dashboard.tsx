@@ -9,6 +9,7 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 });
 
 const tiles: { to: string; key: TKey; desc?: TKey; icon: typeof Inbox }[] = [
+  { to: "/overview", key: "overview", icon: ArrowUpRight },
   { to: "/advisors", key: "advisors", desc: "advisorsDesc", icon: Calculator },
   { to: "/joint-ventures", key: "jv", desc: "jvDesc", icon: Handshake },
   { to: "/distributors", key: "distributors", desc: "distDesc", icon: Truck },
