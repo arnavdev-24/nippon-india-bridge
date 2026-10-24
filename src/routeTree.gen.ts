@@ -20,15 +20,11 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedDistributorsRouteImport } from './routes/_authenticated/distributors'
 import { Route as AuthenticatedGreentechRouteImport } from './routes/_authenticated/greentech'
 import { Route as AuthenticatedJointVenturesRouteImport } from './routes/_authenticated/joint-ventures'
-import { Route as AuthenticatedNavigatorRouteImport } from './routes/_authenticated/navigator'
 import { Route as AuthenticatedOverviewRouteImport } from './routes/_authenticated/overview'
-import { Route as AuthenticatedPartnerFinderRouteImport } from './routes/_authenticated/partner-finder'
-import { Route as AuthenticatedPilotsRouteImport } from './routes/_authenticated/pilots'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedSemiconductorRouteImport } from './routes/_authenticated/semiconductor'
 import { Route as AuthenticatedSurveysRouteImport } from './routes/_authenticated/surveys'
 import { Route as AuthenticatedTaxComplianceRouteImport } from './routes/_authenticated/tax-compliance'
-import { Route as AuthenticatedTrustCenterRouteImport } from './routes/_authenticated/trust-center'
 import { Route as AuthenticatedTutorsRouteImport } from './routes/_authenticated/tutors'
 import { Route as ApiPublicProfileAssessmentRouteImport } from './routes/api/public/profile-assessment'
 
@@ -91,25 +87,9 @@ const AuthenticatedJointVenturesRoute =
     path: '/joint-ventures',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedNavigatorRoute = AuthenticatedNavigatorRouteImport.update({
-  id: '/navigator',
-  path: '/navigator',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedOverviewRoute = AuthenticatedOverviewRouteImport.update({
   id: '/overview',
   path: '/overview',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedPartnerFinderRoute =
-  AuthenticatedPartnerFinderRouteImport.update({
-    id: '/partner-finder',
-    path: '/partner-finder',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedPilotsRoute = AuthenticatedPilotsRouteImport.update({
-  id: '/pilots',
-  path: '/pilots',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
@@ -132,12 +112,6 @@ const AuthenticatedTaxComplianceRoute =
   AuthenticatedTaxComplianceRouteImport.update({
     id: '/tax-compliance',
     path: '/tax-compliance',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedTrustCenterRoute =
-  AuthenticatedTrustCenterRouteImport.update({
-    id: '/trust-center',
-    path: '/trust-center',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedTutorsRoute = AuthenticatedTutorsRouteImport.update({
@@ -163,15 +137,11 @@ export interface FileRoutesByFullPath {
   '/distributors': typeof AuthenticatedDistributorsRoute
   '/greentech': typeof AuthenticatedGreentechRoute
   '/joint-ventures': typeof AuthenticatedJointVenturesRoute
-  '/navigator': typeof AuthenticatedNavigatorRoute
   '/overview': typeof AuthenticatedOverviewRoute
-  '/partner-finder': typeof AuthenticatedPartnerFinderRoute
-  '/pilots': typeof AuthenticatedPilotsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/semiconductor': typeof AuthenticatedSemiconductorRoute
   '/surveys': typeof AuthenticatedSurveysRoute
   '/tax-compliance': typeof AuthenticatedTaxComplianceRoute
-  '/trust-center': typeof AuthenticatedTrustCenterRoute
   '/tutors': typeof AuthenticatedTutorsRoute
   '/api/public/profile-assessment': typeof ApiPublicProfileAssessmentRoute
 }
@@ -186,15 +156,11 @@ export interface FileRoutesByTo {
   '/distributors': typeof AuthenticatedDistributorsRoute
   '/greentech': typeof AuthenticatedGreentechRoute
   '/joint-ventures': typeof AuthenticatedJointVenturesRoute
-  '/navigator': typeof AuthenticatedNavigatorRoute
   '/overview': typeof AuthenticatedOverviewRoute
-  '/partner-finder': typeof AuthenticatedPartnerFinderRoute
-  '/pilots': typeof AuthenticatedPilotsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/semiconductor': typeof AuthenticatedSemiconductorRoute
   '/surveys': typeof AuthenticatedSurveysRoute
   '/tax-compliance': typeof AuthenticatedTaxComplianceRoute
-  '/trust-center': typeof AuthenticatedTrustCenterRoute
   '/tutors': typeof AuthenticatedTutorsRoute
   '/api/public/profile-assessment': typeof ApiPublicProfileAssessmentRoute
 }
@@ -211,15 +177,11 @@ export interface FileRoutesById {
   '/_authenticated/distributors': typeof AuthenticatedDistributorsRoute
   '/_authenticated/greentech': typeof AuthenticatedGreentechRoute
   '/_authenticated/joint-ventures': typeof AuthenticatedJointVenturesRoute
-  '/_authenticated/navigator': typeof AuthenticatedNavigatorRoute
   '/_authenticated/overview': typeof AuthenticatedOverviewRoute
-  '/_authenticated/partner-finder': typeof AuthenticatedPartnerFinderRoute
-  '/_authenticated/pilots': typeof AuthenticatedPilotsRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/semiconductor': typeof AuthenticatedSemiconductorRoute
   '/_authenticated/surveys': typeof AuthenticatedSurveysRoute
   '/_authenticated/tax-compliance': typeof AuthenticatedTaxComplianceRoute
-  '/_authenticated/trust-center': typeof AuthenticatedTrustCenterRoute
   '/_authenticated/tutors': typeof AuthenticatedTutorsRoute
   '/api/public/profile-assessment': typeof ApiPublicProfileAssessmentRoute
 }
@@ -236,15 +198,11 @@ export interface FileRouteTypes {
     | '/distributors'
     | '/greentech'
     | '/joint-ventures'
-    | '/navigator'
     | '/overview'
-    | '/partner-finder'
-    | '/pilots'
     | '/profile'
     | '/semiconductor'
     | '/surveys'
     | '/tax-compliance'
-    | '/trust-center'
     | '/tutors'
     | '/api/public/profile-assessment'
   fileRoutesByTo: FileRoutesByTo
@@ -259,15 +217,11 @@ export interface FileRouteTypes {
     | '/distributors'
     | '/greentech'
     | '/joint-ventures'
-    | '/navigator'
     | '/overview'
-    | '/partner-finder'
-    | '/pilots'
     | '/profile'
     | '/semiconductor'
     | '/surveys'
     | '/tax-compliance'
-    | '/trust-center'
     | '/tutors'
     | '/api/public/profile-assessment'
   id:
@@ -283,15 +237,11 @@ export interface FileRouteTypes {
     | '/_authenticated/distributors'
     | '/_authenticated/greentech'
     | '/_authenticated/joint-ventures'
-    | '/_authenticated/navigator'
     | '/_authenticated/overview'
-    | '/_authenticated/partner-finder'
-    | '/_authenticated/pilots'
     | '/_authenticated/profile'
     | '/_authenticated/semiconductor'
     | '/_authenticated/surveys'
     | '/_authenticated/tax-compliance'
-    | '/_authenticated/trust-center'
     | '/_authenticated/tutors'
     | '/api/public/profile-assessment'
   fileRoutesById: FileRoutesById
@@ -382,32 +332,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedJointVenturesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/navigator': {
-      id: '/_authenticated/navigator'
-      path: '/navigator'
-      fullPath: '/navigator'
-      preLoaderRoute: typeof AuthenticatedNavigatorRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/overview': {
       id: '/_authenticated/overview'
       path: '/overview'
       fullPath: '/overview'
       preLoaderRoute: typeof AuthenticatedOverviewRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/partner-finder': {
-      id: '/_authenticated/partner-finder'
-      path: '/partner-finder'
-      fullPath: '/partner-finder'
-      preLoaderRoute: typeof AuthenticatedPartnerFinderRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/pilots': {
-      id: '/_authenticated/pilots'
-      path: '/pilots'
-      fullPath: '/pilots'
-      preLoaderRoute: typeof AuthenticatedPilotsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/profile': {
@@ -438,13 +367,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTaxComplianceRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/trust-center': {
-      id: '/_authenticated/trust-center'
-      path: '/trust-center'
-      fullPath: '/trust-center'
-      preLoaderRoute: typeof AuthenticatedTrustCenterRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/tutors': {
       id: '/_authenticated/tutors'
       path: '/tutors'
@@ -471,15 +393,11 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDistributorsRoute: typeof AuthenticatedDistributorsRoute
   AuthenticatedGreentechRoute: typeof AuthenticatedGreentechRoute
   AuthenticatedJointVenturesRoute: typeof AuthenticatedJointVenturesRoute
-  AuthenticatedNavigatorRoute: typeof AuthenticatedNavigatorRoute
   AuthenticatedOverviewRoute: typeof AuthenticatedOverviewRoute
-  AuthenticatedPartnerFinderRoute: typeof AuthenticatedPartnerFinderRoute
-  AuthenticatedPilotsRoute: typeof AuthenticatedPilotsRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedSemiconductorRoute: typeof AuthenticatedSemiconductorRoute
   AuthenticatedSurveysRoute: typeof AuthenticatedSurveysRoute
   AuthenticatedTaxComplianceRoute: typeof AuthenticatedTaxComplianceRoute
-  AuthenticatedTrustCenterRoute: typeof AuthenticatedTrustCenterRoute
   AuthenticatedTutorsRoute: typeof AuthenticatedTutorsRoute
 }
 
@@ -492,15 +410,11 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDistributorsRoute: AuthenticatedDistributorsRoute,
   AuthenticatedGreentechRoute: AuthenticatedGreentechRoute,
   AuthenticatedJointVenturesRoute: AuthenticatedJointVenturesRoute,
-  AuthenticatedNavigatorRoute: AuthenticatedNavigatorRoute,
   AuthenticatedOverviewRoute: AuthenticatedOverviewRoute,
-  AuthenticatedPartnerFinderRoute: AuthenticatedPartnerFinderRoute,
-  AuthenticatedPilotsRoute: AuthenticatedPilotsRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedSemiconductorRoute: AuthenticatedSemiconductorRoute,
   AuthenticatedSurveysRoute: AuthenticatedSurveysRoute,
   AuthenticatedTaxComplianceRoute: AuthenticatedTaxComplianceRoute,
-  AuthenticatedTrustCenterRoute: AuthenticatedTrustCenterRoute,
   AuthenticatedTutorsRoute: AuthenticatedTutorsRoute,
 }
 
