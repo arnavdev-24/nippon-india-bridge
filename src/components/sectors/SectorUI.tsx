@@ -215,7 +215,6 @@ function PilotItem({ p, expanded, toggle, patch }: { p: Pilot; expanded: boolean
 export function SectorNav() {
   const links = [
     ["/overview", "Overview"], ["/semiconductor", "Semiconductor"], ["/ai-innovation", "AI"], ["/greentech", "GreenTech"],
-    ["/partner-finder", "Partner Finder"], ["/pilots", "Pilots"], ["/navigator", "Navigator"], ["/trust-center", "Trust & Localization"],
   ] as const;
   return (
     <div className="mb-6 flex gap-1 overflow-x-auto border-b border-border pb-2 text-sm">
