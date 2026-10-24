@@ -12,6 +12,8 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { isCompany, useMyProfile } from "@/lib/profile";
 import { useT } from "@/lib/i18n";
+import { CampaignBuilder } from "@/components/campaigns/CampaignBuilder";
+import { CampaignList } from "@/components/campaigns/CampaignList";
 
 export const Route = createFileRoute("/_authenticated/surveys")({
   head: () => ({ meta: [{ title: "Dealer Surveys — nippon2japan" }, { name: "description", content: "Paid questionnaires answered by Indian dealers and vendors." }, { property: "og:title", content: "Dealer Surveys" }, { property: "og:description", content: "Real field insight from local dealers." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
@@ -24,10 +26,21 @@ function Surveys() {
   const { t } = useT();
   const { data: me } = useMyProfile();
   const company = isCompany(me);
+  const dealer = me?.account_type === "dealer";
+  const [tab, setTab] = useState<"campaigns" | "questionnaires">("campaigns");
   return (
     <>
-      <PageHeader kanji="調" title={t("surveys")} desc={t("surveysDesc")} action={company ? <NewSurvey /> : null} />
-      {company ? <CompanyView /> : me?.account_type === "dealer" ? <DealerView /> : (
+      <PageHeader kanji="調" title={t("surveys")} desc={t("surveysDesc")}
+        action={company ? (tab === "campaigns" ? <CampaignBuilder /> : <NewSurvey />) : null} />
+      {(company || dealer) && (
+        <div className="mb-6 flex gap-1 rounded-md border border-border bg-card p-1 text-sm w-fit">
+          {([["campaigns", "Product Campaigns"], ["questionnaires", "Paid Questionnaires"]] as const).map(([k, l]) => (
+            <button key={k} onClick={() => setTab(k)} className={`rounded px-4 py-1.5 ${tab === k ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>{l}</button>
+          ))}
+        </div>
+      )}
+      {tab === "campaigns" && (company || dealer) ? <CampaignList role={company ? "sme" : "vendor"} />
+        : company ? <CompanyView /> : dealer ? <DealerView /> : (
         <Empty>Surveys are created by companies and answered by dealers/vendors.</Empty>
       )}
     </>

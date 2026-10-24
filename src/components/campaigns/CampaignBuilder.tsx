@@ -110,7 +110,7 @@ export function CampaignBuilder() {
             <Label>Custom questions ({qs.length}/10)</Label>
             <div className="flex gap-2">
               <Button type="button" size="sm" variant="ghost" onClick={() => setQs(AGRI_SAMPLE_QUESTIONS.map((q) => ({ ...q, id: newId() })))}><Wand2 /> Use agri-machinery sample</Button>
-              <Button type="button" size="sm" variant="outline" disabled={qs.length >= 10} onClick={() => setQs([...qs, { id: newId(), label: "", type: "choice", options: ["", ""], section: "localization" }])}><Plus /> Add question</Button>
+              <Button type="button" size="sm" variant="outline" disabled={qs.length >= 10} onClick={() => setQs([...qs, { id: newId(), label: "", type: "choice", options: [], section: "localization" }])}><Plus /> Add question</Button>
             </div>
           </div>
           {qs.map((q, i) => (

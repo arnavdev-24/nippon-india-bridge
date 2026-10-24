@@ -26,6 +26,8 @@ import { Route as AuthenticatedSemiconductorRouteImport } from './routes/_authen
 import { Route as AuthenticatedSurveysRouteImport } from './routes/_authenticated/surveys'
 import { Route as AuthenticatedTaxComplianceRouteImport } from './routes/_authenticated/tax-compliance'
 import { Route as AuthenticatedTutorsRouteImport } from './routes/_authenticated/tutors'
+import { Route as STokenRouteImport } from './routes/s.$token'
+import { Route as AuthenticatedCampaignsIdRouteImport } from './routes/_authenticated/campaigns.$id'
 import { Route as ApiPublicProfileAssessmentRouteImport } from './routes/api/public/profile-assessment'
 
 const IndexRoute = IndexRouteImport.update({
@@ -119,6 +121,17 @@ const AuthenticatedTutorsRoute = AuthenticatedTutorsRouteImport.update({
   path: '/tutors',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const STokenRoute = STokenRouteImport.update({
+  id: '/s/$token',
+  path: '/s/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedCampaignsIdRoute =
+  AuthenticatedCampaignsIdRouteImport.update({
+    id: '/campaigns/$id',
+    path: '/campaigns/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const ApiPublicProfileAssessmentRoute =
   ApiPublicProfileAssessmentRouteImport.update({
     id: '/api/public/profile-assessment',
@@ -143,6 +156,8 @@ export interface FileRoutesByFullPath {
   '/surveys': typeof AuthenticatedSurveysRoute
   '/tax-compliance': typeof AuthenticatedTaxComplianceRoute
   '/tutors': typeof AuthenticatedTutorsRoute
+  '/s/$token': typeof STokenRoute
+  '/campaigns/$id': typeof AuthenticatedCampaignsIdRoute
   '/api/public/profile-assessment': typeof ApiPublicProfileAssessmentRoute
 }
 export interface FileRoutesByTo {
@@ -162,6 +177,8 @@ export interface FileRoutesByTo {
   '/surveys': typeof AuthenticatedSurveysRoute
   '/tax-compliance': typeof AuthenticatedTaxComplianceRoute
   '/tutors': typeof AuthenticatedTutorsRoute
+  '/s/$token': typeof STokenRoute
+  '/campaigns/$id': typeof AuthenticatedCampaignsIdRoute
   '/api/public/profile-assessment': typeof ApiPublicProfileAssessmentRoute
 }
 export interface FileRoutesById {
@@ -183,6 +200,8 @@ export interface FileRoutesById {
   '/_authenticated/surveys': typeof AuthenticatedSurveysRoute
   '/_authenticated/tax-compliance': typeof AuthenticatedTaxComplianceRoute
   '/_authenticated/tutors': typeof AuthenticatedTutorsRoute
+  '/s/$token': typeof STokenRoute
+  '/_authenticated/campaigns/$id': typeof AuthenticatedCampaignsIdRoute
   '/api/public/profile-assessment': typeof ApiPublicProfileAssessmentRoute
 }
 export interface FileRouteTypes {
@@ -204,6 +223,8 @@ export interface FileRouteTypes {
     | '/surveys'
     | '/tax-compliance'
     | '/tutors'
+    | '/s/$token'
+    | '/campaigns/$id'
     | '/api/public/profile-assessment'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -223,6 +244,8 @@ export interface FileRouteTypes {
     | '/surveys'
     | '/tax-compliance'
     | '/tutors'
+    | '/s/$token'
+    | '/campaigns/$id'
     | '/api/public/profile-assessment'
   id:
     | '__root__'
@@ -243,6 +266,8 @@ export interface FileRouteTypes {
     | '/_authenticated/surveys'
     | '/_authenticated/tax-compliance'
     | '/_authenticated/tutors'
+    | '/s/$token'
+    | '/_authenticated/campaigns/$id'
     | '/api/public/profile-assessment'
   fileRoutesById: FileRoutesById
 }
@@ -250,6 +275,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  STokenRoute: typeof STokenRoute
   ApiPublicProfileAssessmentRoute: typeof ApiPublicProfileAssessmentRoute
 }
 
@@ -374,6 +400,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTutorsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/s/$token': {
+      id: '/s/$token'
+      path: '/s/$token'
+      fullPath: '/s/$token'
+      preLoaderRoute: typeof STokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/campaigns/$id': {
+      id: '/_authenticated/campaigns/$id'
+      path: '/campaigns/$id'
+      fullPath: '/campaigns/$id'
+      preLoaderRoute: typeof AuthenticatedCampaignsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/api/public/profile-assessment': {
       id: '/api/public/profile-assessment'
       path: '/api/public/profile-assessment'
@@ -399,6 +439,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSurveysRoute: typeof AuthenticatedSurveysRoute
   AuthenticatedTaxComplianceRoute: typeof AuthenticatedTaxComplianceRoute
   AuthenticatedTutorsRoute: typeof AuthenticatedTutorsRoute
+  AuthenticatedCampaignsIdRoute: typeof AuthenticatedCampaignsIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -416,6 +457,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSurveysRoute: AuthenticatedSurveysRoute,
   AuthenticatedTaxComplianceRoute: AuthenticatedTaxComplianceRoute,
   AuthenticatedTutorsRoute: AuthenticatedTutorsRoute,
+  AuthenticatedCampaignsIdRoute: AuthenticatedCampaignsIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -425,6 +467,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  STokenRoute: STokenRoute,
   ApiPublicProfileAssessmentRoute: ApiPublicProfileAssessmentRoute,
 }
 export const routeTree = rootRouteImport
