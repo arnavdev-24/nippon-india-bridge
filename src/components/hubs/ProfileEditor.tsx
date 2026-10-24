@@ -4,46 +4,443 @@ import { toast } from "sonner";
 import { Plus, Video, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useMyProfile } from "@/lib/profile";
-import { CATEGORIES, INDUSTRIES, LANGUAGES, LEVELS, STATES, TECHNOLOGIES, slotsQuery, split, type Hub, type HubProfile } from "@/lib/hubs";
+import {
+  CATEGORIES,
+  INDUSTRIES,
+  LANGUAGES,
+  LEVELS,
+  STATES,
+  TECHNOLOGIES,
+  slotsQuery,
+  type Hub,
+  type HubProfile,
+} from "@/lib/hubs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Choice, Field, MultiChoice } from "./HubControls";
 
-export function ProfileEditor({hub,profile}:{hub:Hub;profile?:HubProfile}){
- const {data:me}=useMyProfile(); const qc=useQueryClient();const [open,setOpen]=useState(false);
- return <Dialog open={open} onOpenChange={setOpen}><DialogTrigger asChild><Button variant="outline"><Plus className="h-4 w-4"/>{profile?"Manage my profile":hub==="tutoring"?"Register as a tutor":hub==="jv"?"Create company pitch":"Register distributor"}</Button></DialogTrigger><DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-2xl"><DialogHeader><DialogTitle>{hub==="tutoring"?"Tutor & trainer profile":hub==="jv"?"Company & collaboration profile":"Distributor profile"}</DialogTitle></DialogHeader>{open&&me&&<Editor key={profile?.id??"new"} hub={hub} profile={profile} ownerId={me.id} defaultName={me.company_name||me.full_name||""} onSaved={()=>{qc.invalidateQueries({queryKey:["hub-profiles"]});setOpen(false);}}/>}</DialogContent></Dialog>;
+export function ProfileEditor({ hub, profile }: { hub: Hub; profile?: HubProfile | undefined }) {
+  const { data: me } = useMyProfile();
+  const qc = useQueryClient();
+  const [open, setOpen] = useState(false);
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline">
+          <Plus className="h-4 w-4" />
+          {profile
+            ? "Manage my profile"
+            : hub === "tutoring"
+              ? "Register as a tutor"
+              : hub === "jv"
+                ? "Create company pitch"
+                : "Register distributor"}
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-2xl">
+        <DialogHeader>
+          <DialogTitle>
+            {hub === "tutoring"
+              ? "Tutor & trainer profile"
+              : hub === "jv"
+                ? "Company & collaboration profile"
+                : "Distributor profile"}
+          </DialogTitle>
+        </DialogHeader>
+        {open && me && (
+          <Editor
+            key={profile?.id ?? "new"}
+            hub={hub}
+            profile={profile}
+            ownerId={me.id}
+            defaultName={me.company_name || me.full_name || ""}
+            onSaved={() => {
+              qc.invalidateQueries({ queryKey: ["hub-profiles"] });
+              setOpen(false);
+            }}
+          />
+        )}
+      </DialogContent>
+    </Dialog>
+  );
 }
-function Editor({hub,profile,ownerId,defaultName,onSaved}:{hub:Hub;profile?:HubProfile;ownerId:string;defaultName:string;onSaved:()=>void}){
- const [f,setF]=useState({name:profile?.name??defaultName,country:profile?.country??"India",city:profile?.city??"",state:profile?.state??"",industry:profile?.industry??"",categories:profile?.categories??[],service_areas:profile?.service_areas??[],customers:profile?.customers??[],capabilities:profile?.capabilities??[],technologies:profile?.technologies??[],bio:profile?.bio??"",offers:profile?.offers??"",seeking:profile?.seeking??"",goals:profile?.goals??"",qualifications:profile?.qualifications??"",experience_years:profile?.experience_years??0,fee_inr:profile?.fee_inr??0,levels:profile?.levels??[],online:profile?.online??true,in_person:profile?.in_person??false,contact_email:profile?.contact_email??"",pitch_path:profile?.pitch_path??null});
- const [video,setVideo]=useState<File|null>(null);const [busy,setBusy]=useState(false);
- const put=<K extends keyof typeof f>(k:K,v:(typeof f)[K])=>setF(old=>({...old,[k]:v}));
- async function save(e:React.FormEvent){e.preventDefault();setBusy(true);let uploaded:string|null=null;
-  try{
-   if(!f.name.trim()||!f.bio.trim())throw new Error("Add a name and introduction");
-   if(hub==="tutoring"&&(!f.categories.length||!f.levels.length||(!f.online&&!f.in_person)))throw new Error("Choose languages, levels and a teaching mode");
-   if(hub==="distribution"&&(!f.categories.length||!f.service_areas.length))throw new Error("Choose product categories and service areas");
-   if(video){if(!["video/mp4","video/webm"].includes(video.type)||video.size>50*1024*1024)throw new Error("Upload an MP4 or WebM video up to 50 MB");uploaded=`${ownerId}/${crypto.randomUUID()}.${video.type==="video/mp4"?"mp4":"webm"}`;const {error}=await supabase.storage.from("company-pitches").upload(uploaded,video);if(error)throw error;}
-   const {error}=await supabase.from("hub_profiles").upsert({...f,name:f.name.trim(),owner_id:ownerId,hub,pitch_path:uploaded??f.pitch_path,updated_at:new Date().toISOString()}, {onConflict:"owner_id,hub"});if(error)throw error;
-   if(uploaded&&profile?.pitch_path)await supabase.storage.from("company-pitches").remove([profile.pitch_path]);toast.success("Profile saved");onSaved();
-  }catch(error){if(uploaded)await supabase.storage.from("company-pitches").remove([uploaded]);toast.error(error instanceof Error?error.message:"Could not save profile");}finally{setBusy(false);}
- }
- return <form onSubmit={save} className="space-y-5">
-  <div className="grid gap-4 sm:grid-cols-2"><Field label={hub==="tutoring"?"Tutor name":"Company name"}><Input required maxLength={150} value={f.name} onChange={e=>put("name",e.target.value)}/></Field><Field label="Country"><Choice value={f.country} onChange={v=>put("country",v)} options={hub==="distribution"?["India"]:["India","Japan"]} placeholder="Select country"/></Field><Field label="City"><Input required value={f.city} onChange={e=>put("city",e.target.value)}/></Field><Field label="State / prefecture"><Input value={f.state} onChange={e=>put("state",e.target.value)}/></Field></div>
-  <Field label="Industry"><Choice value={f.industry} onChange={v=>put("industry",v)} options={INDUSTRIES} placeholder="Select industry"/></Field>
-  <Field label={hub==="tutoring"?"Languages taught":"Product categories"}><MultiChoice options={hub==="tutoring"?LANGUAGES:CATEGORIES} value={f.categories} onChange={v=>put("categories",v)}/></Field>
-  <Field label="Introduction"><Textarea required maxLength={4000} rows={3} value={f.bio} onChange={e=>put("bio",e.target.value)}/></Field>
-  {hub==="distribution"&&<><Field label="Service areas"><div className="max-h-44 overflow-y-auto"><MultiChoice options={["Nationwide",...STATES]} value={f.service_areas} onChange={v=>put("service_areas",v)}/></div></Field><Field label="Target customers"><MultiChoice options={["Retailers","Manufacturers","Hospitals","Enterprises","Consumers"]} value={f.customers} onChange={v=>put("customers",v)}/></Field><Field label="Distribution capabilities"><MultiChoice options={["Warehousing","Dealer network","Import support","After-sales service","Cold chain","E-commerce"]} value={f.capabilities} onChange={v=>put("capabilities",v)}/></Field></>}
-  {hub==="jv"&&<><Field label="Technologies offered or needed"><MultiChoice options={TECHNOLOGIES} value={f.technologies} onChange={v=>put("technologies",v)}/></Field><Field label="What we offer"><Textarea required value={f.offers} onChange={e=>put("offers",e.target.value)}/></Field><Field label="Partner or technology requirements"><Textarea required value={f.seeking} onChange={e=>put("seeking",e.target.value)}/></Field><Field label="Business goals"><Textarea value={f.goals} onChange={e=>put("goals",e.target.value)}/></Field><Field label="Company or founder video · MP4 / WebM, up to 50 MB"><Input type="file" accept="video/mp4,video/webm" onChange={e=>setVideo(e.target.files?.[0]??null)}/></Field>{f.pitch_path&&<span className="flex items-center gap-2 text-sm text-success"><Video className="h-4 w-4"/>Video pitch attached</span>}</>}
-  {hub==="tutoring"&&<><Field label="Proficiency levels"><MultiChoice options={LEVELS} value={f.levels} onChange={v=>put("levels",v)}/></Field><Field label="Training specialities"><MultiChoice options={["Business Japanese","Professional English","Workplace communication","Cultural etiquette","Everyday conversation","JLPT preparation"]} value={f.capabilities} onChange={v=>put("capabilities",v)}/></Field><Field label="Qualifications · self-reported unless independently reviewed"><Textarea required value={f.qualifications} onChange={e=>put("qualifications",e.target.value)}/></Field><div className="grid gap-4 sm:grid-cols-2"><Field label="Years of experience"><Input type="number" min="0" max="80" required value={f.experience_years} onChange={e=>put("experience_years",Number(e.target.value))}/></Field><Field label="Teaching fee · INR per hour"><Input type="number" min="0" required value={f.fee_inr} onChange={e=>put("fee_inr",Number(e.target.value))}/></Field></div><div className="flex gap-5"><label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={f.online} onChange={e=>put("online",e.target.checked)}/>Online</label><label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={f.in_person} onChange={e=>put("in_person",e.target.checked)}/>In person</label></div></>}
-  <Field label="Public business contact email"><Input type="email" value={f.contact_email} onChange={e=>put("contact_email",e.target.value)}/></Field>
-  <Button type="submit" disabled={busy}>{busy?"Saving…":"Save profile"}</Button>
-  {hub==="tutoring"&&profile&&<Availability profile={profile}/>}
- </form>;
+function Editor({
+  hub,
+  profile,
+  ownerId,
+  defaultName,
+  onSaved,
+}: {
+  hub: Hub;
+  profile?: HubProfile | undefined;
+  ownerId: string;
+  defaultName: string;
+  onSaved: () => void;
+}) {
+  const [f, setF] = useState({
+    name: profile?.name ?? defaultName,
+    country: profile?.country ?? "India",
+    city: profile?.city ?? "",
+    state: profile?.state ?? "",
+    industry: profile?.industry ?? "",
+    categories: profile?.categories ?? [],
+    service_areas: profile?.service_areas ?? [],
+    customers: profile?.customers ?? [],
+    capabilities: profile?.capabilities ?? [],
+    technologies: profile?.technologies ?? [],
+    bio: profile?.bio ?? "",
+    offers: profile?.offers ?? "",
+    seeking: profile?.seeking ?? "",
+    goals: profile?.goals ?? "",
+    qualifications: profile?.qualifications ?? "",
+    experience_years: profile?.experience_years ?? 0,
+    fee_inr: profile?.fee_inr ?? 0,
+    levels: profile?.levels ?? [],
+    online: profile?.online ?? true,
+    in_person: profile?.in_person ?? false,
+    contact_email: profile?.contact_email ?? "",
+    pitch_path: profile?.pitch_path ?? null,
+  });
+  const [video, setVideo] = useState<File | null>(null);
+  const [busy, setBusy] = useState(false);
+  const put = <K extends keyof typeof f>(k: K, v: (typeof f)[K]) =>
+    setF((old) => ({ ...old, [k]: v }));
+  async function save(e: React.FormEvent) {
+    e.preventDefault();
+    setBusy(true);
+    let uploaded: string | null = null;
+    try {
+      if (!f.name.trim() || !f.bio.trim()) throw new Error("Add a name and introduction");
+      if (
+        hub === "tutoring" &&
+        (!f.categories.length || !f.levels.length || (!f.online && !f.in_person))
+      )
+        throw new Error("Choose languages, levels and a teaching mode");
+      if (hub === "distribution" && (!f.categories.length || !f.service_areas.length))
+        throw new Error("Choose product categories and service areas");
+      if (video) {
+        if (!["video/mp4", "video/webm"].includes(video.type) || video.size > 50 * 1024 * 1024)
+          throw new Error("Upload an MP4 or WebM video up to 50 MB");
+        uploaded = `${ownerId}/${crypto.randomUUID()}.${video.type === "video/mp4" ? "mp4" : "webm"}`;
+        const { error } = await supabase.storage.from("company-pitches").upload(uploaded, video);
+        if (error) throw error;
+      }
+      const { error } = await supabase
+        .from("hub_profiles")
+        .upsert(
+          {
+            ...f,
+            name: f.name.trim(),
+            owner_id: ownerId,
+            hub,
+            pitch_path: uploaded ?? f.pitch_path,
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: "owner_id,hub" },
+        );
+      if (error) throw error;
+      if (uploaded && profile?.pitch_path)
+        await supabase.storage.from("company-pitches").remove([profile.pitch_path]);
+      toast.success("Profile saved");
+      onSaved();
+    } catch (error) {
+      if (uploaded) await supabase.storage.from("company-pitches").remove([uploaded]);
+      toast.error(error instanceof Error ? error.message : "Could not save profile");
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <form onSubmit={save} className="space-y-5">
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Field label={hub === "tutoring" ? "Tutor name" : "Company name"}>
+          <Input
+            required
+            maxLength={150}
+            value={f.name}
+            onChange={(e) => put("name", e.target.value)}
+          />
+        </Field>
+        <Field label="Country">
+          <Choice
+            value={f.country}
+            onChange={(v) => put("country", v)}
+            options={hub === "distribution" ? ["India"] : ["India", "Japan"]}
+            placeholder="Select country"
+          />
+        </Field>
+        <Field label="City">
+          <Input required value={f.city} onChange={(e) => put("city", e.target.value)} />
+        </Field>
+        <Field label="State / prefecture">
+          <Input value={f.state} onChange={(e) => put("state", e.target.value)} />
+        </Field>
+      </div>
+      <Field label="Industry">
+        <Choice
+          value={f.industry}
+          onChange={(v) => put("industry", v)}
+          options={INDUSTRIES}
+          placeholder="Select industry"
+        />
+      </Field>
+      <Field label={hub === "tutoring" ? "Languages taught" : "Product categories"}>
+        <MultiChoice
+          options={hub === "tutoring" ? LANGUAGES : CATEGORIES}
+          value={f.categories}
+          onChange={(v) => put("categories", v)}
+        />
+      </Field>
+      <Field label="Introduction">
+        <Textarea
+          required
+          maxLength={4000}
+          rows={3}
+          value={f.bio}
+          onChange={(e) => put("bio", e.target.value)}
+        />
+      </Field>
+      {hub === "distribution" && (
+        <>
+          <Field label="Service areas">
+            <div className="max-h-44 overflow-y-auto">
+              <MultiChoice
+                options={["Nationwide", ...STATES]}
+                value={f.service_areas}
+                onChange={(v) => put("service_areas", v)}
+              />
+            </div>
+          </Field>
+          <Field label="Target customers">
+            <MultiChoice
+              options={["Retailers", "Manufacturers", "Hospitals", "Enterprises", "Consumers"]}
+              value={f.customers}
+              onChange={(v) => put("customers", v)}
+            />
+          </Field>
+          <Field label="Distribution capabilities">
+            <MultiChoice
+              options={[
+                "Warehousing",
+                "Dealer network",
+                "Import support",
+                "After-sales service",
+                "Cold chain",
+                "E-commerce",
+              ]}
+              value={f.capabilities}
+              onChange={(v) => put("capabilities", v)}
+            />
+          </Field>
+        </>
+      )}
+      {hub === "jv" && (
+        <>
+          <Field label="Technologies offered or needed">
+            <MultiChoice
+              options={TECHNOLOGIES}
+              value={f.technologies}
+              onChange={(v) => put("technologies", v)}
+            />
+          </Field>
+          <Field label="What we offer">
+            <Textarea required value={f.offers} onChange={(e) => put("offers", e.target.value)} />
+          </Field>
+          <Field label="Partner or technology requirements">
+            <Textarea required value={f.seeking} onChange={(e) => put("seeking", e.target.value)} />
+          </Field>
+          <Field label="Business goals">
+            <Textarea value={f.goals} onChange={(e) => put("goals", e.target.value)} />
+          </Field>
+          <Field label="Company or founder video · MP4 / WebM, up to 50 MB">
+            <Input
+              type="file"
+              accept="video/mp4,video/webm"
+              onChange={(e) => setVideo(e.target.files?.[0] ?? null)}
+            />
+          </Field>
+          {f.pitch_path && (
+            <span className="flex items-center gap-2 text-sm text-success">
+              <Video className="h-4 w-4" />
+              Video pitch attached
+            </span>
+          )}
+        </>
+      )}
+      {hub === "tutoring" && (
+        <>
+          <Field label="Proficiency levels">
+            <MultiChoice options={LEVELS} value={f.levels} onChange={(v) => put("levels", v)} />
+          </Field>
+          <Field label="Training specialities">
+            <MultiChoice
+              options={[
+                "Business Japanese",
+                "Professional English",
+                "Workplace communication",
+                "Cultural etiquette",
+                "Everyday conversation",
+                "JLPT preparation",
+              ]}
+              value={f.capabilities}
+              onChange={(v) => put("capabilities", v)}
+            />
+          </Field>
+          <Field label="Qualifications · self-reported unless independently reviewed">
+            <Textarea
+              required
+              value={f.qualifications}
+              onChange={(e) => put("qualifications", e.target.value)}
+            />
+          </Field>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Years of experience">
+              <Input
+                type="number"
+                min="0"
+                max="80"
+                required
+                value={f.experience_years}
+                onChange={(e) => put("experience_years", Number(e.target.value))}
+              />
+            </Field>
+            <Field label="Teaching fee · INR per hour">
+              <Input
+                type="number"
+                min="0"
+                required
+                value={f.fee_inr}
+                onChange={(e) => put("fee_inr", Number(e.target.value))}
+              />
+            </Field>
+          </div>
+          <div className="flex gap-5">
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={f.online}
+                onChange={(e) => put("online", e.target.checked)}
+              />
+              Online
+            </label>
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={f.in_person}
+                onChange={(e) => put("in_person", e.target.checked)}
+              />
+              In person
+            </label>
+          </div>
+        </>
+      )}
+      <Field label="Public business contact email">
+        <Input
+          type="email"
+          value={f.contact_email}
+          onChange={(e) => put("contact_email", e.target.value)}
+        />
+      </Field>
+      <Button type="submit" disabled={busy}>
+        {busy ? "Saving…" : "Save profile"}
+      </Button>
+      {hub === "tutoring" && profile && <Availability profile={profile} />}
+    </form>
+  );
 }
-function Availability({profile}:{profile:HubProfile}){
- const qc=useQueryClient();const {data:slots=[]}=useQuery(slotsQuery);const [date,setDate]=useState("");const [mode,setMode]=useState("online");const [duration,setDuration]=useState(60);const [busy,setBusy]=useState(false);
- async function add(){if(!date||new Date(date).getTime()<=Date.now()){toast.error("Choose a future date and time");return;}setBusy(true);const {error}=await supabase.from("tutor_slots").insert({tutor_id:profile.id,starts_at:new Date(date).toISOString(),mode,duration_minutes:duration});setBusy(false);if(error)toast.error(error.message);else{qc.invalidateQueries({queryKey:["tutor-slots"]});setDate("");}}
- return <section className="space-y-3 border-t border-border pt-5"><h3 className="text-lg font-bold">Available sessions</h3><Field label="Date and time · your local timezone"><Input type="datetime-local" value={date} onChange={e=>setDate(e.target.value)}/></Field><div className="grid grid-cols-2 gap-3"><Field label="Mode"><Choice value={mode} onChange={setMode} options={[...(profile.online?["online"]:[]),...(profile.in_person?["in_person"]:[])]} placeholder="Select mode"/></Field><Field label="Duration · minutes"><Input type="number" min="15" max="240" value={duration} onChange={e=>setDuration(Number(e.target.value))}/></Field></div><Button type="button" onClick={add} disabled={busy||!mode}>Add slot</Button>{slots.filter(s=>s.tutor_id===profile.id).map(s=><div key={s.id} className="flex items-center justify-between gap-2 border-b border-border py-2 text-sm"><span>{new Date(s.starts_at).toLocaleString()} · {s.duration_minutes} min · {s.mode.replace("_"," ")}</span><Button type="button" size="icon" variant="ghost" aria-label="Remove slot" onClick={async()=>{const {error}=await supabase.from("tutor_slots").delete().eq("id",s.id);if(error)toast.error("A booked slot cannot be removed");else qc.invalidateQueries({queryKey:["tutor-slots"]});}}><Trash2 className="h-4 w-4"/></Button></div>)}</section>;
+function Availability({ profile }: { profile: HubProfile }) {
+  const qc = useQueryClient();
+  const { data: slots = [] } = useQuery(slotsQuery);
+  const [date, setDate] = useState("");
+  const [mode, setMode] = useState("online");
+  const [duration, setDuration] = useState(60);
+  const [busy, setBusy] = useState(false);
+  async function add() {
+    if (!date || new Date(date).getTime() <= Date.now()) {
+      toast.error("Choose a future date and time");
+      return;
+    }
+    setBusy(true);
+    const { error } = await supabase
+      .from("tutor_slots")
+      .insert({
+        tutor_id: profile.id,
+        starts_at: new Date(date).toISOString(),
+        mode,
+        duration_minutes: duration,
+      });
+    setBusy(false);
+    if (error) toast.error(error.message);
+    else {
+      qc.invalidateQueries({ queryKey: ["tutor-slots"] });
+      setDate("");
+    }
+  }
+  return (
+    <section className="space-y-3 border-t border-border pt-5">
+      <h3 className="text-lg font-bold">Available sessions</h3>
+      <Field label="Date and time · your local timezone">
+        <Input type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} />
+      </Field>
+      <div className="grid grid-cols-2 gap-3">
+        <Field label="Mode">
+          <Choice
+            value={mode}
+            onChange={setMode}
+            options={[
+              ...(profile.online ? ["online"] : []),
+              ...(profile.in_person ? ["in_person"] : []),
+            ]}
+            placeholder="Select mode"
+          />
+        </Field>
+        <Field label="Duration · minutes">
+          <Input
+            type="number"
+            min="15"
+            max="240"
+            value={duration}
+            onChange={(e) => setDuration(Number(e.target.value))}
+          />
+        </Field>
+      </div>
+      <Button type="button" onClick={add} disabled={busy || !mode}>
+        Add slot
+      </Button>
+      {slots
+        .filter((s) => s.tutor_id === profile.id)
+        .map((s) => (
+          <div
+            key={s.id}
+            className="flex items-center justify-between gap-2 border-b border-border py-2 text-sm"
+          >
+            <span>
+              {new Date(s.starts_at).toLocaleString()} · {s.duration_minutes} min ·{" "}
+              {s.mode.replace("_", " ")}
+            </span>
+            <Button
+              type="button"
+              size="icon"
+              variant="ghost"
+              aria-label="Remove slot"
+              onClick={async () => {
+                const { error } = await supabase.from("tutor_slots").delete().eq("id", s.id);
+                if (error) toast.error("A booked slot cannot be removed");
+                else qc.invalidateQueries({ queryKey: ["tutor-slots"] });
+              }}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
+        ))}
+    </section>
+  );
 }
