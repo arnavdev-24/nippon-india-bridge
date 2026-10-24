@@ -1,0 +1,122 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-display: "Shippori Mincho", "Noto Serif JP", serif;
+  --font-sans: "Zen Kaku Gothic New", "Noto Sans JP", system-ui, sans-serif;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-saffron: var(--saffron);
+  --color-saffron-foreground: var(--saffron-foreground);
+  --color-ink: var(--ink);
+  --color-ink-foreground: var(--ink-foreground);
+  --color-success: var(--success);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.375rem;
+  /* washi paper, sumi ink, vermilion (Japan), saffron (India) */
+  --background: oklch(0.975 0.012 85);
+  --foreground: oklch(0.2 0.01 60);
+  --card: oklch(0.99 0.008 85);
+  --card-foreground: oklch(0.2 0.01 60);
+  --popover: oklch(0.99 0.008 85);
+  --popover-foreground: oklch(0.2 0.01 60);
+  --primary: oklch(0.55 0.2 28);
+  --primary-foreground: oklch(0.98 0.01 85);
+  --secondary: oklch(0.93 0.02 80);
+  --secondary-foreground: oklch(0.25 0.01 60);
+  --muted: oklch(0.94 0.015 80);
+  --muted-foreground: oklch(0.48 0.015 60);
+  --accent: oklch(0.92 0.05 65);
+  --accent-foreground: oklch(0.3 0.06 50);
+  --saffron: oklch(0.74 0.17 60);
+  --saffron-foreground: oklch(0.22 0.03 50);
+  --ink: oklch(0.2 0.01 60);
+  --ink-foreground: oklch(0.97 0.012 85);
+  --success: oklch(0.55 0.13 150);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.98 0.01 85);
+  --border: oklch(0.87 0.02 75);
+  --input: oklch(0.87 0.02 75);
+  --ring: oklch(0.55 0.2 28);
+  --sidebar: oklch(0.2 0.01 60);
+  --sidebar-foreground: oklch(0.93 0.012 85);
+  --sidebar-primary: oklch(0.6 0.2 28);
+  --sidebar-primary-foreground: oklch(0.98 0.01 85);
+  --sidebar-accent: oklch(0.28 0.012 60);
+  --sidebar-accent-foreground: oklch(0.97 0.012 85);
+  --sidebar-border: oklch(0.3 0.01 60);
+  --sidebar-ring: oklch(0.6 0.2 28);
+  --shadow-paper: 0 1px 0 oklch(0.87 0.02 75), 0 12px 30px -18px oklch(0.2 0.01 60 / 0.35);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+  h1, h2, h3, .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+}
+
+@utility shadow-paper {
+  box-shadow: var(--shadow-paper);
+}
+
+@utility hanko {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  border-radius: 0.25rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  transform: rotate(-4deg);
+}
+
+@utility rule-ink {
+  background-image: linear-gradient(90deg, var(--color-primary) 0 40px, var(--color-border) 40px);
+  height: 2px;
+}
