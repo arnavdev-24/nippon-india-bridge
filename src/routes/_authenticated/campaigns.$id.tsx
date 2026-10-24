@@ -99,7 +99,7 @@ function ActionPanel({ c, role }: { c: Campaign; role: "sme" | "vendor" }) {
     setBusy(true);
     const { error } = await supabase.from("survey_campaigns").update(patch).eq("id", c.id);
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success(msg);
     qc.invalidateQueries({ queryKey: ["campaign", c.id] });
     qc.invalidateQueries({ queryKey: ["campaigns"] });
@@ -120,7 +120,7 @@ function ActionPanel({ c, role }: { c: Campaign; role: "sme" | "vendor" }) {
         <Button disabled={busy || !vendor} onClick={() => update({ vendor_id: vendor, status: "submitted" }, "Campaign sent to the vendor")}>Submit to vendor</Button>
         <Button variant="ghost" disabled={busy} onClick={async () => {
           const { error } = await supabase.from("survey_campaigns").delete().eq("id", c.id);
-          if (error) return toast.error(error.message);
+          if (error) { toast.error(error.message); return; }
           toast.success("Draft deleted"); qc.invalidateQueries({ queryKey: ["campaigns"] }); navigate({ to: "/surveys" });
         }}>Delete draft</Button>
       </div>

@@ -57,7 +57,7 @@ export function Fieldwork({ c, responses }: { c: Campaign; responses: (ResponseR
   const refresh = () => qc.invalidateQueries({ queryKey: ["campaign", c.id] });
 
   async function handleFile(file: File) {
-    if (!/\.(xlsx|xls|csv)$/i.test(file.name)) return toast.error("Upload an .xlsx, .xls or .csv file");
+    if (!/\.(xlsx|xls|csv)$/i.test(file.name)) { toast.error("Upload an .xlsx, .xls or .csv file"); return; }
     setBusy(true);
     try {
       const rows = await readSheet(file);
@@ -74,14 +74,14 @@ export function Fieldwork({ c, responses }: { c: Campaign; responses: (ResponseR
 
   async function del(id: string) {
     const { error } = await supabase.from("campaign_responses").delete().eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     refresh();
   }
 
   async function setStatus(status: "data_review" | "fieldwork_live") {
-    if (status === "data_review" && responses.length === 0) return toast.error("Add at least one response before submitting");
+    if (status === "data_review" && responses.length === 0) { toast.error("Add at least one response before submitting"); return; }
     const { error } = await supabase.from("survey_campaigns").update({ status }).eq("id", c.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success(status === "data_review" ? "Data submitted — review it and publish the report" : "Fieldwork reopened");
     refresh();
   }

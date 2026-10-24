@@ -19,7 +19,7 @@ export function StatusTrack({ status }: { status: string }) {
   );
 }
 
-export function Kpi({ label, value, hint }: { label: string; value: string; hint?: string }) {
+export function Kpi({ label, value, hint }: { label: string; value: string; hint?: string | undefined }) {
   return (
     <div className="rounded-lg border border-border bg-card p-4 shadow-paper">
       <div className="text-xs text-muted-foreground">{label}</div>

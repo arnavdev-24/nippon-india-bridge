@@ -79,7 +79,7 @@ export function validateResponse(r: ParsedRow, questions: CustomQuestion[]): str
 
 /** Turn spreadsheet rows (header → value) into responses, with per-row errors. */
 export function parseSheetRows(rows: Record<string, unknown>[], questions: CustomQuestion[]) {
-  const headers = rows.length ? Object.keys(rows[0]) : [];
+  const headers = rows[0] ? Object.keys(rows[0]) : [];
   const core = detectColumns(headers);
   const errors: RowError[] = [];
   const missing = (Object.keys(core) as CoreKey[]).filter((k) => !core[k]);

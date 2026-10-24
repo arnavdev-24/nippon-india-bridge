@@ -48,17 +48,17 @@ export function CampaignBuilder() {
 
   async function save(submit: boolean) {
     if (!me) return;
-    if (!f.product_name_en.trim()) return toast.error("Product name (English) is required");
-    if (submit && !f.vendor_id) return toast.error("Choose an Indian vendor to send the request to");
-    if (submit && f.target_states.length === 0) return toast.error("Select at least one target state");
+    if (!f.product_name_en.trim()) { toast.error("Product name (English) is required"); return; }
+    if (submit && !f.vendor_id) { toast.error("Choose an Indian vendor to send the request to"); return; }
+    if (submit && f.target_states.length === 0) { toast.error("Select at least one target state"); return; }
     const clean = qs.map((q) => ({ ...q, label: q.label.trim(), options: q.options.map((o) => o.trim()).filter(Boolean) })).filter((q) => q.label);
-    if (clean.some((q) => q.type === "choice" && q.options.length < 2)) return toast.error("Choice questions need at least 2 options");
+    if (clean.some((q) => q.type === "choice" && q.options.length < 2)) { toast.error("Choice questions need at least 2 options"); return; }
     setBusy(true);
     let photo_path: string | null = null;
     if (photo) {
       photo_path = `${me.id}/${Date.now()}-${photo.name.replace(/[^\w.-]/g, "_")}`;
       const up = await supabase.storage.from("campaign-photos").upload(photo_path, photo);
-      if (up.error) { setBusy(false); return toast.error(`Photo upload failed: ${up.error.message}`); }
+      if (up.error) { setBusy(false); { toast.error(`Photo upload failed: ${up.error.message}`); return; } }
     }
     const num = (v: string) => (v === "" ? null : Math.max(0, Math.round(Number(v))));
     const { data, error } = await supabase.from("survey_campaigns").insert({
@@ -68,7 +68,7 @@ export function CampaignBuilder() {
       bis_status: f.bis_status, custom_questions: clean, status: submit ? "submitted" : "draft",
     }).select("id").single();
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success(submit ? "Campaign sent to the vendor" : "Draft saved");
     qc.invalidateQueries({ queryKey: ["campaigns"] });
     setOpen(false);

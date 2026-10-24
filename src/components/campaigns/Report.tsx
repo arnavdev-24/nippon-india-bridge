@@ -38,14 +38,14 @@ export function Report({ c, responses, role }: { c: Campaign; responses: Respons
     const ex = has(rid, kind);
     const { error } = ex ? await supabase.from("campaign_dealer_actions").delete().eq("id", ex.id)
       : await supabase.from("campaign_dealer_actions").insert({ campaign_id: c.id, response_id: rid, sme_id: c.sme_id, kind });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success(ex ? "Removed" : kind === "shortlist" ? "Dealer shortlisted" : "Sample request recorded — the vendor can see it");
     qc.invalidateQueries({ queryKey: ["campaign-actions", c.id] });
   }
 
   async function update(patch: Partial<Campaign>, msg: string) {
     const { error } = await supabase.from("survey_campaigns").update(patch).eq("id", c.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success(msg);
     qc.invalidateQueries({ queryKey: ["campaign", c.id] });
   }
