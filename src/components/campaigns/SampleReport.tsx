@@ -6,7 +6,7 @@ import { AGRI_SAMPLE_QUESTIONS, type ResponseRow } from "@/lib/campaigns";
 import type { Campaign } from "@/lib/campaigns-data";
 
 const QS = AGRI_SAMPLE_QUESTIONS.map((q, i) => ({ ...q, id: `q${i}` }));
-const ENGINE = QS[0].options;
+const ENGINE = QS[0]?.options ?? [];
 
 // Illustrative sample answers in the attached agri-machinery format — not real dealers.
 const RAW: [string, string, string, number, string, string, number, string, string, string, string][] = [
