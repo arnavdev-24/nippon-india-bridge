@@ -9,6 +9,7 @@ const dict = {
   distributors: { en: "Find Distributors", ja: "販売代理店" },
   tutors: { en: "Language Training", ja: "語学研修" },
   surveys: { en: "Dealer Surveys", ja: "販売店調査" },
+  consultations: { en: "My Consultations", ja: "相談予約" },
   connections: { en: "Connections", ja: "つながり" },
   profile: { en: "Profile", ja: "プロフィール" },
   signIn: { en: "Sign in", ja: "ログイン" },
@@ -24,6 +25,7 @@ const dict = {
   distDesc: { en: "Tell us your product — see where it sells best, then meet distributors in that state.", ja: "製品を選ぶと人気の州と、その州の販売代理店がわかります。" },
   tutorsDesc: { en: "Japanese and Hindi tutors to train your teams in both languages.", ja: "社員研修のための日本語・ヒンディー語講師。" },
   surveysDesc: { en: "Paid questionnaires answered by local dealers and vendors — real field insight.", ja: "現地の販売店・業者が回答する有償アンケートで現場の声を。" },
+  consultationsDesc: { en: "Track pending and confirmed consultations with compliance experts.", ja: "専門家との相談予約の状況を確認。" },
 } as const;
 
 export type TKey = keyof typeof dict;

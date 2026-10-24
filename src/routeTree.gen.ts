@@ -19,6 +19,7 @@ import { Route as AuthenticatedDistributorsRouteImport } from './routes/_authent
 import { Route as AuthenticatedJointVenturesRouteImport } from './routes/_authenticated/joint-ventures'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedSurveysRouteImport } from './routes/_authenticated/surveys'
+import { Route as AuthenticatedTaxComplianceRouteImport } from './routes/_authenticated/tax-compliance'
 import { Route as AuthenticatedTutorsRouteImport } from './routes/_authenticated/tutors'
 import { Route as ApiPublicProfileAssessmentRouteImport } from './routes/api/public/profile-assessment'
 
@@ -74,6 +75,12 @@ const AuthenticatedSurveysRoute = AuthenticatedSurveysRouteImport.update({
   path: '/surveys',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedTaxComplianceRoute =
+  AuthenticatedTaxComplianceRouteImport.update({
+    id: '/tax-compliance',
+    path: '/tax-compliance',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedTutorsRoute = AuthenticatedTutorsRouteImport.update({
   id: '/tutors',
   path: '/tutors',
@@ -96,6 +103,7 @@ export interface FileRoutesByFullPath {
   '/joint-ventures': typeof AuthenticatedJointVenturesRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/surveys': typeof AuthenticatedSurveysRoute
+  '/tax-compliance': typeof AuthenticatedTaxComplianceRoute
   '/tutors': typeof AuthenticatedTutorsRoute
   '/api/public/profile-assessment': typeof ApiPublicProfileAssessmentRoute
 }
@@ -109,6 +117,7 @@ export interface FileRoutesByTo {
   '/joint-ventures': typeof AuthenticatedJointVenturesRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/surveys': typeof AuthenticatedSurveysRoute
+  '/tax-compliance': typeof AuthenticatedTaxComplianceRoute
   '/tutors': typeof AuthenticatedTutorsRoute
   '/api/public/profile-assessment': typeof ApiPublicProfileAssessmentRoute
 }
@@ -124,6 +133,7 @@ export interface FileRoutesById {
   '/_authenticated/joint-ventures': typeof AuthenticatedJointVenturesRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/surveys': typeof AuthenticatedSurveysRoute
+  '/_authenticated/tax-compliance': typeof AuthenticatedTaxComplianceRoute
   '/_authenticated/tutors': typeof AuthenticatedTutorsRoute
   '/api/public/profile-assessment': typeof ApiPublicProfileAssessmentRoute
 }
@@ -139,6 +149,7 @@ export interface FileRouteTypes {
     | '/joint-ventures'
     | '/profile'
     | '/surveys'
+    | '/tax-compliance'
     | '/tutors'
     | '/api/public/profile-assessment'
   fileRoutesByTo: FileRoutesByTo
@@ -152,6 +163,7 @@ export interface FileRouteTypes {
     | '/joint-ventures'
     | '/profile'
     | '/surveys'
+    | '/tax-compliance'
     | '/tutors'
     | '/api/public/profile-assessment'
   id:
@@ -166,6 +178,7 @@ export interface FileRouteTypes {
     | '/_authenticated/joint-ventures'
     | '/_authenticated/profile'
     | '/_authenticated/surveys'
+    | '/_authenticated/tax-compliance'
     | '/_authenticated/tutors'
     | '/api/public/profile-assessment'
   fileRoutesById: FileRoutesById
@@ -249,6 +262,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSurveysRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/tax-compliance': {
+      id: '/_authenticated/tax-compliance'
+      path: '/tax-compliance'
+      fullPath: '/tax-compliance'
+      preLoaderRoute: typeof AuthenticatedTaxComplianceRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/tutors': {
       id: '/_authenticated/tutors'
       path: '/tutors'
@@ -274,6 +294,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedJointVenturesRoute: typeof AuthenticatedJointVenturesRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedSurveysRoute: typeof AuthenticatedSurveysRoute
+  AuthenticatedTaxComplianceRoute: typeof AuthenticatedTaxComplianceRoute
   AuthenticatedTutorsRoute: typeof AuthenticatedTutorsRoute
 }
 
@@ -285,6 +306,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedJointVenturesRoute: AuthenticatedJointVenturesRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedSurveysRoute: AuthenticatedSurveysRoute,
+  AuthenticatedTaxComplianceRoute: AuthenticatedTaxComplianceRoute,
   AuthenticatedTutorsRoute: AuthenticatedTutorsRoute,
 }
 
