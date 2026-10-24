@@ -14,7 +14,7 @@ export function IndiaHeatMap({ responses, questions, selState, onSelectState }: 
   })), [responses]);
   const metrics = useMemo(() => buildMetrics(responses, questions), [responses, questions]);
   const [metricId, setMetricId] = useState("count");
-  const metric = metrics.find((m) => m.id === metricId) ?? metrics[0];
+  const metric = metrics.find((m) => m.id === metricId) ?? metrics[0]!;
   const catOptions = metric.cat ? Object.entries(metric.cat.counts).sort((a, b) => b[1] - a[1]) : [];
   const [catPick, setCatPick] = useState<string | null>(null);
   const catValue = metric.cat ? (catPick && metric.cat.counts[catPick] ? catPick : catOptions[0]?.[0] ?? null) : null;
@@ -38,13 +38,13 @@ export function IndiaHeatMap({ responses, questions, selState, onSelectState }: 
     const el = (e.target as Element).closest("[data-state]") as HTMLElement | null;
     const b = boxRef.current?.getBoundingClientRect();
     if (!el || !b) { setTip(null); return; }
-    setTip({ s: el.dataset.state!, x: Math.min(e.clientX - b.left + 14, b.width - 230), y: e.clientY - b.top + 14 });
+    setTip({ s: el.dataset["state"]!, x: Math.min(e.clientX - b.left + 14, b.width - 230), y: e.clientY - b.top + 14 });
   }
   const pick = (s: string) => onSelectState(selState === s ? null : s);
 
   let insight: React.ReactNode = "No dealer territories could be matched to Indian states in this dataset.";
   if (ranked.length) {
-    const hot = ranked[0], cold = ranked[ranked.length - 1];
+    const hot = ranked[0]!, cold = ranked[ranked.length - 1]!;
     const tied = ranked.filter((r) => r[1].value === hot[1].value).map((r) => r[0]);
     insight = (<>
       <b>Hotspot:</b> {tied.length > 1 && tied.length <= 3 ? tied.join(", ") : hot[0]} ({metric.fmt(hot[1].value!)})
@@ -90,7 +90,7 @@ export function IndiaHeatMap({ responses, questions, selState, onSelectState }: 
         <div ref={boxRef} className="relative rounded-2xl border border-border bg-muted/40 p-3 lg:col-span-3">
           <div className="mx-auto" style={{ maxWidth: 560 }}>
             <svg viewBox={`0 0 ${INDIA_MAP.w} ${INDIA_MAP.h}`} className="h-auto w-full" onMouseMove={onMove} onMouseLeave={() => setTip(null)}
-              onClick={(e) => { const el = (e.target as Element).closest("[data-state]") as HTMLElement | null; if (el) pick(el.dataset.state!); }}>
+              onClick={(e) => { const el = (e.target as Element).closest("[data-state]") as HTMLElement | null; if (el) pick(el.dataset["state"]!); }}>
               {[...STATE_NAMES.filter((n) => n !== selState), ...(selState && INDIA_MAP.paths[selState] ? [selState] : [])].map((n) => (
                 <path key={n} data-state={n} d={INDIA_MAP.paths[n]} fill={fill(n)} stroke={n === selState ? "#4f46e5" : "#64748b"} strokeWidth={n === selState ? 2.2 : 0.6} strokeLinejoin="round" style={{ cursor: "pointer", transition: "fill .35s" }} />
               ))}
