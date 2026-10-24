@@ -261,6 +261,223 @@ export type Database = {
           },
         ]
       }
+      hub_messages: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          request_id: string
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          request_id: string
+          sender_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          request_id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hub_messages_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "hub_requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "hub_messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      hub_profiles: {
+        Row: {
+          bio: string
+          capabilities: string[]
+          categories: string[]
+          city: string
+          contact_email: string
+          country: string
+          customers: string[]
+          experience_years: number
+          fee_inr: number
+          goals: string
+          hub: string
+          id: string
+          in_person: boolean
+          industry: string
+          levels: string[]
+          name: string
+          offers: string
+          online: boolean
+          owner_id: string
+          pitch_path: string | null
+          qualification_verified: boolean
+          qualifications: string
+          seeking: string
+          service_areas: string[]
+          state: string
+          technologies: string[]
+          updated_at: string
+        }
+        Insert: {
+          bio?: string
+          capabilities?: string[]
+          categories?: string[]
+          city?: string
+          contact_email?: string
+          country?: string
+          customers?: string[]
+          experience_years?: number
+          fee_inr?: number
+          goals?: string
+          hub: string
+          id?: string
+          in_person?: boolean
+          industry?: string
+          levels?: string[]
+          name: string
+          offers?: string
+          online?: boolean
+          owner_id: string
+          pitch_path?: string | null
+          qualification_verified?: boolean
+          qualifications?: string
+          seeking?: string
+          service_areas?: string[]
+          state?: string
+          technologies?: string[]
+          updated_at?: string
+        }
+        Update: {
+          bio?: string
+          capabilities?: string[]
+          categories?: string[]
+          city?: string
+          contact_email?: string
+          country?: string
+          customers?: string[]
+          experience_years?: number
+          fee_inr?: number
+          goals?: string
+          hub?: string
+          id?: string
+          in_person?: boolean
+          industry?: string
+          levels?: string[]
+          name?: string
+          offers?: string
+          online?: boolean
+          owner_id?: string
+          pitch_path?: string | null
+          qualification_verified?: boolean
+          qualifications?: string
+          seeking?: string
+          service_areas?: string[]
+          state?: string
+          technologies?: string[]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hub_profiles_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      hub_requests: {
+        Row: {
+          created_at: string
+          details: Json
+          from_user: string
+          hub: string
+          id: string
+          meeting_at: string | null
+          meeting_location: string | null
+          meeting_mode: string | null
+          message: string
+          profile_id: string
+          slot_id: string | null
+          status: string
+          subject: string
+          to_user: string
+        }
+        Insert: {
+          created_at?: string
+          details?: Json
+          from_user: string
+          hub: string
+          id?: string
+          meeting_at?: string | null
+          meeting_location?: string | null
+          meeting_mode?: string | null
+          message: string
+          profile_id: string
+          slot_id?: string | null
+          status?: string
+          subject: string
+          to_user: string
+        }
+        Update: {
+          created_at?: string
+          details?: Json
+          from_user?: string
+          hub?: string
+          id?: string
+          meeting_at?: string | null
+          meeting_location?: string | null
+          meeting_mode?: string | null
+          message?: string
+          profile_id?: string
+          slot_id?: string | null
+          status?: string
+          subject?: string
+          to_user?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hub_requests_from_user_fkey"
+            columns: ["from_user"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "hub_requests_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "hub_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "hub_requests_slot_id_fkey"
+            columns: ["slot_id"]
+            isOneToOne: false
+            referencedRelation: "tutor_slots"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "hub_requests_to_user_fkey"
+            columns: ["to_user"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       jv_proposals: {
         Row: {
           created_at: string
@@ -542,6 +759,38 @@ export type Database = {
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tutor_slots: {
+        Row: {
+          duration_minutes: number
+          id: string
+          mode: string
+          starts_at: string
+          tutor_id: string
+        }
+        Insert: {
+          duration_minutes?: number
+          id?: string
+          mode?: string
+          starts_at: string
+          tutor_id: string
+        }
+        Update: {
+          duration_minutes?: number
+          id?: string
+          mode?: string
+          starts_at?: string
+          tutor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tutor_slots_tutor_id_fkey"
+            columns: ["tutor_id"]
+            isOneToOne: false
+            referencedRelation: "hub_profiles"
             referencedColumns: ["id"]
           },
         ]
