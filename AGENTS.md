@@ -18,3 +18,5 @@
 - Product survey campaigns (survey_campaigns + campaign_responses + campaign_response_contacts) are separate from legacy paid surveys; a DB trigger enforces SME/vendor field ownership and the status flow, and contacts live in their own table so RLS can hide them from the SME until delivery.
 - Public dealer survey links use security-definer RPCs (get_public_campaign / submit_public_response) keyed by an unguessable token, so anonymous dealers never get table grants.
 - Report numbers are computed client-side from saved responses via pure functions in src/lib/campaigns.ts (tested), never stored or hardcoded.
+- Indian company accounts act as dealer-survey vendors (legacy `dealer` accounts too); sign-up offers no separate vendor type, so there are only Japanese and Indian sides.
+- The campaign report reuses the test_1.html engine visuals: Chart.js charts with its palette and an SVG India heat map (src/lib/india-heatmap.ts, tested) that filters the dealer table by state.
