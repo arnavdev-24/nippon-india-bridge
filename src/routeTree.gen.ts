@@ -21,7 +21,6 @@ import { Route as AuthenticatedDistributorsRouteImport } from './routes/_authent
 import { Route as AuthenticatedGreentechRouteImport } from './routes/_authenticated/greentech'
 import { Route as AuthenticatedJointVenturesRouteImport } from './routes/_authenticated/joint-ventures'
 import { Route as AuthenticatedOverviewRouteImport } from './routes/_authenticated/overview'
-import { Route as AuthenticatedPilotsRouteImport } from './routes/_authenticated/pilots'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedSemiconductorRouteImport } from './routes/_authenticated/semiconductor'
 import { Route as AuthenticatedSurveysRouteImport } from './routes/_authenticated/surveys'
@@ -93,11 +92,6 @@ const AuthenticatedOverviewRoute = AuthenticatedOverviewRouteImport.update({
   path: '/overview',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedPilotsRoute = AuthenticatedPilotsRouteImport.update({
-  id: '/pilots',
-  path: '/pilots',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -144,7 +138,6 @@ export interface FileRoutesByFullPath {
   '/greentech': typeof AuthenticatedGreentechRoute
   '/joint-ventures': typeof AuthenticatedJointVenturesRoute
   '/overview': typeof AuthenticatedOverviewRoute
-  '/pilots': typeof AuthenticatedPilotsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/semiconductor': typeof AuthenticatedSemiconductorRoute
   '/surveys': typeof AuthenticatedSurveysRoute
@@ -164,7 +157,6 @@ export interface FileRoutesByTo {
   '/greentech': typeof AuthenticatedGreentechRoute
   '/joint-ventures': typeof AuthenticatedJointVenturesRoute
   '/overview': typeof AuthenticatedOverviewRoute
-  '/pilots': typeof AuthenticatedPilotsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/semiconductor': typeof AuthenticatedSemiconductorRoute
   '/surveys': typeof AuthenticatedSurveysRoute
@@ -186,7 +178,6 @@ export interface FileRoutesById {
   '/_authenticated/greentech': typeof AuthenticatedGreentechRoute
   '/_authenticated/joint-ventures': typeof AuthenticatedJointVenturesRoute
   '/_authenticated/overview': typeof AuthenticatedOverviewRoute
-  '/_authenticated/pilots': typeof AuthenticatedPilotsRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/semiconductor': typeof AuthenticatedSemiconductorRoute
   '/_authenticated/surveys': typeof AuthenticatedSurveysRoute
@@ -208,7 +199,6 @@ export interface FileRouteTypes {
     | '/greentech'
     | '/joint-ventures'
     | '/overview'
-    | '/pilots'
     | '/profile'
     | '/semiconductor'
     | '/surveys'
@@ -228,7 +218,6 @@ export interface FileRouteTypes {
     | '/greentech'
     | '/joint-ventures'
     | '/overview'
-    | '/pilots'
     | '/profile'
     | '/semiconductor'
     | '/surveys'
@@ -249,7 +238,6 @@ export interface FileRouteTypes {
     | '/_authenticated/greentech'
     | '/_authenticated/joint-ventures'
     | '/_authenticated/overview'
-    | '/_authenticated/pilots'
     | '/_authenticated/profile'
     | '/_authenticated/semiconductor'
     | '/_authenticated/surveys'
@@ -351,13 +339,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOverviewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/pilots': {
-      id: '/_authenticated/pilots'
-      path: '/pilots'
-      fullPath: '/pilots'
-      preLoaderRoute: typeof AuthenticatedPilotsRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
       path: '/profile'
@@ -413,7 +394,6 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedGreentechRoute: typeof AuthenticatedGreentechRoute
   AuthenticatedJointVenturesRoute: typeof AuthenticatedJointVenturesRoute
   AuthenticatedOverviewRoute: typeof AuthenticatedOverviewRoute
-  AuthenticatedPilotsRoute: typeof AuthenticatedPilotsRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedSemiconductorRoute: typeof AuthenticatedSemiconductorRoute
   AuthenticatedSurveysRoute: typeof AuthenticatedSurveysRoute
@@ -431,7 +411,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedGreentechRoute: AuthenticatedGreentechRoute,
   AuthenticatedJointVenturesRoute: AuthenticatedJointVenturesRoute,
   AuthenticatedOverviewRoute: AuthenticatedOverviewRoute,
-  AuthenticatedPilotsRoute: AuthenticatedPilotsRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedSemiconductorRoute: AuthenticatedSemiconductorRoute,
   AuthenticatedSurveysRoute: AuthenticatedSurveysRoute,
