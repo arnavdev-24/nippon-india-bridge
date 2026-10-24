@@ -26,7 +26,7 @@ export const CANDIDATES: Candidate[] = [
   c("t13", "Pooja Nair (Demo)", "Robotics automation engineer", "Manufacturing", ["PLC programming", "Industrial robotics", "Python", "SCADA"], "M.Tech / M.S.", "M.Tech Mechatronics (self-reported)", 5, "Bengaluru", "N4", "Fluent", 20, "Immediate", ["Full-time", "Contract"]),
 ];
 
-export type Requirements = { industry?: string; skills: string[]; level?: keyof typeof EXPERIENCE_LEVELS; education?: string; location?: string; jlpt?: string; employment?: string; salaryMax?: number };
+export type Requirements = { industry?: string | undefined; skills: string[]; level?: keyof typeof EXPERIENCE_LEVELS | undefined; education?: string | undefined; location?: string | undefined; jlpt?: string | undefined; employment?: string | undefined; salaryMax?: number };
 
 export const allSkills = () => [...new Set(CANDIDATES.flatMap((x) => x.skills))].sort();
 

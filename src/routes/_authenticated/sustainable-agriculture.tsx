@@ -105,7 +105,7 @@ function Page() {
   );
 }
 
-function RegionMap({ selected, onSelect }: { selected?: string; onSelect: (s: string) => void }) {
+function RegionMap({ selected, onSelect }: { selected?: string | undefined; onSelect: (s: string) => void }) {
   const region = AGRI_REGIONS.find((r) => r.state === selected);
   return (
     <section className="mb-10">
@@ -139,13 +139,13 @@ function PilotExchange({ pilots, save }: { pilots: AgriPilot[]; save: (p: AgriPi
   const [f, setF] = useState({ title: "", theme: "", state: "", problem: "", budget: "" });
   const [prop, setProp] = useState<Record<string, { partner: string; summary: string; cost: string; weeks: string }>>({});
   function post() {
-    if (!f.title.trim() || !f.theme || !f.state || !f.problem.trim() || !(Number(f.budget) > 0)) return toast.error("Fill in all challenge fields with a valid budget.");
+    if (!f.title.trim() || !f.theme || !f.state || !f.problem.trim() || !(Number(f.budget) > 0)) { toast.error("Fill in all challenge fields with a valid budget."); return; }
     save([{ id: crypto.randomUUID(), title: f.title.trim(), theme: f.theme, state: f.state, problem: f.problem.trim(), budgetLakh: Number(f.budget), status: "open", proposals: [], impact: { waterKl: 1000, energyKwh: 500, wasteT: 10, co2T: 5 } }, ...pilots]);
     setF({ title: "", theme: "", state: "", problem: "", budget: "" }); toast.success("Challenge posted (saved in this browser)");
   }
   function submit(id: string) {
     const d = prop[id];
-    if (!d?.partner || !d.summary?.trim() || !(Number(d.cost) > 0) || !(Number(d.weeks) > 0)) return toast.error("Complete the proposal fields.");
+    if (!d?.partner || !d.summary?.trim() || !(Number(d.cost) > 0) || !(Number(d.weeks) > 0)) { toast.error("Complete the proposal fields."); return; }
     save(pilots.map((p) => p.id === id ? { ...p, proposals: [...p.proposals, { id: crypto.randomUUID(), partner: d.partner, summary: d.summary.trim(), costLakh: Number(d.cost), weeks: Number(d.weeks) }] } : p));
     setProp({ ...prop, [id]: { partner: "", summary: "", cost: "", weeks: "" } }); toast.success("Proposal submitted");
   }

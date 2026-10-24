@@ -42,7 +42,7 @@ function Page() {
   const byId = (id: string) => CANDIDATES.find((c) => c.id === id)!;
   const toggleSL = (id: string) => { persist(shortlist.includes(id) ? shortlist.filter((x) => x !== id) : [...shortlist, id], requests); };
   const send = (id: string, kind: Req["kind"]) => {
-    if (requests.some((q) => q.candidate === id && q.kind === kind && q.status === "Pending")) return toast.error("A pending request already exists.");
+    if (requests.some((q) => q.candidate === id && q.kind === kind && q.status === "Pending")) { toast.error("A pending request already exists."); return; }
     persist(shortlist, [{ id: crypto.randomUUID(), candidate: id, kind, status: "Pending", at: new Date().toISOString() }, ...requests]);
     toast.success(`${kind} request recorded (simulated — demo candidates are not notified)`);
   };

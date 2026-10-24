@@ -24,7 +24,7 @@ export const AGRI_PARTNERS: AgriPartner[] = [
   p("ag12", "Madhya Organic Inputs (Demo)", "Agri supplier", "Madhya Pradesh", "Indore", ["Pulses", "Wheat"], ["Organic farming", "Soil health"], ["Vermicompost", "Bio-pesticides"], ["Manufacturing", "Dealer network"], ["Supplier", "Distribution"], "Organic inputs manufacturer for soybean and pulse belts."),
 ];
 
-export type AgriNeeds = { solution?: string; crop?: string; state?: string; type?: string; collab?: string; keyword?: string };
+export type AgriNeeds = { solution?: string | undefined; crop?: string | undefined; state?: string | undefined; type?: string | undefined; collab?: string | undefined; keyword?: string | undefined };
 
 /** Transparent rule-based score (0-100) with reasons; simulated, not a validation. */
 export function agriMatch(pt: AgriPartner, n: AgriNeeds) {
