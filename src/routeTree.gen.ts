@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedAdvisorsRouteImport } from './routes/_authenticated/advisors'
 import { Route as AuthenticatedConnectionsRouteImport } from './routes/_authenticated/connections'
+import { Route as AuthenticatedConsultationsRouteImport } from './routes/_authenticated/consultations'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDistributorsRouteImport } from './routes/_authenticated/distributors'
 import { Route as AuthenticatedJointVenturesRouteImport } from './routes/_authenticated/joint-ventures'
@@ -46,6 +47,12 @@ const AuthenticatedConnectionsRoute =
   AuthenticatedConnectionsRouteImport.update({
     id: '/connections',
     path: '/connections',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedConsultationsRoute =
+  AuthenticatedConsultationsRouteImport.update({
+    id: '/consultations',
+    path: '/consultations',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
@@ -98,6 +105,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/advisors': typeof AuthenticatedAdvisorsRoute
   '/connections': typeof AuthenticatedConnectionsRoute
+  '/consultations': typeof AuthenticatedConsultationsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/distributors': typeof AuthenticatedDistributorsRoute
   '/joint-ventures': typeof AuthenticatedJointVenturesRoute
@@ -112,6 +120,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/advisors': typeof AuthenticatedAdvisorsRoute
   '/connections': typeof AuthenticatedConnectionsRoute
+  '/consultations': typeof AuthenticatedConsultationsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/distributors': typeof AuthenticatedDistributorsRoute
   '/joint-ventures': typeof AuthenticatedJointVenturesRoute
@@ -128,6 +137,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/advisors': typeof AuthenticatedAdvisorsRoute
   '/_authenticated/connections': typeof AuthenticatedConnectionsRoute
+  '/_authenticated/consultations': typeof AuthenticatedConsultationsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/distributors': typeof AuthenticatedDistributorsRoute
   '/_authenticated/joint-ventures': typeof AuthenticatedJointVenturesRoute
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/advisors'
     | '/connections'
+    | '/consultations'
     | '/dashboard'
     | '/distributors'
     | '/joint-ventures'
@@ -158,6 +169,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/advisors'
     | '/connections'
+    | '/consultations'
     | '/dashboard'
     | '/distributors'
     | '/joint-ventures'
@@ -173,6 +185,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/advisors'
     | '/_authenticated/connections'
+    | '/_authenticated/consultations'
     | '/_authenticated/dashboard'
     | '/_authenticated/distributors'
     | '/_authenticated/joint-ventures'
@@ -225,6 +238,13 @@ declare module '@tanstack/react-router' {
       path: '/connections'
       fullPath: '/connections'
       preLoaderRoute: typeof AuthenticatedConnectionsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/consultations': {
+      id: '/_authenticated/consultations'
+      path: '/consultations'
+      fullPath: '/consultations'
+      preLoaderRoute: typeof AuthenticatedConsultationsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard': {
@@ -289,6 +309,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdvisorsRoute: typeof AuthenticatedAdvisorsRoute
   AuthenticatedConnectionsRoute: typeof AuthenticatedConnectionsRoute
+  AuthenticatedConsultationsRoute: typeof AuthenticatedConsultationsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDistributorsRoute: typeof AuthenticatedDistributorsRoute
   AuthenticatedJointVenturesRoute: typeof AuthenticatedJointVenturesRoute
@@ -301,6 +322,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdvisorsRoute: AuthenticatedAdvisorsRoute,
   AuthenticatedConnectionsRoute: AuthenticatedConnectionsRoute,
+  AuthenticatedConsultationsRoute: AuthenticatedConsultationsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDistributorsRoute: AuthenticatedDistributorsRoute,
   AuthenticatedJointVenturesRoute: AuthenticatedJointVenturesRoute,
