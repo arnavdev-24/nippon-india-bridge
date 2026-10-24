@@ -59,6 +59,90 @@ export type Database = {
           },
         ]
       }
+      consultation_requests: {
+        Row: {
+          company_id: string
+          company_name: string
+          contact_name: string
+          country: string
+          created_at: string
+          email: string
+          expert_id: string | null
+          expert_name: string
+          fee_inr: number | null
+          id: string
+          industry: string
+          location_notes: string | null
+          mode: string
+          preferred_date: string | null
+          preferred_time: string | null
+          problem_description: string | null
+          reference: string
+          services: string[]
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          company_id: string
+          company_name: string
+          contact_name: string
+          country: string
+          created_at?: string
+          email: string
+          expert_id?: string | null
+          expert_name: string
+          fee_inr?: number | null
+          id?: string
+          industry: string
+          location_notes?: string | null
+          mode: string
+          preferred_date?: string | null
+          preferred_time?: string | null
+          problem_description?: string | null
+          reference?: string
+          services?: string[]
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string
+          company_name?: string
+          contact_name?: string
+          country?: string
+          created_at?: string
+          email?: string
+          expert_id?: string | null
+          expert_name?: string
+          fee_inr?: number | null
+          id?: string
+          industry?: string
+          location_notes?: string | null
+          mode?: string
+          preferred_date?: string | null
+          preferred_time?: string | null
+          problem_description?: string | null
+          reference?: string
+          services?: string[]
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "consultation_requests_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "consultation_requests_expert_id_fkey"
+            columns: ["expert_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       distributors: {
         Row: {
           categories: string[]
@@ -91,6 +175,91 @@ export type Database = {
           years_active?: number | null
         }
         Relationships: []
+      }
+      expert_availability: {
+        Row: {
+          available_date: string
+          expert_id: string
+          id: string
+          mode: string
+          slots: string[]
+        }
+        Insert: {
+          available_date: string
+          expert_id: string
+          id?: string
+          mode?: string
+          slots?: string[]
+        }
+        Update: {
+          available_date?: string
+          expert_id?: string
+          id?: string
+          mode?: string
+          slots?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "expert_availability_expert_id_fkey"
+            columns: ["expert_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      expert_profiles: {
+        Row: {
+          expert_id: string
+          industries: string[]
+          languages: string[]
+          offers_in_person: boolean
+          offers_online: boolean
+          office_address: string | null
+          office_city: string | null
+          qualifications: string | null
+          specializations: string[]
+          updated_at: string
+          verified: boolean
+          years_experience: number | null
+        }
+        Insert: {
+          expert_id: string
+          industries?: string[]
+          languages?: string[]
+          offers_in_person?: boolean
+          offers_online?: boolean
+          office_address?: string | null
+          office_city?: string | null
+          qualifications?: string | null
+          specializations?: string[]
+          updated_at?: string
+          verified?: boolean
+          years_experience?: number | null
+        }
+        Update: {
+          expert_id?: string
+          industries?: string[]
+          languages?: string[]
+          offers_in_person?: boolean
+          offers_online?: boolean
+          office_address?: string | null
+          office_city?: string | null
+          qualifications?: string | null
+          specializations?: string[]
+          updated_at?: string
+          verified?: boolean
+          years_experience?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "expert_profiles_expert_id_fkey"
+            columns: ["expert_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       jv_proposals: {
         Row: {
