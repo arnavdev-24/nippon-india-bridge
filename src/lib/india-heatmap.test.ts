@@ -24,6 +24,7 @@ describe("India heat map", () => {
 describe("profiles", () => {
   it("Indian company profiles run dealer surveys; no separate vendor sign-up", () => {
     expect(isIndianSide({ account_type: "indian_company" })).toBe(true);
+    expect(isIndianSide({ account_type: "expert" })).toBe(true);
     expect(isIndianSide({ account_type: "japanese_company" })).toBe(false);
     expect(Object.keys(SIGNUP_ACCOUNT_TYPES)).not.toContain("dealer");
   });

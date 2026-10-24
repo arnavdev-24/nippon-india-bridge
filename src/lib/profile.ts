@@ -18,10 +18,10 @@ export const SIGNUP_ACCOUNT_TYPES = {
   expert: ACCOUNT_TYPES.expert,
 } as const;
 
-/** Indian side (Indian company, or a legacy vendor account) — runs dealer-survey fieldwork. */
+/** Indian side (Indian company, Indian expert, or a legacy vendor account) — runs dealer-survey fieldwork. */
+export const VENDOR_ACCOUNT_TYPES = ["indian_company", "expert", "dealer"];
 export const isIndianSide = (p?: { account_type?: string | null } | null) =>
-  p?.account_type === "indian_company" || p?.account_type === "dealer";
-export const VENDOR_ACCOUNT_TYPES = ["indian_company", "dealer"];
+  !!p?.account_type && VENDOR_ACCOUNT_TYPES.includes(p.account_type);
 
 export const EXPERT_TYPES = {
   ca: "Chartered Accountant",
