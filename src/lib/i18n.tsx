@@ -12,6 +12,7 @@ const dict = {
   surveys: { en: "Dealer Surveys", ja: "販売店調査" },
   consultations: { en: "My Consultations", ja: "相談予約" },
   connections: { en: "Connections", ja: "つながり" },
+  talent: { en: "Talent Match", ja: "人材マッチ", hi: "टैलेंट मैच" },
   profile: { en: "Profile", ja: "プロフィール" },
   signIn: { en: "Sign in", ja: "ログイン" },
   signOut: { en: "Sign out", ja: "ログアウト" },

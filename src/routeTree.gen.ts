@@ -24,6 +24,8 @@ import { Route as AuthenticatedOverviewRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedSemiconductorRouteImport } from './routes/_authenticated/semiconductor'
 import { Route as AuthenticatedSurveysRouteImport } from './routes/_authenticated/surveys'
+import { Route as AuthenticatedSustainableAgricultureRouteImport } from './routes/_authenticated/sustainable-agriculture'
+import { Route as AuthenticatedTalentRouteImport } from './routes/_authenticated/talent'
 import { Route as AuthenticatedTaxComplianceRouteImport } from './routes/_authenticated/tax-compliance'
 import { Route as AuthenticatedTutorsRouteImport } from './routes/_authenticated/tutors'
 import { Route as STokenRouteImport } from './routes/s.$token'
@@ -110,6 +112,17 @@ const AuthenticatedSurveysRoute = AuthenticatedSurveysRouteImport.update({
   path: '/surveys',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSustainableAgricultureRoute =
+  AuthenticatedSustainableAgricultureRouteImport.update({
+    id: '/sustainable-agriculture',
+    path: '/sustainable-agriculture',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedTalentRoute = AuthenticatedTalentRouteImport.update({
+  id: '/talent',
+  path: '/talent',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedTaxComplianceRoute =
   AuthenticatedTaxComplianceRouteImport.update({
     id: '/tax-compliance',
@@ -154,6 +167,8 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthenticatedProfileRoute
   '/semiconductor': typeof AuthenticatedSemiconductorRoute
   '/surveys': typeof AuthenticatedSurveysRoute
+  '/sustainable-agriculture': typeof AuthenticatedSustainableAgricultureRoute
+  '/talent': typeof AuthenticatedTalentRoute
   '/tax-compliance': typeof AuthenticatedTaxComplianceRoute
   '/tutors': typeof AuthenticatedTutorsRoute
   '/s/$token': typeof STokenRoute
@@ -175,6 +190,8 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthenticatedProfileRoute
   '/semiconductor': typeof AuthenticatedSemiconductorRoute
   '/surveys': typeof AuthenticatedSurveysRoute
+  '/sustainable-agriculture': typeof AuthenticatedSustainableAgricultureRoute
+  '/talent': typeof AuthenticatedTalentRoute
   '/tax-compliance': typeof AuthenticatedTaxComplianceRoute
   '/tutors': typeof AuthenticatedTutorsRoute
   '/s/$token': typeof STokenRoute
@@ -198,6 +215,8 @@ export interface FileRoutesById {
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/semiconductor': typeof AuthenticatedSemiconductorRoute
   '/_authenticated/surveys': typeof AuthenticatedSurveysRoute
+  '/_authenticated/sustainable-agriculture': typeof AuthenticatedSustainableAgricultureRoute
+  '/_authenticated/talent': typeof AuthenticatedTalentRoute
   '/_authenticated/tax-compliance': typeof AuthenticatedTaxComplianceRoute
   '/_authenticated/tutors': typeof AuthenticatedTutorsRoute
   '/s/$token': typeof STokenRoute
@@ -221,6 +240,8 @@ export interface FileRouteTypes {
     | '/profile'
     | '/semiconductor'
     | '/surveys'
+    | '/sustainable-agriculture'
+    | '/talent'
     | '/tax-compliance'
     | '/tutors'
     | '/s/$token'
@@ -242,6 +263,8 @@ export interface FileRouteTypes {
     | '/profile'
     | '/semiconductor'
     | '/surveys'
+    | '/sustainable-agriculture'
+    | '/talent'
     | '/tax-compliance'
     | '/tutors'
     | '/s/$token'
@@ -264,6 +287,8 @@ export interface FileRouteTypes {
     | '/_authenticated/profile'
     | '/_authenticated/semiconductor'
     | '/_authenticated/surveys'
+    | '/_authenticated/sustainable-agriculture'
+    | '/_authenticated/talent'
     | '/_authenticated/tax-compliance'
     | '/_authenticated/tutors'
     | '/s/$token'
@@ -386,6 +411,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSurveysRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/sustainable-agriculture': {
+      id: '/_authenticated/sustainable-agriculture'
+      path: '/sustainable-agriculture'
+      fullPath: '/sustainable-agriculture'
+      preLoaderRoute: typeof AuthenticatedSustainableAgricultureRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/talent': {
+      id: '/_authenticated/talent'
+      path: '/talent'
+      fullPath: '/talent'
+      preLoaderRoute: typeof AuthenticatedTalentRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/tax-compliance': {
       id: '/_authenticated/tax-compliance'
       path: '/tax-compliance'
@@ -437,6 +476,8 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedSemiconductorRoute: typeof AuthenticatedSemiconductorRoute
   AuthenticatedSurveysRoute: typeof AuthenticatedSurveysRoute
+  AuthenticatedSustainableAgricultureRoute: typeof AuthenticatedSustainableAgricultureRoute
+  AuthenticatedTalentRoute: typeof AuthenticatedTalentRoute
   AuthenticatedTaxComplianceRoute: typeof AuthenticatedTaxComplianceRoute
   AuthenticatedTutorsRoute: typeof AuthenticatedTutorsRoute
   AuthenticatedCampaignsIdRoute: typeof AuthenticatedCampaignsIdRoute
@@ -455,6 +496,9 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedSemiconductorRoute: AuthenticatedSemiconductorRoute,
   AuthenticatedSurveysRoute: AuthenticatedSurveysRoute,
+  AuthenticatedSustainableAgricultureRoute:
+    AuthenticatedSustainableAgricultureRoute,
+  AuthenticatedTalentRoute: AuthenticatedTalentRoute,
   AuthenticatedTaxComplianceRoute: AuthenticatedTaxComplianceRoute,
   AuthenticatedTutorsRoute: AuthenticatedTutorsRoute,
   AuthenticatedCampaignsIdRoute: AuthenticatedCampaignsIdRoute,
