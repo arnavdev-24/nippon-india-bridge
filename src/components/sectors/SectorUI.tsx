@@ -50,7 +50,7 @@ export function CompanyCard({ c, reasons }: { c: DemoCompany; reasons?: string[]
   );
 }
 
-export function OpportunityMap({ sector, selected, onSelect }: { sector?: Sector; selected?: string; onSelect?: (s: string) => void }) {
+export function OpportunityMap({ sector, selected, onSelect }: { sector?: Sector | undefined; selected?: string | undefined; onSelect?: (s: string) => void }) {
   const clusters = CLUSTERS.filter((c) => !sector || c.sector === sector);
   const counts = new Map<string, number>();
   clusters.forEach((c) => counts.set(c.state, (counts.get(c.state) ?? 0) + 1));

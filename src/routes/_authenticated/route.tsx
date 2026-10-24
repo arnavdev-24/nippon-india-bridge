@@ -30,7 +30,7 @@ const nav: { to: string; key: TKey; icon: typeof Inbox }[] = [
   { to: "/surveys", key: "surveys", icon: ClipboardList },
   { to: "/consultations", key: "consultations", icon: CalendarCheck },
   { to: "/connections", key: "connections", icon: Inbox },
-  { to: "/profile", key: "profile", icon: UserRound, Globe2 },
+  { to: "/profile", key: "profile", icon: UserRound },
 ];
 
 function Shell() {

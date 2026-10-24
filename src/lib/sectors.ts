@@ -96,7 +96,7 @@ export const MAP_GRID: Record<string, [number, number]> = {
   Kerala: [1, 8], "Tamil Nadu": [2, 8],
 };
 
-export type FinderNeeds = { sector?: string; type?: string; state?: string; capability?: string; budget?: number; objective?: string };
+export type FinderNeeds = { sector?: string | undefined; type?: string | undefined; state?: string | undefined; capability?: string | undefined; budget?: number | undefined; objective?: string | undefined };
 
 /** Transparent rule-based score: lists which of the user's criteria a profile meets. */
 export function partnerFit(p: DemoCompany, n: FinderNeeds) {
