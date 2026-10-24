@@ -6,7 +6,16 @@ import { SectorDashboard } from "@/components/sectors/SectorDashboard";
 import { CompanyCard } from "@/components/sectors/SectorUI";
 import { DEMO_COMPANIES, SECTORS } from "@/lib/sectors";
 export const Route = createFileRoute("/_authenticated/ai-innovation")({
-  head: () => ({ meta: [{ title: "AI Innovation Exchange — Japan2Nippon" }, { name: "description", content: "Connect with Indian AI startups, developers, researchers and universities for joint AI development." }, { property: "og:title", content: "AI Innovation Exchange — Japan2Nippon" }, { property: "og:description", content: "Connect with Indian AI startups, developers, researchers and universities for joint AI development." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
+  head: () => ({
+    meta: [
+      { title: "AI Innovation Exchange — nippon2japan" },
+      { name: "description", content: "Connect with Indian AI startups, developers, researchers and universities for joint AI development." },
+      { property: "og:title", content: "AI Innovation Exchange — nippon2japan" },
+      { property: "og:description", content: "Connect with Indian AI startups, developers, researchers and universities for joint AI development." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: () => <SectorDashboard sector="ai" extra={<Extras />} />,
 });
 const KEYWORDS: Record<string, string[]> = {

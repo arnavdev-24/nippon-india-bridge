@@ -14,13 +14,13 @@ import { HubProfileCard } from "@/components/hubs/HubProfileCard";
 export const Route = createFileRoute("/_authenticated/tutors")({
   head: () => ({
     meta: [
-      { title: "Language & Cultural Exchange Hub — Japan2Nippon" },
+      { title: "Language & Cultural Exchange Hub — nippon2japan" },
       {
         name: "description",
         content:
           "Find Japanese, Hindi and English tutors, cultural trainers and employee language sessions.",
       },
-      { property: "og:title", content: "Language & Cultural Exchange Hub — Japan2Nippon" },
+      { property: "og:title", content: "Language & Cultural Exchange Hub — nippon2japan" },
       {
         property: "og:description",
         content: "Match tutors by language, goals, budget and available sessions.",

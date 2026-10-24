@@ -22,13 +22,13 @@ import { HubProfileCard } from "@/components/hubs/HubProfileCard";
 export const Route = createFileRoute("/_authenticated/distributors")({
   head: () => ({
     meta: [
-      { title: "Distributor Connect Hub — Japan2Nippon" },
+      { title: "Distributor Connect Hub — nippon2japan" },
       {
         name: "description",
         content:
           "Match your products with Indian distributors by industry, state and capabilities.",
       },
-      { property: "og:title", content: "Distributor Connect Hub — Japan2Nippon" },
+      { property: "og:title", content: "Distributor Connect Hub — nippon2japan" },
       {
         property: "og:description",
         content: "Find regional distribution partners for Japanese products in India.",

@@ -9,7 +9,16 @@ import { useT } from "@/lib/i18n";
 import { RequestDashboard } from "@/components/hubs/RequestDashboard";
 
 export const Route = createFileRoute("/_authenticated/connections")({
-  head: () => ({ meta: [{ title: "Connections & Requests — Japan2Nippon" }, { name: "description", content: "Track partnerships, tutor bookings, private conversations and meetings." }, { property: "og:title", content: "Connections & Requests — Japan2Nippon" }, { property: "og:description", content: "Manage distributor, collaboration and language training requests." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
+  head: () => ({
+    meta: [
+      { title: "Connections & Requests — nippon2japan" },
+      { name: "description", content: "Track partnerships, tutor bookings, private conversations and meetings." },
+      { property: "og:title", content: "Connections & Requests — nippon2japan" },
+      { property: "og:description", content: "Manage distributor, collaboration and language training requests." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Connections,
 });
 
