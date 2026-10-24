@@ -14,6 +14,7 @@ import { Report } from "@/components/campaigns/Report";
 import { BIS_STATUSES, CORE_HEADERS } from "@/lib/campaigns";
 import { fetchCampaign, fetchResponses, photoUrl, questionsOf, type Campaign } from "@/lib/campaigns-data";
 import { useMyProfile } from "@/lib/profile";
+import { VENDOR_ACCOUNT_TYPES } from "@/lib/profile";
 
 export const Route = createFileRoute("/_authenticated/campaigns/$id")({
   head: () => ({ meta: [{ title: "Product Campaign — Japan2Nippon" }, { name: "description", content: "Dealer survey campaign: quote, fieldwork and market viability report." }, { property: "og:title", content: "Product Campaign — Japan2Nippon" }, { property: "og:description", content: "Dealer survey campaign: quote, fieldwork and market viability report." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
@@ -92,7 +93,7 @@ function ActionPanel({ c, role }: { c: Campaign; role: "sme" | "vendor" }) {
   useEffect(() => setVendor(c.vendor_id ?? ""), [c.vendor_id]);
   const { data: vendors = [] } = useQuery({
     queryKey: ["survey-vendors"], enabled: role === "sme" && c.status === "draft",
-    queryFn: async () => (await supabase.from("profiles").select("id, full_name, company_name, state").eq("account_type", "dealer")).data ?? [],
+    queryFn: async () => (await supabase.from("profiles").select("id, full_name, company_name, state").in("account_type", VENDOR_ACCOUNT_TYPES)).data ?? [],
   });
 
   async function update(patch: Partial<Campaign>, msg: string) {
@@ -110,11 +111,11 @@ function ActionPanel({ c, role }: { c: Campaign; role: "sme" | "vendor" }) {
 
   if (role === "sme") {
     if (c.status === "draft") return box(<>
-      <h3 className="font-bold">Draft — send to an Indian vendor</h3>
+      <h3 className="font-bold">Draft — send to an Indian company</h3>
       <div className="mt-3 flex flex-wrap items-end gap-3">
-        <div className="min-w-64"><Label>Vendor</Label>
+        <div className="min-w-64"><Label>Indian company</Label>
           <select className="mt-1 h-10 w-full rounded-md border border-input bg-background px-3 text-sm" value={vendor} onChange={(e) => setVendor(e.target.value)}>
-            <option value="">{vendors.length ? "Select a vendor" : "No vendor accounts registered yet"}</option>
+            <option value="">{vendors.length ? "Select an Indian company" : "No Indian company profiles yet"}</option>
             {vendors.map((v) => <option key={v.id} value={v.id}>{v.company_name || v.full_name || "Vendor"}{v.state ? ` · ${v.state}` : ""}</option>)}
           </select></div>
         <Button disabled={busy || !vendor} onClick={() => update({ vendor_id: vendor, status: "submitted" }, "Campaign sent to the vendor")}>Submit to vendor</Button>

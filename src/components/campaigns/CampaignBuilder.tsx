@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { AGRI_SAMPLE_QUESTIONS, BIS_STATUSES, CORE_HEADERS, DEALER_TYPES, type CustomQuestion, type QuestionType } from "@/lib/campaigns";
 import { INDIAN_STATES, INDUSTRIES } from "@/lib/campaigns-data";
 import { useMyProfile } from "@/lib/profile";
+import { VENDOR_ACCOUNT_TYPES } from "@/lib/profile";
 
 const sel = "mt-1 h-10 w-full rounded-md border border-input bg-background px-3 text-sm";
 const newId = () => Math.random().toString(36).slice(2, 10);
@@ -41,7 +42,7 @@ export function CampaignBuilder() {
 
   const { data: vendors = [] } = useQuery({
     queryKey: ["survey-vendors"], enabled: open,
-    queryFn: async () => (await supabase.from("profiles").select("id, full_name, company_name, city, state").eq("account_type", "dealer")).data ?? [],
+    queryFn: async () => (await supabase.from("profiles").select("id, full_name, company_name, city, state").in("account_type", VENDOR_ACCOUNT_TYPES)).data ?? [],
   });
 
   const upd = (i: number, p: Partial<CustomQuestion>) => setQs(qs.map((q, j) => (j === i ? { ...q, ...p } : q)));
@@ -95,7 +96,7 @@ export function CampaignBuilder() {
           <div><Label>BIS certification status</Label><select className={sel} value={f.bis_status} onChange={(e) => set("bis_status", e.target.value)}>{Object.entries(BIS_STATUSES).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select></div>
           <div><Label>Send request to Indian vendor *</Label>
             <select className={sel} value={f.vendor_id} onChange={(e) => set("vendor_id", e.target.value)}>
-              <option value="">{vendors.length ? "Select a vendor" : "No vendor accounts registered yet"}</option>
+              <option value="">{vendors.length ? "Select an Indian company" : "No Indian company profiles yet"}</option>
               {vendors.map((v) => <option key={v.id} value={v.id}>{v.company_name || v.full_name || "Vendor"}{v.state ? ` · ${v.state}` : ""}</option>)}
             </select></div>
         </div>

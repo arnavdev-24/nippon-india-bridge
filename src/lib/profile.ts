@@ -8,8 +8,20 @@ export const ACCOUNT_TYPES = {
   japanese_company: "Japanese company",
   indian_company: "Indian company",
   expert: "Expert (CA / CS / Tutor)",
-  dealer: "Dealer / Vendor",
+  dealer: "Indian company",
 } as const;
+
+/** Sign-up choices: Indian companies also act as survey vendors, so no separate vendor type is offered. */
+export const SIGNUP_ACCOUNT_TYPES = {
+  japanese_company: ACCOUNT_TYPES.japanese_company,
+  indian_company: ACCOUNT_TYPES.indian_company,
+  expert: ACCOUNT_TYPES.expert,
+} as const;
+
+/** Indian side (Indian company, or a legacy vendor account) — runs dealer-survey fieldwork. */
+export const isIndianSide = (p?: { account_type?: string | null } | null) =>
+  p?.account_type === "indian_company" || p?.account_type === "dealer";
+export const VENDOR_ACCOUNT_TYPES = ["indian_company", "dealer"];
 
 export const EXPERT_TYPES = {
   ca: "Chartered Accountant",

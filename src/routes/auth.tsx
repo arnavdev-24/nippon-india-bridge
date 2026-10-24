@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Logo } from "@/components/Logo";
-import { ACCOUNT_TYPES, EXPERT_TYPES } from "@/lib/profile";
+import { SIGNUP_ACCOUNT_TYPES as ACCOUNT_TYPES, EXPERT_TYPES } from "@/lib/profile";
 import { LangToggle } from "@/lib/i18n";
 
 export const Route = createFileRoute("/auth")({
