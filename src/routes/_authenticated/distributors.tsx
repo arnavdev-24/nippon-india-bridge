@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { ArrowRight, ExternalLink, MapPin, Truck } from "lucide-react";
+import { ArrowRight, Truck } from "lucide-react";
 import { PageHeader, Empty } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -247,42 +247,3 @@ function Distributors() {
           )}
         </section>
       </div>
-      <section className="border-t border-border pt-6">
-        <div className="mb-5">
-          <h2 className="text-2xl font-bold">Business examples in your market</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Official company sources · Not registered members · Partnership suitability is not
-            verified.
-          </p>
-        </div>
-        {examples.length === 0 ? (
-          <Empty>No sourced business example for these selections.</Empty>
-        ) : (
-          <div className="grid gap-4 md:grid-cols-3">
-            {examples.map((p) => (
-              <article key={p.name} className="rounded-lg border border-border bg-card p-5">
-                <span className="text-xs font-medium text-primary">
-                  REAL BUSINESS · EXTERNAL EXAMPLE
-                </span>
-                <h3 className="mt-2 text-lg font-bold">{p.name}</h3>
-                <p className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
-                  <MapPin className="h-3 w-3" />
-                  {p.city}
-                </p>
-                <p className="mt-3 text-sm">{p.bio}</p>
-                <p className="mt-3 text-xs text-muted-foreground">
-                  Coverage: {p.service_areas.join(", ")}
-                </p>
-                <Button asChild size="sm" variant="outline" className="mt-4">
-                  <a href={p.source} target="_blank" rel="noopener noreferrer">
-                    Official website <ExternalLink className="h-3 w-3" />
-                  </a>
-                </Button>
-              </article>
-            ))}
-          </div>
-        )}
-      </section>
-    </>
-  );
-}
