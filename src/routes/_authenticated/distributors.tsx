@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useMyProfile } from "@/lib/profile";
 import {
-  BUSINESS_EXAMPLES,
   CATEGORIES,
   INDUSTRIES,
   STATES,
@@ -68,12 +67,6 @@ function Distributors() {
               )))),
     )
     .sort((a, b) => matchReasons(b, needs).length - matchReasons(a, needs).length);
-  const examples = BUSINESS_EXAMPLES.filter(
-    (p) =>
-      (!category || p.categories.includes(category)) &&
-      (!states.length ||
-        states.some((s) => p.service_areas.includes(s) || p.service_areas.includes("Nationwide"))),
-  ).sort((a, b) => matchReasons(b, needs).length - matchReasons(a, needs).length);
   return (
     <>
       <PageHeader
