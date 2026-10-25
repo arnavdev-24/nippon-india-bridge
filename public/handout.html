@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nippon2Bharat — Executive Handout</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Serif+JP:wght@600;900&family=JetBrains+Mono:wght@500;700&display=swap');
+
+    :root {
+      --primary: #0f2b48;
+      --primary-light: #1e4976;
+      --japan-red: #c52222;
+      --india-saffron: #d97706;
+      --india-green: #15803d;
+      --paper: #fcfbf8;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background: #eef2f6;
+      color: var(--text-main);
+      line-height: 1.45;
+      padding: 24px 12px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 900px;
+      margin: 0 auto 30px auto;
+      background: var(--paper);
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(15, 43, 72, 0.08);
+      border-radius: 12px;
+      overflow: hidden;
+      page-break-after: always;
+    }
+
+    /* Print Setup */
+    @media print {
+      body { background: white; padding: 0; }
+      .page {
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        margin: 0;
+        max-width: 100%;
+        page-break-after: always;
+      }
+      .no-print { display: none !important; }
+    }
+
+    /* Top Bar Banner */
+    .top-banner {
+      background: linear-gradient(135deg, var(--primary) 0%, #07192d 100%);
+      color: white;
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 4px solid var(--japan-red);
+    }
+    .brand-group { display: flex; align-items: center; gap: 16px; }
+    .kanji-badge {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 24px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 2px;
+    }
+    .brand-text h1 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-text h1 span.flags { font-size: 20px; }
+    .brand-text p {
+      font-size: 13px;
+      color: #94a3b8;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+    .live-badge-wrap {
+      text-align: right;
+    }
+    .live-badge {
+      display: inline-block;
+      background: #ffffff;
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 11px;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .live-url {
+      font-size: 11px;
+      color: #cbd5e1;
+      margin-top: 4px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Main Content Padding */
+    .content { padding: 28px 32px; }
+
+    /* Problem vs Solution Split */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+    .summary-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+    }
+    .summary-card.problem { border-left: 4px solid var(--japan-red); }
+    .summary-card.solution { border-left: 4px solid var(--india-green); }
+    .card-title {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .problem .card-title { color: var(--japan-red); }
+    .solution .card-title { color: var(--india-green); }
+    .summary-card ul {
+      list-style: none;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+    .summary-card li { margin-bottom: 6px; padding-left: 14px; position: relative; }
+    .summary-card li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+    }
+    .problem li::before { color: var(--japan-red); }
+    .solution li::before { color: var(--india-green); }
+
+    /* Section Headers */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 6px;
+    }
+    .section-header h2 {
+      font-size: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--primary);
+    }
+    .section-header .tag {
+      font-size: 11px;
+      background: #e2e8f0;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* Pillars Grid */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .pillar-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .pillar-num {
+      display: inline-block;
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      background: var(--primary);
+      color: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+    .pillar-card h3 {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+    .pillar-card p {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Technical & Tri-Persona Row */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+    .box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .box h4 {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--primary);
+    }
+
+    .persona-pills {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .persona-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      font-size: 12px;
+    }
+    .persona-pill strong { color: var(--primary); font-size: 12px; }
+    .persona-pill span { color: var(--text-muted); font-size: 11px; }
+
+    .tech-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .tech-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      background: #f1f5f9;
+      color: #334155;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid #cbd5e1;
+    }
+
+    /* Print bar helper */
+    .print-bar {
+      max-width: 900px;
+      margin: 0 auto 16px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .btn-print {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .btn-print:hover { background: var(--primary-light); }
+
+    /* Footer */
+    .handout-footer {
+      border-top: 1px solid var(--border);
+      padding: 14px 32px;
+      background: #f8fafc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #64748b;
+    }
+    .handout-footer strong { color: var(--primary); }
+  </style>
+</head>
+<body>
+
+  <!-- Screen Helper Bar -->
+  <div class="print-bar no-print">
+    <div>
+      <strong>📄 Judge Executive Handout</strong>
+      <span style="color:#64748b; font-size:12px; margin-left:8px;">Ready to print or save as PDF (A4 format)</span>
+    </div>
+    <div style="display:flex; gap:10px; align-items:center;">
+      <a href="https://nippontwobharat.lovable.app" target="_blank" style="font-size:12px; font-weight:600; color:var(--primary); text-decoration:none;">Open Live App ↗</a>
+      <button class="btn-print" onclick="window.print()">🖨️ Print / Save as PDF</button>
+    </div>
+  </div>
+
+  <div class="page">
+    <!-- Header Banner -->
+    <header class="top-banner">
+      <div class="brand-group">
+        <div class="kanji-badge">日印</div>
+        <div class="brand-text">
+          <h1>Nippon2Bharat <span class="flags">🇯🇵 × 🇮🇳</span></h1>
+          <p>Bilateral SME Market Entry, Fieldwork Verification & Partnership Corridor</p>
+        </div>
+      </div>
+      <div class="live-badge-wrap">
+        <a class="live-badge" href="https://nippontwobharat.lovable.app" target="_blank">🌐 LIVE WEB PLATFORM</a>
+        <div class="live-url">nippontwobharat.lovable.app</div>
+      </div>
+    </header>
+
+    <div class="content">
+      <!-- Problem vs Solution -->
+      <section class="summary-grid">
+        <div class="summary-card problem">
+          <div class="card-title">⚠️ The SME Challenge in India</div>
+          <ul>
+            <li><strong>Monolith Fallacy:</strong> India is 28 diverse economies with differing soils, monsoons, and local subsidies.</li>
+            <li><strong>High Advisory Costs:</strong> Big-4 consulting reports cost \$50K+ without giving practical dealer access.</li>
+            <li><strong>Product Mismatch:</strong> Japanese specs often fail local field conditions (e.g. soil clearance, 45°C heat).</li>
+            <li><strong>Regulatory Hurdles:</strong> Navigating BIS certification, GST, and CEPA concessions without local partners.</li>
+          </ul>
+        </div>
+        <div class="summary-card solution">
+          <div class="card-title">✅ The Nippon2Bharat Solution</div>
+          <ul>
+            <li><strong>Ground Fieldwork Engine:</strong> Commission verified dealer surveys with live analytics & PDF export.</li>
+            <li><strong>State Intelligence:</strong> Pinpoint Japanese Industrial Townships (JITs) & state DBT subsidies.</li>
+            <li><strong>Maruti-Style JV Matchmaker:</strong> Connect with vetted Indian manufacturing & corporate partners.</li>
+            <li><strong>Direct Advisory Access:</strong> Book vetted CAs, CSs, and bilingual corporate Japanese/Hindi tutors.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 5 Core Platform Pillars -->
+      <div class="section-header">
+        <h2>Five Bilateral Platform Pillars</h2>
+        <span class="tag">Complete End-to-End Corridor</span>
+      </div>
+
+      <div class="pillars-grid">
+        <div class="pillar-card">
+          <span class="pillar-num">01 / SURVEYS</span>
+          <h3>Ground Fieldwork Engine</h3>
+          <p>Launch dynamic dealer campaigns. Includes mobile QR surveys and a smart Excel/TSV ingestion engine with fuzzy choice matching and auto-assigned provisional GSTINs.</p>
+        </div>
+
+        <div class="pillar-card">
+          <span class="pillar-num">02 / STATE INTEL</span>
+          <h3>17-State Intelligence</h3>
+          <p>Regional cluster analytics mapping Japanese Industrial Townships (JITs), state-level capital subsidies (MahaDBT, Ikhedut, SMAM), and port logistics connectivity.</p>
+        </div>
+
+        <div class="pillar-card">
+          <span class="pillar-num">03 / JOINT VENTURE</span>
+          <h3>JV & Technology Exchange</h3>
+          <p>Bilateral matching based on complementary capabilities (e.g. Japanese precision CNC IP × Indian Tier-1 OEM manufacturing floor space & supply contracts).</p>
+        </div>
+
+        <div class="pillar-card">
+          <span class="pillar-num">04 / DISTRIBUTORS</span>
+          <h3>28-State Distributor Hub</h3>
+          <p>Directory of vetted regional distributors filterable by cold-chain logistics, bonded warehousing, CDSCO/BIS import licenses, and after-sales service teams.</p>
+        </div>
+
+        <div class="pillar-card">
+          <span class="pillar-num">05 / REGULATORY</span>
+          <h3>CEPA & Tax Advisory</h3>
+          <p>Direct scheduling with ICAI-certified CAs and Company Secretaries. Built-in India–Japan CEPA tariff reduction simulator for duty-free machinery imports.</p>
+        </div>
+
+        <div class="pillar-card" style="background: #f8fafc; border-style: dashed;">
+          <span class="pillar-num" style="background:#475569;">06 / TALENT</span>
+          <h3>Corporate Language Hub</h3>
+          <p>Bilingual JLPT & Business Hindi training for cross-border expansion teams with live calendar slot scheduling for certified native instructors.</p>
+        </div>
+      </div>
+
+      <!-- Bottom: Tri-Persona & Technology -->
+      <div class="bottom-grid">
+        <div class="box">
+          <h4>🔄 1-Click Tri-Persona Switcher (Interactive Evaluation)</h4>
+          <p style="font-size:11.5px; color:#64748b; margin-bottom:10px;">Judges can switch identities in the top navigation bar to test tailored permissions:</p>
+          <div class="persona-pills">
+            <div class="persona-pill">
+              <span style="font-size:18px;">🇯🇵</span>
+              <div>
+                <strong>Japanese SME Enterprise</strong>
+                <span> · Market diagnostic, create campaigns, review fieldwork, seek JV partners</span>
+              </div>
+            </div>
+            <div class="persona-pill">
+              <span style="font-size:18px;">🇮🇳</span>
+              <div>
+                <strong>Indian Corporate / Distributor</strong>
+                <span> · Run dealer fieldwork, submit quotes, pitch capabilities, apply for JVs</span>
+              </div>
+            </div>
+            <div class="persona-pill">
+              <span style="font-size:18px;">🎓</span>
+              <div>
+                <strong>Professional Practice (CA / CS / Tutor)</strong>
+                <span> · Client consultations, regulatory advice, corporate training sessions</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="box">
+          <h4>⚙️ Architecture & Rigor</h4>
+          <ul style="font-size:11.5px; color:#475569; list-style:none; line-height:1.6;">
+            <li>✅ <strong>Automated Tests:</strong> 45/45 Vitest tests passing</li>
+            <li>✅ <strong>Frontend:</strong> React 18, Vite 6, TypeScript Strict</li>
+            <li>✅ <strong>State & Routing:</strong> TanStack Router & Query</li>
+            <li>✅ <strong>Backend:</strong> Supabase Auth, PostgreSQL, Storage</li>
+            <li>✅ <strong>Data Engine:</strong> SheetJS XLSX, jsPDF, html2canvas</li>
+          </ul>
+
+          <div style="margin-top:12px;">
+            <div style="font-size:11px; font-weight:700; color:#0f2b48;">GITHUB REPOSITORY</div>
+            <div style="font-size:11px; font-family:'JetBrains Mono', monospace; color:#64748b; word-break:break-all;">
+              github.com/arnavdev-24/nippon-india-bridge
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Handout Footer -->
+    <footer class="handout-footer">
+      <div><strong>Nippon2Bharat</strong> — Designed for JETRO & Bilateral Japan–India SME Expansion</div>
+      <div>MIT License · Code & Live Demo Ready for Evaluation</div>
+    </footer>
+  </div>
+
+</body>
+</html>
