@@ -1,11 +1,31 @@
 # Nippon2Bharat (日印ブリッジ) 🇯🇵 × 🇮🇳
 ### Bilateral SME Market Entry, Fieldwork Verification & Partnership Corridor
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-nippontwobharat.lovable.app-FF3366?style=for-the-badge&logo=google-chrome&logoColor=white)](https://nippontwobharat.lovable.app)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/arnavdev-24/nippon-india-bridge)
 [![Tests](https://img.shields.io/badge/tests-45%2F45%20passing-brightgreen)](https://github.com/arnavdev-24/nippon-india-bridge)
 [![TypeScript](https://img.shields.io/badge/typescript-strict-blue)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/vite-6.x-646CFF)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/react-18.x-61DAFB)](https://react.dev/)
+
+---
+
+## ⚡ Quick Evaluation for Judges
+
+### 1️⃣ Option A: Open Live Demo (Instant in Browser)
+> ### 🌐 **[https://nippontwobharat.lovable.app](https://nippontwobharat.lovable.app)**
+> *(Fully deployed and live — use the 1-click **Persona Switcher** in the top header to explore Japanese SME, Indian Partner, and Expert views)*.
+
+### ── OR ──
+
+### 2️⃣ Option B: Run Locally in 3 Steps
+```bash
+git clone https://github.com/arnavdev-24/nippon-india-bridge.git
+cd nippon-india-bridge
+npm install && npm run dev
+```
+> App boots on **`http://localhost:5173`** *(Credentials pre-configured in `.env` — no setup needed)*.  
+> 📖 See [`START_HERE.md`](./START_HERE.md) for the complete judge walkthrough guide.
 
 ---
 
