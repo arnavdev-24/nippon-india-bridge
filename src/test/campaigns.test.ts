@@ -33,4 +33,29 @@ describe("product survey campaigns", () => {
     expect(r.valid[0]?.answers["e"]).toBe("Diesel");
     expect(r.errors.some((e) => e.row === 3)).toBe(true);
   });
+  it("flexibly matches choice variations and extracts combined contact info", () => {
+    const rowData = {
+      "Dealer Name": "Kisan Agri Machinery & Spares",
+      "Territory / Region": "Ludhiana & Sangrur, Punjab",
+      "Price Competitiveness Rating (1-5)": 4,
+      "Expected Dealer Margin (%)": "15.0%",
+      "Pilot Batch Volume (Units)": 15,
+      "Preferred Engine / Fuel Type": "7.0 HP Air-Cooled Diesel",
+      "Key Decision Maker / Contact Person": "Gurpreet Singh",
+      "Contact Phone / Email": "+91 98140 XXXXX / kisan.ludhiana@example.com"
+    };
+    const r = parseSheetRows(
+      [rowData],
+      [{ ...q("eng", "choice", ["Single-Cylinder Diesel Demanded", "Petrol Engine Acceptable"]), label: "Engine & Fuel Preference" }]
+    );
+    expect(r.errors).toHaveLength(0);
+    expect(r.valid).toHaveLength(1);
+    const parsed = r.valid[0]!;
+    expect(parsed.dealer_name).toBe("Kisan Agri Machinery & Spares");
+    expect(parsed.answers["eng"]).toBe("Single-Cylinder Diesel Demanded");
+    expect(parsed.contact_name).toBe("Gurpreet Singh");
+    expect(parsed.phone).toBe("+91 98140 XXXXX");
+    expect(parsed.email).toBe("kisan.ludhiana@example.com");
+    expect(isValidGstinFormat(parsed.gstin)).toBe(true);
+  });
 });

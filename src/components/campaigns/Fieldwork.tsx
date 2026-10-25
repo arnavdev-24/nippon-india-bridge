@@ -57,7 +57,7 @@ export function Fieldwork({ c, responses }: { c: Campaign; responses: (ResponseR
   const refresh = () => qc.invalidateQueries({ queryKey: ["campaign", c.id] });
 
   async function handleFile(file: File) {
-    if (!/\.(xlsx|xls|csv)$/i.test(file.name)) { toast.error("Upload an .xlsx, .xls or .csv file"); return; }
+    if (!/\.(xlsx|xls|csv|tsv)$/i.test(file.name)) { toast.error("Upload an .xlsx, .xls, .csv or .tsv file"); return; }
     setBusy(true);
     try {
       const rows = await readSheet(file);
@@ -114,8 +114,8 @@ export function Fieldwork({ c, responses }: { c: Campaign; responses: (ResponseR
               onDrop={(e) => { e.preventDefault(); setDrag(false); const f = e.dataTransfer.files[0]; if (f) handleFile(f); }}
               onClick={() => fileRef.current?.click()}
               className={`mt-3 cursor-pointer rounded-md border-2 border-dashed p-6 text-center text-sm ${drag ? "border-primary bg-primary/5" : "border-border text-muted-foreground"}`}>
-              <Upload className="mx-auto mb-2 h-5 w-5" />{busy ? "Importing…" : "Drag & drop .xlsx / .csv here, or click to browse"}
-              <input ref={fileRef} type="file" accept=".xlsx,.xls,.csv" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = ""; }} />
+              <Upload className="mx-auto mb-2 h-5 w-5" />{busy ? "Importing…" : "Drag & drop .xlsx / .csv / .tsv here, or click to browse"}
+              <input ref={fileRef} type="file" accept=".xlsx,.xls,.csv,.tsv" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = ""; }} />
             </div>
             {report && (
               <div className="mt-3 text-xs">

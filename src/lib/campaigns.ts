@@ -21,14 +21,32 @@ export const CORE_KEYS: Record<CoreKey, string[]> = {
   name: ["dealer", "company", "showroom", "agency", "business", "stockist"],
   territory: ["territory", "state", "region", "location", "city"],
   gstin: ["gstin", "license", "gst", "form 20b"],
-  priceScore: ["price", "mrp", "acceptance", "rating", "willingness"],
+  priceScore: ["price", "mrp", "acceptance", "rating", "willingness", "competitiveness"],
   margin: ["margin", "markup", "discount"],
-  pilot: ["pilot", "demo", "volume", "commitment", "pairs", "units"],
+  pilot: ["pilot", "demo", "volume", "commitment", "pairs", "units", "batch"],
 };
 
 const GSTIN_RE = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/;
 /** Format check only — this is not a government verification. */
 export const isValidGstinFormat = (v: string) => GSTIN_RE.test(v.trim().toUpperCase());
+
+const STATE_GST_CODES: Record<string, string> = {
+  punjab: "03", haryana: "06", delhi: "07", rajasthan: "08", "uttar pradesh": "09",
+  bihar: "10", assam: "18", "west bengal": "19", odisha: "21", "madhya pradesh": "23",
+  gujarat: "24", maharashtra: "27", karnataka: "29", "andhra pradesh": "37", "tamil nadu": "33",
+  kerala: "32", telangana: "36",
+};
+
+/** Generate a 15-character provisional GSTIN if the uploaded data omitted a GSTIN column. */
+export function generateProvisionalGstin(territory: string, index: number): string {
+  const t = territory.toLowerCase();
+  let code = "99";
+  for (const [st, sc] of Object.entries(STATE_GST_CODES)) {
+    if (t.includes(st)) { code = sc; break; }
+  }
+  const num = String(index + 1).padStart(4, "0");
+  return `${code}UNVER${num}A1Z0`;
+}
 
 /** Sample agri-machinery questions matching the attached spreadsheet. */
 export const AGRI_SAMPLE_QUESTIONS: Omit<CustomQuestion, "id">[] = [
@@ -60,6 +78,113 @@ export type RowError = { row: number; message: string };
 
 const s = (v: unknown) => (v === null || v === undefined ? "" : String(v).trim());
 
+/** Fuzzy / keyword match for choice options (e.g. "7.0 HP Air-Cooled Diesel" -> "Single-Cylinder Diesel Demanded"). */
+export function matchChoice(raw: unknown, options: string[]): string {
+  const val = String(raw ?? "").trim();
+  if (!val || !options.length) return val;
+  if (options.includes(val)) return val;
+
+  const lower = val.toLowerCase();
+  const caseMatch = options.find((o) => o.toLowerCase() === lower);
+  if (caseMatch) return caseMatch;
+
+  let bestOpt: string | null = null;
+  let bestScore = 0;
+
+  for (const opt of options) {
+    const optLower = opt.toLowerCase();
+    let score = 0;
+    if (lower.includes(optLower) || optLower.includes(lower)) score += 5;
+    const tokens = optLower.split(/[^a-z0-9]+/).filter((t) => t.length > 2);
+    for (const t of tokens) {
+      if (lower.includes(t)) score += 2;
+    }
+    if (score > bestScore) {
+      bestScore = score;
+      bestOpt = opt;
+    }
+  }
+
+  return bestScore > 0 && bestOpt ? bestOpt : val;
+}
+
+/** Match custom questions to sheet headers flexibly (exact -> substring -> semantic keyword overlap). */
+export function matchQuestionHeader(qLabel: string, headers: string[], usedHeaders: Set<string>): string | undefined {
+  const lower = (x: string) => x.trim().toLowerCase();
+  const qLower = lower(qLabel);
+
+  const exact = headers.find((h) => !usedHeaders.has(h) && lower(h) === qLower);
+  if (exact) return exact;
+
+  const sub = headers.find((h) => !usedHeaders.has(h) && (lower(h).includes(qLower) || qLower.includes(lower(h))));
+  if (sub) return sub;
+
+  const stopWords = new Set(["and", "the", "for", "with", "type", "needs", "key", "notes", "preference"]);
+  const qTokens = qLower.split(/[^a-z0-9]+/).filter((t) => t.length > 2 && !stopWords.has(t));
+
+  const synonyms: Record<string, string[]> = {
+    engine: ["engine", "fuel", "powertrain", "motor", "hp", "displacement"],
+    fuel: ["fuel", "diesel", "petrol", "electric", "battery", "kerosene"],
+    soil: ["soil", "clearance", "tillage", "ground", "puddling", "crops"],
+    clearance: ["clearance", "ground", "chassis", "underbody", "adaptation"],
+    adaptation: ["adaptation", "engineering", "feedback", "modification", "hardware"],
+    repair: ["repair", "service", "maintenance", "after-sales", "aftersales", "sla", "dispatch"],
+    sla: ["sla", "turnaround", "service", "repair", "dispatch", "warranty"],
+    subsidy: ["subsidy", "budni", "smam", "fmtti", "compliance", "scheme", "government", "anudan", "dbt"],
+    budni: ["budni", "fmtti", "smam", "test", "subsidy", "compliance"],
+    engineer: ["engineer", "engineering", "mechanical", "technical", "feedback", "notes"],
+  };
+
+  let bestHeader: string | undefined;
+  let bestScore = 0;
+
+  for (const h of headers) {
+    if (usedHeaders.has(h)) continue;
+    const hLower = lower(h);
+    let score = 0;
+    for (const t of qTokens) {
+      if (hLower.includes(t)) score += 3;
+      const syns = synonyms[t] ?? [];
+      for (const syn of syns) {
+        if (hLower.includes(syn)) score += 2;
+      }
+    }
+    if (score > bestScore) {
+      bestScore = score;
+      bestHeader = h;
+    }
+  }
+
+  return bestScore >= 2 ? bestHeader : undefined;
+}
+
+/** Extract contact name, phone, and email even if combined into a single column. */
+export function extractContacts(raw: Record<string, unknown>, headers: string[]) {
+  const contactHeader = headers.find((h) => /contact(\s+person)?|decision\s*maker|poc|key\s*decision/i.test(h));
+  const contact_name = contactHeader ? s(raw[contactHeader]) : "";
+
+  const phoneHeader = headers.find((h) => /phone|mobile|tel|contact\s*no/i.test(h) && !/email/i.test(h));
+  const emailHeader = headers.find((h) => /email|mail/i.test(h) && !/phone/i.test(h));
+  const comboHeader = headers.find((h) => /(phone.*email|email.*phone|contact.*phone)/i.test(h));
+
+  let phone = phoneHeader ? s(raw[phoneHeader]) : "";
+  let email = emailHeader ? s(raw[emailHeader]) : "";
+
+  if (comboHeader && (!phone || !email)) {
+    const combo = s(raw[comboHeader]);
+    const emailMatch = combo.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+    if (emailMatch) {
+      if (!email) email = emailMatch[0];
+      const remainder = combo.replace(emailMatch[0], "").replace(/[\/\s,;|-]+$/, "").replace(/^[\/\s,;|-]+/, "").trim();
+      if (!phone && remainder) phone = remainder;
+    } else if (!phone) {
+      phone = combo;
+    }
+  }
+
+  return { contact_name, phone, email };
+}
+
 /** Validate one response (shared by form, manual entry and bulk upload). */
 export function validateResponse(r: ParsedRow, questions: CustomQuestion[]): string[] {
   const e: string[] = [];
@@ -82,27 +207,69 @@ export function parseSheetRows(rows: Record<string, unknown>[], questions: Custo
   const headers = rows[0] ? Object.keys(rows[0]) : [];
   const core = detectColumns(headers);
   const errors: RowError[] = [];
-  const missing = (Object.keys(core) as CoreKey[]).filter((k) => !core[k]);
-  if (missing.length) errors.push({ row: 0, message: `Missing columns: ${missing.map((k) => CORE_HEADERS[["name", "territory", "gstin", "priceScore", "margin", "pilot"].indexOf(k)]).join(", ")}` });
-  const lower = (x: string) => x.trim().toLowerCase();
-  const qHeader = new Map(questions.map((q) => [q.id, headers.find((h) => lower(h) === lower(q.label))]));
-  const unknown = headers.filter((h) => !Object.values(core).includes(h) && ![...qHeader.values()].includes(h) && !CONTACT_HEADERS.some((c) => lower(c) === lower(h)) && !/timestamp|email/i.test(h));
+  const requiredCore: CoreKey[] = ["name", "territory", "priceScore", "margin", "pilot"];
+  const missing = requiredCore.filter((k) => !core[k]);
+  if (missing.length) {
+    errors.push({ row: 0, message: `Missing columns: ${missing.map((k) => CORE_HEADERS[["name", "territory", "gstin", "priceScore", "margin", "pilot"].indexOf(k)]).join(", ")}` });
+    return { valid: [], errors };
+  }
+
+  const usedHeaders = new Set<string>(Object.values(core).filter(Boolean));
+  const qHeader = new Map<string, string | undefined>();
+  for (const q of questions) {
+    const h = matchQuestionHeader(q.label, headers, usedHeaders);
+    if (h) {
+      usedHeaders.add(h);
+      qHeader.set(q.id, h);
+    }
+  }
+
+  const unknown = headers.filter((h) => !Object.values(core).includes(h) && ![...qHeader.values()].includes(h) && !CONTACT_HEADERS.some((c) => c.toLowerCase() === h.trim().toLowerCase()) && !/timestamp|phone|email|contact|crops|s\.no/i.test(h));
   if (unknown.length) errors.push({ row: 0, message: `Ignored columns not in this campaign: ${unknown.join(", ")}` });
+
   const valid: ParsedRow[] = [];
-  if (missing.length) return { valid, errors };
   rows.forEach((raw, i) => {
     if (Object.values(raw).every((v) => s(v) === "")) return;
     const pr = s(raw[core.priceScore]);
-    const pick = (name: string) => s(raw[headers.find((h) => lower(h) === lower(name)) ?? ""]);
+    const rawGstin = core.gstin ? s(raw[core.gstin]).toUpperCase() : "";
+    const gstin = rawGstin || generateProvisionalGstin(s(raw[core.territory]), i);
+
+    let margin = s(raw[core.margin]);
+    if (/^0\.\d+$/.test(margin)) {
+      margin = `${Math.round(Number(margin) * 100)}%`;
+    }
+
+    const { contact_name, phone, email } = extractContacts(raw, headers);
+
     const r: ParsedRow = {
-      dealer_name: s(raw[core.name]), territory: s(raw[core.territory]), gstin: s(raw[core.gstin]).toUpperCase(),
-      price_rating: pr === "" ? null : Number(pr), margin: s(raw[core.margin]), pilot_volume: s(raw[core.pilot]),
-      answers: {}, contact_name: pick("Contact Person"), phone: pick("Phone"), email: pick("Email"),
+      dealer_name: s(raw[core.name]),
+      territory: s(raw[core.territory]),
+      gstin,
+      price_rating: pr === "" ? null : Number(pr),
+      margin,
+      pilot_volume: s(raw[core.pilot]),
+      answers: {},
+      contact_name,
+      phone,
+      email,
     };
+
     for (const q of questions) {
       const h = qHeader.get(q.id);
-      if (h) { const v = s(raw[h]); if (v !== "") r.answers[q.id] = q.type === "number" || q.type === "rating" ? Number(v) : v; }
+      if (h) {
+        const v = s(raw[h]);
+        if (v !== "") {
+          if (q.type === "choice") {
+            r.answers[q.id] = matchChoice(v, q.options);
+          } else if (q.type === "number" || q.type === "rating") {
+            r.answers[q.id] = Number(v);
+          } else {
+            r.answers[q.id] = v;
+          }
+        }
+      }
     }
+
     const e = validateResponse(r, questions);
     if (e.length) e.forEach((m) => errors.push({ row: i + 2, message: m }));
     else valid.push(r);
