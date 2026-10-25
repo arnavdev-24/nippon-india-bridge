@@ -31,7 +31,7 @@ import {
 export const Route = createFileRoute("/_authenticated/state-intelligence")({
   head: () => ({
     meta: [
-      { title: "State Market Intelligence — nippon2japan" },
+      { title: "State Market Intelligence — nippon2bharat" },
       { name: "description", content: "Comparative economic, logistics, and industrial cluster data across Indian states for Japanese SMEs." },
       { property: "og:title", content: "State Market Intelligence" },
       { property: "og:description", content: "State-by-state economic and regulatory comparison." },

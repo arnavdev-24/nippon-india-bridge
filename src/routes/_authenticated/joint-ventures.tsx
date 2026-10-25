@@ -15,13 +15,13 @@ import { RegisterAsPartnerDialog } from "@/components/RegisterAsPartnerDialog";
 export const Route = createFileRoute("/_authenticated/joint-ventures")({
   head: () => ({
     meta: [
-      { title: "Joint Venture & Technology Exchange — nippon2japan" },
+      { title: "Joint Venture & Technology Exchange — nippon2bharat" },
       {
         name: "description",
         content:
           "Discover Indian and Japanese companies, technology needs, video pitches and collaboration partners.",
       },
-      { property: "og:title", content: "Joint Venture & Technology Exchange — nippon2japan" },
+      { property: "og:title", content: "Joint Venture & Technology Exchange — nippon2bharat" },
       {
         property: "og:description",
         content: "Two-way Japan–India partnerships and technology transfer.",

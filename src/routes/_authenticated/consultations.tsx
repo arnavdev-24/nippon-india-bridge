@@ -17,7 +17,7 @@ type Request = Tables<"consultation_requests">;
 export const Route = createFileRoute("/_authenticated/consultations")({
   head: () => ({
     meta: [
-      { title: "My Consultations — nippon2japan" },
+      { title: "My Consultations — nippon2bharat" },
       { name: "description", content: "Track your tax and compliance consultation requests." },
       { property: "og:title", content: "My Consultations" },
       { property: "og:description", content: "Pending, confirmed and completed consultations with Indian compliance experts." },

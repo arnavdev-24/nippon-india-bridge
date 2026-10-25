@@ -16,7 +16,7 @@ import { diagnose, type EntityType, type MarketEntryInput } from "@/lib/market-e
 export const Route = createFileRoute("/_authenticated/tax-compliance")({
   head: () => ({
     meta: [
-      { title: "Market Entry Diagnostic — nippon2japan" },
+      { title: "Market Entry Diagnostic — nippon2bharat" },
       { name: "description", content: "Statutory FDI route check, GST assessment, and licence requirements for Japanese companies entering India." },
       { property: "og:title", content: "Market Entry Diagnostic" },
       { property: "og:description", content: "Statutory FDI, GST and regulatory diagnosis paired with accredited Chartered Accountants." },

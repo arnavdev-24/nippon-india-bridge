@@ -37,7 +37,7 @@ export function Confirmation({ reference, expert, booking }: {
         <ol className="mt-2 list-decimal space-y-1 pl-5">
           <li>The professional reviews your request and confirms or proposes another time.</li>
           <li>Once confirmed, meeting details appear under My Consultations.</li>
-          <li>Questions? Contact us at support@nippon2japan.example.</li>
+          <li>Questions? Contact us at support@nippon2bharat.example.</li>
         </ol>
       </div>
       <div className="mt-6 flex justify-center gap-3">

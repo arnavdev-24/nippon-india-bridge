@@ -25,13 +25,13 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "nippon2japan — Japan–India SME Expansion & Industrial Corridor" },
+      { title: "nippon2bharat — Japan–India SME Expansion & Industrial Corridor" },
       {
         name: "description",
         content:
           "Institutional platform connecting Japanese SMEs with Indian Chartered Accountants, Joint Venture partners, industrial distributors, bilingual talent, and paid on-ground dealer surveys.",
       },
-      { property: "og:title", content: "nippon2japan — Japan–India SME Expansion & Industrial Corridor" },
+      { property: "og:title", content: "nippon2bharat — Japan–India SME Expansion & Industrial Corridor" },
       {
         property: "og:description",
         content: "Tax & compliance, joint ventures, distributors, and field dealer intelligence — in one unified corridor.",
@@ -574,13 +574,13 @@ export default function Index() {
       <footer className="border-t border-border/80 bg-background py-10 text-xs text-muted-foreground">
         <div className="mx-auto flex max-w-6xl flex-col sm:flex-row items-center justify-between gap-4 px-6">
           <div className="flex items-center gap-2">
-            <span className="font-serif font-bold text-foreground">nippon2japan</span>
+            <span className="font-serif font-bold text-foreground">nippon2bharat</span>
             <span>·</span>
             <span>Bilateral SME Expansion Infrastructure</span>
           </div>
           <div className="flex items-center gap-6">
             <span>Tokyo · Bengaluru · Mumbai · New Delhi</span>
-            <span>© {new Date().getFullYear()} nippon2japan</span>
+            <span>© {new Date().getFullYear()} nippon2bharat</span>
           </div>
         </div>
       </footer>

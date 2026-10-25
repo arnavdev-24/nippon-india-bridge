@@ -29,7 +29,7 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
-      { title: "Command Center — nippon2japan" },
+      { title: "Command Center — nippon2bharat" },
       { name: "description", content: "Your Japan–India business expansion command center." },
       { property: "og:title", content: "Command Center" },
       { property: "og:description", content: "Your Japan–India business expansion command center." },

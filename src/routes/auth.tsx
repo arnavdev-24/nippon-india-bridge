@@ -14,9 +14,9 @@ import { LangToggle, useT } from "@/lib/i18n";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Authentication — nippon2japan" },
-      { name: "description", content: "Sign in or create a nippon2japan corridor account." },
-      { property: "og:title", content: "Authentication — nippon2japan" },
+      { title: "Authentication — nippon2bharat" },
+      { name: "description", content: "Sign in or create a nippon2bharat corridor account." },
+      { property: "og:title", content: "Authentication — nippon2bharat" },
       { property: "og:description", content: "Join the Japan–India SME business network." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -141,7 +141,7 @@ function AuthPage() {
 
         <div className="border-t border-sidebar-border/80 pt-6 text-[11px] text-sidebar-foreground/50 flex items-center justify-between">
           <span>Japan–India Business Corridor</span>
-          <span>© {new Date().getFullYear()} nippon2japan</span>
+          <span>© {new Date().getFullYear()} nippon2bharat</span>
         </div>
       </div>
 

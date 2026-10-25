@@ -9,7 +9,7 @@ import { RegisterAsPartnerDialog } from "@/components/RegisterAsPartnerDialog";
 export const Route = createFileRoute("/_authenticated/advisors")({
   head: () => ({
     meta: [
-      { title: "Tax & Compliance Advisors — nippon2japan" },
+      { title: "Tax & Compliance Advisors — nippon2bharat" },
       { name: "description", content: "Connect with vetted Indian Chartered Accountants and Company Secretaries." },
       { property: "og:title", content: "Tax & Compliance Advisors" },
       { property: "og:description", content: "CAs and CSs for GST, tax and incorporation in India." },

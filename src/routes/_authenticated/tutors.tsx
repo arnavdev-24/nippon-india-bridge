@@ -15,13 +15,13 @@ import { RegisterAsPartnerDialog } from "@/components/RegisterAsPartnerDialog";
 export const Route = createFileRoute("/_authenticated/tutors")({
   head: () => ({
     meta: [
-      { title: "Language & Cultural Exchange Hub — nippon2japan" },
+      { title: "Language & Cultural Exchange Hub — nippon2bharat" },
       {
         name: "description",
         content:
           "Find Japanese, Hindi and English tutors, cultural trainers and employee language sessions.",
       },
-      { property: "og:title", content: "Language & Cultural Exchange Hub — nippon2japan" },
+      { property: "og:title", content: "Language & Cultural Exchange Hub — nippon2bharat" },
       {
         property: "og:description",
         content: "Match tutors by language, goals, budget and available sessions.",

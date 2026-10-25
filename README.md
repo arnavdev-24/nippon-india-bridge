@@ -1,4 +1,4 @@
-# Nippon2Japan (日印ブリッジ) 🇯🇵 × 🇮🇳
+# Nippon2Bharat (日印ブリッジ) 🇯🇵 × 🇮🇳
 ### Bilateral SME Market Entry, Fieldwork Verification & Partnership Corridor
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/arnavdev-24/nippon-india-bridge)
@@ -16,7 +16,7 @@ While large conglomerates like Maruti-Suzuki, Daikin, and Uniqlo have achieved i
 2. **Regulatory & Compliance Maze**: Navigating BIS certification, GST, Foreign Direct Investment (FDI) guidelines, and India–Japan CEPA tariff concessions without costly multinational advisory firms.
 3. **Counterparty Trust Deficit**: Sourcing reliable, vetted local distributors, joint venture partners, and bilingual advisors.
 
-**Nippon2Japan** bridges this gap with an end-to-end corridor platform designed for JETRO-aligned initiatives and bilateral business expansion.
+**Nippon2Bharat** bridges this gap with an end-to-end corridor platform designed for JETRO-aligned initiatives and bilateral business expansion.
 
 ---
 

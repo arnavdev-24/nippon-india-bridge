@@ -8,12 +8,12 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/_authenticated/overview")({
   head: () => ({
     meta: [
-      { title: "Sector Platform — nippon2japan" },
+      { title: "Sector Platform — nippon2bharat" },
       {
         name: "description",
         content: "Bilateral sector dashboards for semiconductors, AI innovation, greentech, and sustainable agriculture.",
       },
-      { property: "og:title", content: "Sector Platform — nippon2japan" },
+      { property: "og:title", content: "Sector Platform — nippon2bharat" },
       {
         property: "og:description",
         content: "Discover Indian partners and industrial clusters in semiconductors, AI, greentech, and sustainable agriculture.",
