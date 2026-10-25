@@ -1,6 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import type { CustomQuestion, ResponseRow } from "@/lib/campaigns";
+import { DEMO_CAMPAIGNS_MAP, DEMO_RESPONSES_MAP } from "@/lib/campaigns-demo";
 
 export type Campaign = Tables<"survey_campaigns">;
 export const questionsOf = (c: Pick<Campaign, "custom_questions">) => (Array.isArray(c.custom_questions) ? (c.custom_questions as unknown as CustomQuestion[]) : []);
@@ -9,15 +10,30 @@ export const INDUSTRIES = ["Agri-machinery", "Automotive & Mobility", "Consumer 
 export const INDIAN_STATES = ["Andhra Pradesh", "Assam", "Bihar", "Delhi", "Gujarat", "Haryana", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Odisha", "Punjab", "Rajasthan", "Tamil Nadu", "Telangana", "Uttar Pradesh", "West Bengal"];
 
 export async function fetchCampaign(id: string) {
+  if (id.startsWith("demo-")) {
+    return DEMO_CAMPAIGNS_MAP[id] ?? null;
+  }
   const { data, error } = await supabase.from("survey_campaigns").select("*").eq("id", id).maybeSingle();
-  if (error) throw error;
-  return data;
+  if (error) {
+    console.warn("Could not fetch campaign from Supabase, checking fallback:", error.message);
+    return DEMO_CAMPAIGNS_MAP[id] ?? null;
+  }
+  return data ?? DEMO_CAMPAIGNS_MAP[id] ?? null;
 }
 
 export async function fetchResponses(campaignId: string) {
+  if (campaignId.startsWith("demo-")) {
+    return DEMO_RESPONSES_MAP[campaignId] ?? [];
+  }
   const { data, error } = await supabase.from("campaign_responses").select("*").eq("campaign_id", campaignId).order("created_at");
-  if (error) throw error;
-  return data.map((r) => ({ ...r, answers: (r.answers ?? {}) as Record<string, unknown> })) as (ResponseRow & { source: string; created_at: string })[];
+  if (error) {
+    console.warn("Could not fetch responses from Supabase, checking fallback:", error.message);
+    return DEMO_RESPONSES_MAP[campaignId] ?? [];
+  }
+  if (data && data.length > 0) {
+    return data.map((r) => ({ ...r, answers: (r.answers ?? {}) as Record<string, unknown> })) as (ResponseRow & { source: string; created_at: string })[];
+  }
+  return DEMO_RESPONSES_MAP[campaignId] ?? [];
 }
 
 /** Returns contacts only where policy allows (vendor always; SME after delivery). */

@@ -56,6 +56,14 @@ export function HubRequestDialog({
     e.preventDefault();
     if (!me) return;
     setBusy(true);
+
+    if (profile.id.startsWith("jv-") || profile.owner_id.startsWith("00000000-demo-")) {
+      setBusy(false);
+      toast.success(`Collaboration request sent to ${profile.name}`);
+      setOpen(false);
+      return;
+    }
+
     const { error } = await supabase
       .from("hub_requests")
       .insert({

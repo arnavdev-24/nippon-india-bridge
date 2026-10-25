@@ -16,6 +16,7 @@ import { useT } from "@/lib/i18n";
 import { CampaignBuilder } from "@/components/campaigns/CampaignBuilder";
 import { CampaignList } from "@/components/campaigns/CampaignList";
 import { SampleReportButton } from "@/components/campaigns/SampleReport";
+import { DEMO_QUESTIONNAIRES, type DemoQuestionnaire } from "@/lib/campaigns-demo";
 
 export const Route = createFileRoute("/_authenticated/surveys")({
   head: () => ({ meta: [{ title: "Dealer Surveys — nippon2bharat" }, { name: "description", content: "Paid questionnaires answered by Indian dealers and vendors." }, { property: "og:title", content: "Dealer Surveys" }, { property: "og:description", content: "Real field insight from local dealers." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
@@ -60,32 +61,49 @@ function CompanyView() {
       const { data, error } = await supabase.from("surveys")
         .select("*, survey_responses(*, dealer:profiles!survey_responses_dealer_id_fkey(full_name, company_name, city, state))")
         .eq("company_id", me!.id).order("created_at", { ascending: false });
-      if (error) throw error;
-      return data;
+      if (error) {
+        console.warn("Could not load surveys from Supabase, checking fallback:", error.message);
+        return [];
+      }
+      return data ?? [];
     },
   });
 
   async function markPaid(id: string) {
+    if (id.startsWith("demo-")) {
+      toast.success("Marked as paid (demo)");
+      return;
+    }
     const { error } = await supabase.from("survey_responses").update({ payout_status: "paid", paid_at: new Date().toISOString() }).eq("id", id);
     if (error) { toast.error(error.message); return; }
     toast.success("Marked as paid");
     qc.invalidateQueries({ queryKey: ["my-surveys"] });
   }
   async function toggle(id: string, status: string) {
+    if (id.startsWith("demo-")) {
+      toast.success(status === "open" ? "Survey closed (demo)" : "Survey reopened (demo)");
+      return;
+    }
     await supabase.from("surveys").update({ status: status === "open" ? "closed" : "open" }).eq("id", id);
     qc.invalidateQueries({ queryKey: ["my-surveys"] });
   }
 
-  if (data.length === 0) return <Empty>Create your first survey to collect insight from Indian dealers.</Empty>;
+  const existingIds = new Set(data.map((s) => s.id));
+  const displaySurveys = [...data, ...(DEMO_QUESTIONNAIRES.filter((d) => !existingIds.has(d.id)) as unknown as typeof data)];
+
+  if (displaySurveys.length === 0) return <Empty>Create your first survey to collect insight from Indian dealers.</Empty>;
   return (
     <div className="space-y-6">
-      {data.map((s) => {
+      {displaySurveys.map((s) => {
         const owed = s.survey_responses.filter((r) => r.payout_status === "pending").length * s.reward_inr;
         return (
           <div key={s.id} className="rounded-lg border border-border bg-card shadow-paper">
             <div className="flex flex-wrap items-start justify-between gap-4 p-6">
               <div>
-                <h3 className="text-xl font-bold">{s.title}</h3>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-xl font-bold">{s.title}</h3>
+                  {s.id.startsWith("demo-") && <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">Example</span>}
+                </div>
                 <p className="text-sm text-muted-foreground">{s.description}</p>
                 <div className="mt-2 text-xs text-muted-foreground">{(s.questions as string[]).length} questions · {inr(s.reward_inr)} per response</div>
               </div>
@@ -137,6 +155,9 @@ function DealerView() {
     },
   });
   if (!data) return null;
+  const existingSurveyIds = new Set(data.surveys.map((s) => s.id));
+  const allSurveys = [...data.surveys, ...(DEMO_QUESTIONNAIRES.filter((d) => !existingSurveyIds.has(d.id)) as unknown as typeof data.surveys)];
+
   const earned = data.responses.filter((r) => r.payout_status === "paid").length;
   const answered = new Map(data.responses.map((r) => [r.survey_id, r]));
   return (
@@ -146,9 +167,9 @@ function DealerView() {
         <Stat label="Payments received" value={String(earned)} />
         <Stat label="Payments pending" value={String(data.responses.length - earned)} />
       </div>
-      {data.surveys.length === 0 ? <Empty>No open surveys right now. Check back soon.</Empty> : (
+      {allSurveys.length === 0 ? <Empty>No open surveys right now. Check back soon.</Empty> : (
         <div className="grid gap-4 md:grid-cols-2">
-          {data.surveys.map((s) => {
+          {allSurveys.map((s) => {
             const r = answered.get(s.id);
             return (
               <div key={s.id} className="rounded-lg border border-border bg-card p-6 shadow-paper">
@@ -156,7 +177,10 @@ function DealerView() {
                   <span className="text-xs text-muted-foreground">{s.company?.company_name || s.company?.full_name}</span>
                   <span className="font-display text-lg font-bold text-primary">{inr(s.reward_inr)}</span>
                 </div>
-                <h3 className="mt-2 text-lg font-bold">{s.title}</h3>
+                <div className="mt-2 flex items-center gap-2">
+                  <h3 className="text-lg font-bold">{s.title}</h3>
+                  {s.id.startsWith("demo-") && <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">Example</span>}
+                </div>
                 <p className="mt-1 text-sm text-muted-foreground">{s.description}</p>
                 <div className="mt-4">
                   {r ? <span className="text-sm text-success">Submitted · {r.payout_status === "paid" ? "Paid" : "Payment pending"}</span>
@@ -183,6 +207,11 @@ function AnswerDialog({ survey }: { survey: { id: string; title: string; questio
   const [answers, setAnswers] = useState<string[]>(qs.map(() => ""));
   async function submit() {
     if (!me) return;
+    if (survey.id.startsWith("demo-")) {
+      toast.success("Thank you! Your response was submitted.");
+      setOpen(false);
+      return;
+    }
     const { error } = await supabase.from("survey_responses").insert({ survey_id: survey.id, dealer_id: me.id, answers: answers.map((a) => a.slice(0, 2000)) });
     if (error) { toast.error(error.message); return; }
     toast.success("Thank you! Your response was submitted.");
