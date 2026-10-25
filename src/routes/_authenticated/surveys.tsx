@@ -18,7 +18,7 @@ import { CampaignList } from "@/components/campaigns/CampaignList";
 import { SampleReportButton } from "@/components/campaigns/SampleReport";
 
 export const Route = createFileRoute("/_authenticated/surveys")({
-  head: () => ({ meta: [{ title: "Dealer Surveys — nippon2japan" }, { name: "description", content: "Paid questionnaires answered by Indian dealers and vendors." }, { property: "og:title", content: "Dealer Surveys" }, { property: "og:description", content: "Real field insight from local dealers." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
+  head: () => ({ meta: [{ title: "Dealer Surveys — nippon2bharat" }, { name: "description", content: "Paid questionnaires answered by Indian dealers and vendors." }, { property: "og:title", content: "Dealer Surveys" }, { property: "og:description", content: "Real field insight from local dealers." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
   component: Surveys,
 });
 

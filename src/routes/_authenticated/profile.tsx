@@ -14,8 +14,8 @@ import { Building2, ShieldCheck, CheckCircle2 } from "lucide-react";
 export const Route = createFileRoute("/_authenticated/profile")({
   head: () => ({
     meta: [
-      { title: "Organization Profile — nippon2japan" },
-      { name: "description", content: "Manage your nippon2japan enterprise or practice credentials." },
+      { title: "Organization Profile — nippon2bharat" },
+      { name: "description", content: "Manage your nippon2bharat enterprise or practice credentials." },
       { property: "og:title", content: "Organization Profile" },
       { property: "og:description", content: "Manage your profile." },
       { property: "og:type", content: "website" },

@@ -7,7 +7,7 @@ export function Logo({ light = false }: { light?: boolean }) {
         <span className="absolute -right-1 -bottom-1 h-3 w-3 rounded-full bg-saffron" />
       </span>
       <span className={`font-display text-lg font-bold ${light ? "text-sidebar-foreground" : "text-foreground"}`}>
-        nippon<span className="text-primary">2</span>japan
+        nippon<span className="text-primary">2</span>bharat
       </span>
     </Link>
   );

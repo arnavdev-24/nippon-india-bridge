@@ -22,13 +22,13 @@ import { RegisterAsPartnerDialog } from "@/components/RegisterAsPartnerDialog";
 export const Route = createFileRoute("/_authenticated/distributors")({
   head: () => ({
     meta: [
-      { title: "Distributor Connect Hub — nippon2japan" },
+      { title: "Distributor Connect Hub — nippon2bharat" },
       {
         name: "description",
         content:
           "Match your products with Indian distributors by industry, state and capabilities.",
       },
-      { property: "og:title", content: "Distributor Connect Hub — nippon2japan" },
+      { property: "og:title", content: "Distributor Connect Hub — nippon2bharat" },
       {
         property: "og:description",
         content: "Find regional distribution partners for Japanese products in India.",

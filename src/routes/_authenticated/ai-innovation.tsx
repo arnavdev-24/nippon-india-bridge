@@ -8,9 +8,9 @@ import { DEMO_COMPANIES, SECTORS } from "@/lib/sectors";
 export const Route = createFileRoute("/_authenticated/ai-innovation")({
   head: () => ({
     meta: [
-      { title: "AI Innovation Exchange — nippon2japan" },
+      { title: "AI Innovation Exchange — nippon2bharat" },
       { name: "description", content: "Connect with Indian AI startups, developers, researchers and universities for joint AI development." },
-      { property: "og:title", content: "AI Innovation Exchange — nippon2japan" },
+      { property: "og:title", content: "AI Innovation Exchange — nippon2bharat" },
       { property: "og:description", content: "Connect with Indian AI startups, developers, researchers and universities for joint AI development." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
