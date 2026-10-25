@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { ArrowRight, Languages } from "lucide-react";
 import { PageHeader, Empty } from "@/components/PageHeader";
@@ -30,17 +30,11 @@ export const Route = createFileRoute("/_authenticated/tutors")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  loader: async ({ context }) => {
-    await Promise.all([
-      context.queryClient.ensureQueryData(hubProfilesQuery("tutoring")),
-      context.queryClient.ensureQueryData(slotsQuery),
-    ]);
-  },
   component: Tutors,
 });
 function Tutors() {
-  const { data: profiles } = useSuspenseQuery(hubProfilesQuery("tutoring"));
-  const { data: slots } = useSuspenseQuery(slotsQuery);
+  const { data: profiles = [] } = useQuery(hubProfilesQuery("tutoring"));
+  const { data: slots = [] } = useQuery(slotsQuery);
   const { data: me } = useMyProfile();
   const [language, setLanguage] = useState("");
   const [level, setLevel] = useState("");

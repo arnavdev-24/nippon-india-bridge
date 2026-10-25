@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Plus, Video, Trash2 } from "lucide-react";
+import { Plus, Video, Trash2, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useMyProfile } from "@/lib/profile";
 import {
@@ -28,9 +28,32 @@ import {
 import { Choice, Field, MultiChoice } from "./HubControls";
 
 export function ProfileEditor({ hub, profile }: { hub: Hub; profile?: HubProfile | undefined }) {
-  const { data: me } = useMyProfile();
+  const { data: me, isLoading: profileLoading } = useMyProfile();
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
+  const [authFallback, setAuthFallback] = useState<{ id: string; name: string } | null>(null);
+
+  useEffect(() => {
+    if (open && !me) {
+      supabase.auth.getUser().then(({ data }) => {
+        if (data.user) {
+          const meta = (data.user.user_metadata ?? {}) as Record<string, unknown>;
+          setAuthFallback({
+            id: data.user.id,
+            name:
+              (meta["company_name"] as string) ||
+              (meta["full_name"] as string) ||
+              data.user.email?.split("@")[0] ||
+              "My Company",
+          });
+        }
+      });
+    }
+  }, [open, me]);
+
+  const ownerId = me?.id || authFallback?.id;
+  const defaultName = me?.company_name || me?.full_name || authFallback?.name || "";
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -55,18 +78,29 @@ export function ProfileEditor({ hub, profile }: { hub: Hub; profile?: HubProfile
                 : "Distributor profile"}
           </DialogTitle>
         </DialogHeader>
-        {open && me && (
-          <Editor
-            key={profile?.id ?? "new"}
-            hub={hub}
-            profile={profile}
-            ownerId={me.id}
-            defaultName={me.company_name || me.full_name || ""}
-            onSaved={() => {
-              qc.invalidateQueries({ queryKey: ["hub-profiles"] });
-              setOpen(false);
-            }}
-          />
+        {open && (
+          profileLoading && !ownerId ? (
+            <div className="flex flex-col items-center justify-center py-12 gap-3 text-sm text-muted-foreground">
+              <Loader2 className="h-6 w-6 animate-spin text-primary" />
+              <span>Loading profile details…</span>
+            </div>
+          ) : ownerId ? (
+            <Editor
+              key={profile?.id ?? "new"}
+              hub={hub}
+              profile={profile}
+              ownerId={ownerId}
+              defaultName={defaultName}
+              onSaved={() => {
+                qc.invalidateQueries({ queryKey: ["hub-profiles"] });
+                setOpen(false);
+              }}
+            />
+          ) : (
+            <div className="py-8 text-center text-sm text-destructive">
+              Authentication required. Please sign in to create or edit your company profile.
+            </div>
+          )
         )}
       </DialogContent>
     </Dialog>
@@ -133,20 +167,34 @@ function Editor({
         const { error } = await supabase.storage.from("company-pitches").upload(uploaded, video);
         if (error) throw error;
       }
-      const { error } = await supabase
-        .from("hub_profiles")
-        .upsert(
-          {
-            ...f,
-            name: f.name.trim(),
-            owner_id: ownerId,
-            hub,
-            pitch_path: uploaded ?? f.pitch_path,
-            updated_at: new Date().toISOString(),
-          },
-          { onConflict: "owner_id,hub" },
-        );
-      if (error) throw error;
+      const payload = {
+        ...f,
+        name: f.name.trim(),
+        owner_id: ownerId,
+        hub,
+        pitch_path: uploaded ?? f.pitch_path,
+        updated_at: new Date().toISOString(),
+      };
+
+      if (profile?.id) {
+        const { error } = await supabase.from("hub_profiles").update(payload).eq("id", profile.id);
+        if (error) throw error;
+      } else {
+        const { data: existing } = await supabase
+          .from("hub_profiles")
+          .select("id")
+          .eq("owner_id", ownerId)
+          .eq("hub", hub)
+          .maybeSingle();
+
+        if (existing?.id) {
+          const { error } = await supabase.from("hub_profiles").update(payload).eq("id", existing.id);
+          if (error) throw error;
+        } else {
+          const { error } = await supabase.from("hub_profiles").insert(payload);
+          if (error) throw error;
+        }
+      }
       if (uploaded && profile?.pitch_path)
         await supabase.storage.from("company-pitches").remove([profile.pitch_path]);
       toast.success("Profile saved");

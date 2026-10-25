@@ -37,7 +37,48 @@ export const myProfileQuery = queryOptions({
     if (!u.user) return null;
     const { data, error } = await supabase.from("profiles").select("*").eq("id", u.user.id).maybeSingle();
     if (error) throw error;
-    return data;
+    if (data) return data;
+
+    // Auto-provision profile row if user is authenticated in Supabase but lacks a row in profiles
+    const metadata = (u.user.user_metadata ?? {}) as Record<string, unknown>;
+    const fullName =
+      (metadata["full_name"] as string) ||
+      (metadata["name"] as string) ||
+      u.user.email?.split("@")[0] ||
+      "Enterprise Member";
+    const companyName = (metadata["company_name"] as string) || "";
+    const accountType = (metadata["account_type"] as Tables<"profiles">["account_type"]) || "japanese_company";
+
+    try {
+      const { data: created, error: insertError } = await supabase
+        .from("profiles")
+        .insert({
+          id: u.user.id,
+          full_name: fullName,
+          company_name: companyName,
+          account_type: accountType,
+        })
+        .select("*")
+        .maybeSingle();
+
+      if (!insertError && created) return created;
+    } catch {
+      // Ignore insert error (e.g. read-only RLS), return fallback profile
+    }
+
+    return {
+      id: u.user.id,
+      full_name: fullName,
+      company_name: companyName,
+      account_type: accountType,
+      expert_type: null,
+      bio: null,
+      industry: null,
+      rate_inr: null,
+      city: null,
+      state: null,
+      created_at: new Date().toISOString(),
+    } as Profile;
   },
 });
 

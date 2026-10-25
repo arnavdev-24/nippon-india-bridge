@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { ArrowRight, Handshake } from "lucide-react";
+import { ArrowRight, Handshake, Loader2 } from "lucide-react";
 import { PageHeader, Empty } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,7 @@ import { Choice, Field, MultiChoice } from "@/components/hubs/HubControls";
 import { ProfileEditor } from "@/components/hubs/ProfileEditor";
 import { HubProfileCard } from "@/components/hubs/HubProfileCard";
 import { RegisterAsPartnerDialog } from "@/components/RegisterAsPartnerDialog";
+
 export const Route = createFileRoute("/_authenticated/joint-ventures")({
   head: () => ({
     meta: [
@@ -29,11 +30,11 @@ export const Route = createFileRoute("/_authenticated/joint-ventures")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(hubProfilesQuery("jv")),
   component: JV,
 });
+
 function JV() {
-  const { data: profiles } = useSuspenseQuery(hubProfilesQuery("jv"));
+  const { data: profiles = [], isLoading: loadingProfiles } = useQuery(hubProfilesQuery("jv"));
   const { data: me } = useMyProfile();
   const [search, setSearch] = useState("");
   const [country, setCountry] = useState("");
@@ -124,7 +125,12 @@ function JV() {
           <MultiChoice options={TECHNOLOGIES} value={technology} onChange={setTechnology} />
         </Field>
       </section>
-      {list.length === 0 ? (
+      {loadingProfiles ? (
+        <div className="flex flex-col items-center justify-center py-16 gap-3 text-muted-foreground text-sm">
+          <Loader2 className="h-7 w-7 animate-spin text-primary" />
+          <span>Loading joint venture opportunities…</span>
+        </div>
+      ) : list.length === 0 ? (
         <Empty>
           No company pitches match yet. Publish your collaboration interests to join the network.
         </Empty>

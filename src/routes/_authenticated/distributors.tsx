@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { ArrowRight, ExternalLink, MapPin, Truck } from "lucide-react";
 import { PageHeader, Empty } from "@/components/PageHeader";
@@ -38,11 +38,10 @@ export const Route = createFileRoute("/_authenticated/distributors")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(hubProfilesQuery("distribution")),
   component: Distributors,
 });
 function Distributors() {
-  const { data: profiles } = useSuspenseQuery(hubProfilesQuery("distribution"));
+  const { data: profiles = [] } = useQuery(hubProfilesQuery("distribution"));
   const { data: me } = useMyProfile();
   const [industry, setIndustry] = useState("");
   const [category, setCategory] = useState("");
